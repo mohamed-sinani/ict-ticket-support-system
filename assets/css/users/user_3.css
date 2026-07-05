@@ -1,0 +1,15 @@
+/* Sample user-specific overrides for user_3 (green accent) */
+:root {
+    --accent: #10b981; /* Emerald-500 */
+}
+.admin-sidebar {
+    background: linear-gradient(135deg, #072a1f 0%, #0b4b36 100%);
+}
+.admin-module-nav a.active {
+    background: #e9fff6;
+    color: #06492f;
+}
+.btn-primary {
+    background-color: var(--accent);
+    border-color: rgba(16,185,129,0.2);
+}
