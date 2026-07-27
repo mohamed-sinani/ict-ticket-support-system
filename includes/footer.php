@@ -208,5 +208,7 @@ if (document.readyState === 'loading') {
 }
 </script>
 
+<script src="<?= $baseUrl ?>assets/js/animations.js"></script>
+
 </body>
 </html>
