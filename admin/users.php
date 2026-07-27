@@ -28,16 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $jobTitle = trim($_POST['job_title'] ?? '');
         $departmentId = (int) ($_POST['department_id'] ?? 0);
         $role = $_POST['role'] ?? 'employee';
-        $password = trim($_POST['password'] ?? 'pass123');
-        $passwordHash = password_hash($password !== '' ? $password : 'pass123', PASSWORD_DEFAULT);
+        $password = trim($_POST['password'] ?? '');
+        $passwordHash = $password !== '' ? password_hash($password, PASSWORD_DEFAULT) : '';
 
-        if ($fullName !== '' && $email !== '' && in_array($role, ['admin', 'ict', 'employee'], true)) {
+        if ($fullName !== '' && $email !== '' && $password !== '' && in_array($role, ['admin', 'ict', 'employee'], true)) {
             $stmt = $conn->prepare('INSERT INTO users (full_name, employee_number, phone, email, job_title, department_id, role, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
             $stmt->bind_param('sssssiss', $fullName, $employeeNumber, $phone, $email, $jobTitle, $departmentId, $role, $passwordHash);
             $stmt->execute();
             setFlash('User created successfully.');
         } else {
-            setFlash('Unable to create user. Please check required fields.', 'error');
+            setFlash('Unable to create user. Please check required fields and provide a password.', 'error');
         }
     }
 
@@ -129,7 +129,7 @@ require_once __DIR__ . '/_nav.php';
             </select>
         </label>
         <label><span data-i18n="admin_password_label">Password (leave blank to keep current)</span>
-            <input type="text" name="password" value="<?= $editUser ? '' : 'pass123' ?>">
+            <input type="password" name="password" value="" placeholder="<?= $editUser ? 'Leave blank to keep current' : 'Required for new users' ?>">
         </label>
         <div class="table-actions">
             <button class="btn btn-primary" type="submit"><?= $editUser ? 'Save Changes' : 'Create User' ?></button>
@@ -182,6 +182,4 @@ require_once __DIR__ . '/_nav.php';
     </table>
     </div>
 </section>
-</section>
-</div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
