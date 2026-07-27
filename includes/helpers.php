@@ -315,7 +315,7 @@ function sendNotificationEmail(string $to, string $subject, string $message, ?st
 
     $headers = "MIME-Version: 1.0\r\n";
     $headers .= ($htmlMessage !== null ? "Content-type:text/html;charset=UTF-8\r\n" : "Content-type:text/plain;charset=UTF-8\r\n");
-    $headers .= 'From: ' . APP_NAME . ' <' . (defined('SMTP_USERNAME') ? SMTP_USERNAME : 'no-reply@institution.local') . "\r\n";
+    $headers .= 'From: ' . APP_NAME . ' <' . (defined('SMTP_USERNAME') ? SMTP_USERNAME : 'no-reply@institution.local') . ">\r\n";
 
     $result = @mail($to, $subject, $htmlMessage ?? $message, $headers);
     if (!$result) {
