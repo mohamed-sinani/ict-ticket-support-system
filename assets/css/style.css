@@ -2213,6 +2213,10 @@ tbody tr:hover {
         height: 19px;
     }
 
+    .brand-text {
+        display: none;
+    }
+
     .menu-toggle {
         display: block;
         min-width: 44px;
@@ -2904,6 +2908,395 @@ main > * {
     }
     .staff-ticket-update-form .file-drop-zone {
         min-height: 100px;
+    }
+}
+
+/* ═══ Dashboard Improvements ═══ */
+
+.dash-greeting {
+    margin-bottom: 1.5rem;
+}
+
+.dash-greeting h2 {
+    margin-bottom: 0.15rem;
+    color: var(--primary);
+    font-size: 1.55rem;
+    line-height: 1.2;
+}
+
+.dash-greeting p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+
+/* ── Stat cards with icons ────────────────────────────────── */
+
+.dash-stats {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dash-stats .stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-stats .stat::after {
+    display: none;
+}
+
+.dash-stats .stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-accent-blue .stat-icon {
+    background: rgba(37, 99, 235, 0.1);
+    color: #2563eb;
+}
+
+.stat-accent-amber .stat-icon {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.stat-accent-violet .stat-icon {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.stat-accent-green .stat-icon {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.stat-accent-red .stat-icon {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.stat-accent-cyan .stat-icon {
+    background: rgba(6, 182, 212, 0.1);
+    color: #06b6d4;
+}
+
+.stat-body {
+    min-width: 0;
+}
+
+.stat-body h3 {
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 0.1rem;
+}
+
+.stat-accent-blue .stat-body h3 { color: #2563eb; }
+.stat-accent-amber .stat-body h3 { color: #f59e0b; }
+.stat-accent-violet .stat-body h3 { color: #8b5cf6; }
+.stat-accent-green .stat-body h3 { color: #22c55e; }
+.stat-accent-red .stat-body h3 { color: #ef4444; }
+.stat-accent-cyan .stat-body h3 { color: #06b6d4; }
+
+.stat-body p {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    line-height: 1.25;
+}
+
+/* ── KPI row ──────────────────────────────────────────────── */
+
+.dash-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dash-kpi-card {
+    padding: 1.2rem 1.3rem;
+}
+
+.dash-kpi-card:hover {
+    transform: translateY(-2px);
+}
+
+.kpi-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.kpi-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.kpi-icon-clock {
+    background: rgba(37, 99, 235, 0.1);
+    color: #2563eb;
+}
+
+.kpi-icon-trend {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.kpi-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.1;
+    margin-bottom: 0.65rem;
+}
+
+.kpi-bar {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+}
+
+.kpi-bar-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 999px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+}
+
+.kpi-bar-amber {
+    background: #f59e0b;
+}
+
+.kpi-bar-green {
+    background: #22c55e;
+}
+
+.kpi-sub {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* ── Chart grid ───────────────────────────────────────────── */
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.chart-card {
+    background: transparent;
+    padding: 0;
+}
+
+.chart-card h3 {
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 260px !important;
+    display: block;
+}
+
+.chart-card-wide {
+    min-width: 0;
+}
+
+.chart-card-side {
+    min-width: 0;
+}
+
+@media (max-width: 980px) {
+    .chart-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Quick action cards ───────────────────────────────────── */
+
+.dash-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dash-action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.2rem 1.3rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--text-main);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-action-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(37,99,235,0.06), transparent);
+    transform: translateX(-120%);
+    transition: transform 0.6s ease;
+    z-index: 0;
+}
+
+.dash-action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+
+.dash-action-card:hover::before {
+    transform: translateX(120%);
+}
+
+.dash-action-card:hover svg {
+    color: var(--accent);
+}
+
+.dash-action-card svg {
+    width: 28px;
+    height: 28px;
+    color: var(--text-muted);
+    transition: var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+.dash-action-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary);
+    position: relative;
+    z-index: 1;
+}
+
+.dash-action-count {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+}
+
+.dash-action-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.dash-action-primary svg {
+    color: rgba(255,255,255,0.85);
+}
+
+.dash-action-primary:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    border-color: transparent;
+    box-shadow: 0 12px 28px rgba(37,99,235,0.3);
+}
+
+.dash-action-primary:hover svg {
+    color: #ffffff;
+}
+
+.dash-action-primary .dash-action-label {
+    color: #ffffff;
+}
+
+.dash-action-primary .dash-action-count {
+    color: rgba(255,255,255,0.7);
+}
+
+/* ── Responsive dashboard tweaks ──────────────────────────── */
+
+@media (max-width: 600px) {
+    .dash-stats .stat {
+        padding: 0.9rem 1rem;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .stat-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .stat-body h3 {
+        font-size: 1.35rem;
+    }
+
+    .kpi-value {
+        font-size: 1.5rem;
+    }
+
+    .dash-quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-action-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 1rem 1.1rem;
+    }
+
+    .dash-action-card svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .chart-card canvas {
+        height: 200px !important;
     }
 }
 
