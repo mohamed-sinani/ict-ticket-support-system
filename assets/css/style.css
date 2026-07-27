@@ -1362,10 +1362,6 @@ main {
         gap: 0.65rem;
     }
 
-    .stepper {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .wizard-actions {
         justify-content: flex-end;
     }
@@ -1589,22 +1585,21 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0;
+    gap: 0.4rem;
     margin: 1rem 0 1.5rem;
-    overflow-x: auto;
-    padding: 0.25rem 0;
+    position: relative;
 }
 
 .auth-stepper {
-    gap: 0;
+    gap: 0.4rem;
 }
 
 .step {
     background: var(--bg);
     color: var(--text-muted);
     border: 2px solid var(--border);
-    border-radius: 999px;
-    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 1.1rem;
     text-align: center;
     font-size: 0.82rem;
     font-weight: 700;
@@ -1612,27 +1607,14 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    position: relative;
+    gap: 0.35rem;
+    transition: var(--transition);
     flex: 1;
     min-width: 0;
-    transition: var(--transition);
 }
 
-.step::after {
-    content: '';
-    position: absolute;
-    right: -50%;
-    top: 50%;
-    width: 100%;
-    height: 2px;
-    background: var(--border);
-    z-index: 0;
-    transform: translateY(-50%);
-}
-
-.step:last-child::after {
-    display: none;
+.step + .step {
+    margin-left: 1.2rem;
 }
 
 .step.active {
@@ -1640,22 +1622,12 @@ main {
     border-color: var(--accent);
     color: #fff;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-    z-index: 1;
-}
-
-.step.active::after {
-    background: var(--accent);
 }
 
 .step.completed {
     background: var(--success);
     border-color: var(--success);
     color: #fff;
-}
-
-.step.completed::after {
-    background: var(--success);
-}
 }
 
 .wizard-step {
@@ -2805,7 +2777,7 @@ tbody tr:hover {
     }
 
     .stepper {
-        gap: 0;
+        gap: 0.3rem;
         overflow-x: auto;
         padding: 0.25rem 0;
     }
@@ -2814,7 +2786,11 @@ tbody tr:hover {
         padding: 0.4rem 0.6rem;
         font-size: 0.7rem;
         white-space: nowrap;
-        border-radius: 999px;
+        flex: 0 0 auto;
+    }
+
+    .step + .step {
+        margin-left: 0;
     }
 
     .wizard-actions {
