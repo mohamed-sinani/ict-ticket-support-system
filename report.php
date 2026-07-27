@@ -138,7 +138,4 @@ if (isLoggedIn()) {
 </section>
 <script src="assets/js/report.js"></script>
 
-    </section>
-</section>
-</div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -338,5 +338,6 @@ require_once __DIR__ . '/_nav.php';
         </div>
     <?php endif; ?>
 </section>
+</div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -67,4 +67,5 @@ require_once __DIR__ . '/_nav.php';
         </table>
     </div>
 </section>
+</div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
