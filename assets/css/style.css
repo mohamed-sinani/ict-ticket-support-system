@@ -171,10 +171,175 @@ main {
     padding: 2rem 0 4rem;
 }
 
+/* How it works section */
+.how-it-works {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.how-it-works h2,
+.features-section h2 {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 2rem;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.step-item {
+    text-align: center;
+    padding: 1.5rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.step-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(37, 99, 235, 0.3);
+}
+
+.step-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.step-item h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.step-item p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+/* Features section */
+.features-section {
+    margin-bottom: 3rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 1.75rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(37, 99, 235, 0.3);
+}
+
+.feature-card svg {
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.feature-card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+/* CTA section */
+.cta-section {
+    margin-bottom: 2rem;
+}
+
+.cta-card {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    border-radius: var(--radius-lg);
+    color: #fff;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.18);
+}
+
+.cta-card h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+}
+
+.cta-card p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    max-width: 540px;
+    margin: 0 auto 1.5rem;
+}
+
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cta-actions .btn-secondary {
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--primary);
+    border-color: rgba(255, 255, 255, 0.54);
+}
+
+@media (max-width: 768px) {
+    .steps-grid,
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .steps-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Cards and Panels */
 .hero {
     text-align: center;
-    padding: 4rem 2rem 3.75rem;
+    padding: 5rem 2rem 4.5rem;
     background:
         linear-gradient(90deg, rgba(125, 211, 252, 0.11) 1px, transparent 1px),
         linear-gradient(0deg, rgba(125, 211, 252, 0.09) 1px, transparent 1px),
@@ -218,7 +383,7 @@ main {
 }
 
 .hero h1 {
-    font-size: clamp(1.8rem, 4vw, 2.65rem);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
     margin-bottom: 1rem;
     font-weight: 800;
     line-height: 1.15;
@@ -2327,7 +2492,7 @@ tbody tr:hover {
     }
 
     .hero h1 {
-        font-size: clamp(1.55rem, 9vw, 2.1rem);
+        font-size: clamp(1.65rem, 9vw, 2.3rem);
     }
 
     .hero p {
