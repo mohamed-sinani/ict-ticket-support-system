@@ -263,6 +263,44 @@ function buildTicketResolvedEmail(array $ticket): string
 </html>';
 }
 
+function buildOtpEmail(string $fullName, string $otpCode): string
+{
+    $name = e($fullName);
+    $code = e($otpCode);
+    $minutes = OTP_EXPIRY_MINUTES;
+
+    return '<!doctype html>
+<html>
+<body style="margin:0;background:#eff6ff;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eff6ff;padding:28px 12px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #dbeafe;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                    <tr>
+                        <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
+                            <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
+                            <div style="font-size:22px;font-weight:800;line-height:1.25;margin-top:4px;">Login Verification Code</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:24px;">
+                            <p style="margin:0 0 14px;">Hello ' . $name . ',</p>
+                            <p style="margin:0 0 18px;color:#475569;">Use the following one-time code to complete your login. This code expires in ' . $minutes . ' minutes.</p>
+                            <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:10px;padding:20px;text-align:center;margin:18px 0;">
+                                <div style="font-size:12px;font-weight:800;color:#1e3a8a;text-transform:uppercase;letter-spacing:.08em;">Verification Code</div>
+                                <div style="font-size:36px;font-weight:800;color:#0f2f61;letter-spacing:.15em;margin-top:8px;">' . $code . '</div>
+                            </div>
+                            <p style="margin:18px 0 0;color:#64748b;font-size:13px;">If you did not request this login, please ignore this email or contact ICT support immediately.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>';
+}
+
 function sendNotificationEmail(string $to, string $subject, string $message, ?string $htmlMessage = null): bool
 {
     if (defined('SMTP_HOST') && SMTP_HOST !== '') {
