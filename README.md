@@ -1,4 +1,4 @@
-# Institutional ICT Support Ticket & Issue Tracking System
+# Report all Technical ICT issues by Submitting a Ticket
 
 Web-based ticket and issue tracking solution for a single institution.
 

@@ -131,7 +131,7 @@ const appTranslations = {
         subnav_my_tickets: 'My Tickets',
         footer_title: 'ICT Ticketing System',
         footer_subtitle: 'Institutional ICT Support & Issue Tracking System',
-        home_hero_title: 'Institutional ICT Support Ticket & Issue Tracking System',
+        home_hero_title: 'Report all Technical ICT issues by Submitting a Ticket',
         home_hero_text: 'Report ICT incidents quickly and track updates with your unique code. Admin and ICT staff can securely manage ticket lifecycles in one place.',
         home_register_btn: 'Register',
         home_report_btn: 'Report an Issue',

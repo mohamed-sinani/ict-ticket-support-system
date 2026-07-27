@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-const APP_NAME = 'Institutional ICT Support Ticket & Issue Tracking System';
+const APP_NAME = 'Report all Technical ICT issues by Submitting a Ticket';
 const UPLOAD_DIR = __DIR__ . '/../uploads';
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5MB
 
