@@ -146,9 +146,9 @@ while ($row = $catRes->fetch_assoc()) {
 </div>
 
 <?php if ($catLabels): ?>
-<div class="panel-card chart-card" style="margin-top:1rem;">
+<div class="panel-card chart-card" style="margin-top:1.25rem;">
     <h3>Top Issue Categories</h3>
-    <canvas id="categoryBar" aria-label="Top categories chart" role="img" style="height:200px!important;"></canvas>
+    <canvas id="categoryBar" aria-label="Top categories chart" role="img"></canvas>
 </div>
 <?php endif; ?>
 

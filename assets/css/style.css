@@ -3117,18 +3117,20 @@ main > * {
 .chart-grid {
     display: grid;
     grid-template-columns: 1fr 380px;
-    gap: 1rem;
+    gap: 1.25rem;
     align-items: stretch;
 }
 
 .chart-card {
-    background: transparent;
-    padding: 0;
+    background: #ffffff;
+    padding: 1.3rem;
 }
 
 .chart-card h3 {
     margin-bottom: 0.8rem;
     font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
 }
 
 .chart-card canvas {
