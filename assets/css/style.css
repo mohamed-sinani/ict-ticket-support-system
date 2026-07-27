@@ -309,8 +309,8 @@ main {
 
 .panel-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    border-color: rgba(37, 99, 235, 0.2);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
 .panel-card:hover::before {
@@ -348,7 +348,7 @@ main {
 
 /* Admin layout */
 .admin-app-page {
-    background: #f8fafc;
+    background: #f1f5f9;
 }
 
 .admin-app-page .topbar,
@@ -366,19 +366,19 @@ main {
     display: grid;
     grid-template-columns: 260px minmax(0, 1fr);
     min-height: 100vh;
-    background: #f8fafc;
+    background: #f1f5f9;
 }
 
 .admin-sidebar {
     position: sticky;
     top: 0;
     height: 100vh;
-    background: var(--surface);
+    background: #f8fafc;
     color: var(--text-main);
     border: 0;
-    border-right: 1px solid var(--border);
+    border-right: 1px solid #e2e8f0;
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
     padding: 1.2rem 0.85rem;
     display: flex;
     flex-direction: column;
@@ -462,7 +462,7 @@ main {
 }
 
 .admin-module-nav a {
-    color: var(--text-main);
+    color: #475569;
     text-decoration: none;
     border-radius: 10px;
     padding: 0.7rem 0.85rem;
@@ -478,20 +478,20 @@ main {
 
 .admin-module-icon {
     flex: 0 0 auto;
-    color: var(--text-muted);
+    color: #94a3b8;
     transition: var(--transition);
 }
 
 .admin-module-nav a:hover,
 .admin-module-nav a:focus-visible {
-    background: var(--bg);
+    background: #e2e8f0;
     color: var(--accent);
 }
 
 .admin-module-nav a.active {
     background: var(--accent);
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .admin-module-nav a:hover .admin-module-icon,
@@ -528,9 +528,9 @@ main {
     min-height: 74px;
     margin: 0 -2rem 1.5rem;
     padding: 0 2rem;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    box-shadow: none;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     color: var(--text-main);
     display: flex;
     align-items: center;
@@ -548,23 +548,23 @@ main {
 .admin-profile-icon {
     width: 44px;
     height: 44px;
-    border: 1px solid var(--border);
+    border: 1px solid #e2e8f0;
     border-radius: 999px;
-    background: var(--bg);
+    background: #f1f5f9;
     color: var(--text-main);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     transition: var(--transition);
 }
 
 .admin-profile-icon:hover,
 .admin-profile-icon:focus-visible {
     color: var(--accent);
-    border-color: rgba(37, 99, 235, 0.2);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    border-color: rgba(37, 99, 235, 0.3);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
     transform: translateY(-1px);
 }
 
@@ -623,10 +623,10 @@ main {
 
 .confirm-modal {
     width: min(420px, 100%);
-    background: var(--surface);
+    background: #ffffff;
     border-radius: 16px;
-    border: 1px solid var(--border);
-    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.15);
     padding: 1.25rem;
 }
 
@@ -672,9 +672,9 @@ main {
     right: 0;
     width: min(440px, 100%);
     height: 100%;
-    background: var(--surface);
-    border-left: 1px solid var(--border);
-    box-shadow: -8px 0 32px rgba(15, 23, 42, 0.1);
+    background: #ffffff;
+    border-left: 1px solid #e2e8f0;
+    box-shadow: -8px 0 32px rgba(15, 23, 42, 0.15);
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
@@ -786,10 +786,10 @@ main {
 
 .admin-content .stat,
 .admin-content .panel-card {
-    border: 1px solid var(--border);
+    border: 1px solid #e2e8f0;
     border-radius: 14px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    background: var(--surface);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    background: #ffffff;
 }
 
 .admin-content .stat {
@@ -889,11 +889,11 @@ main {
     gap: 0.25rem;
     padding: 0.95rem 1rem;
     border-radius: 12px;
-    background: var(--bg);
-    border: 1px solid var(--border);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     color: var(--text-main);
     text-decoration: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .module-summary-item strong {
@@ -907,9 +907,9 @@ main {
 
 .module-summary-item:hover,
 .module-summary-item:focus-visible {
-    border-color: rgba(37, 99, 235, 0.2);
+    border-color: rgba(37, 99, 235, 0.3);
     color: var(--accent);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .admin-content .table-wrap {
@@ -1084,7 +1084,7 @@ main {
 .admin-sidebar-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.3);
+    background: rgba(15, 23, 42, 0.4);
     backdrop-filter: blur(2px);
     z-index: 1100;
     opacity: 0;
@@ -1111,19 +1111,19 @@ main {
 }
 
 .subnav a {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: var(--radius-sm);
     color: var(--text-main);
     font-weight: 700;
     padding: 0.65rem 0.85rem;
     text-decoration: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .subnav a:hover,
 .subnav a:focus-visible {
-    border-color: rgba(37, 99, 235, 0.2);
+    border-color: rgba(37, 99, 235, 0.3);
     color: var(--accent);
 }
 
@@ -1131,11 +1131,11 @@ main {
 .auth-card, .wizard-wrap {
     max-width: 420px;
     margin: 0 auto;
-    background: var(--surface);
+    background: #ffffff;
     padding: 1.35rem 1.45rem 1.45rem;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     position: relative;
     overflow: hidden;
 }
@@ -1211,7 +1211,7 @@ main {
 
     .admin-shell.sidebar-open .admin-sidebar {
         transform: translateX(0);
-        box-shadow: 16px 0 48px rgba(15, 23, 42, 0.15);
+        box-shadow: 16px 0 48px rgba(15, 23, 42, 0.2);
     }
 
     .admin-content {
@@ -1681,7 +1681,7 @@ button:disabled {
     min-height: 44px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     isolation: isolate;
 }
 
@@ -1707,7 +1707,7 @@ button:disabled {
 
 .btn-primary:hover {
     background-color: var(--accent-hover);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
     transform: translateY(-1px);
 }
 
@@ -1968,12 +1968,12 @@ button:disabled {
 
 /* Tables */
 .table-wrap {
-    background: var(--surface);
+    background: #ffffff;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border);
+    border: 1px solid #e2e8f0;
     overflow-x: auto;
     margin-top: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .table-wrap table {
@@ -2059,8 +2059,8 @@ tbody tr:hover {
     border-radius: 14px;
     padding: 0.9rem 1rem;
     border: 1px solid transparent;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
-    background: var(--surface);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15);
+    background: #ffffff;
     animation: flashToastIn 0.2s ease-out;
 }
 
@@ -2121,11 +2121,11 @@ tbody tr:hover {
 }
 
 .stat {
-    background: var(--surface);
+    background: #ffffff;
     padding: 1.5rem;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -2144,8 +2144,8 @@ tbody tr:hover {
 
 .stat:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    border-color: rgba(37, 99, 235, 0.2);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
 .stat:hover::after {
@@ -2309,14 +2309,14 @@ tbody tr:hover {
         max-width: 300px;
         height: 100dvh;
         padding: 1rem 0.85rem;
-        box-shadow: 16px 0 48px rgba(15, 23, 42, 0.15);
+        box-shadow: 16px 0 48px rgba(15, 23, 42, 0.2);
         border-radius: 0;
         transform: translateX(-100%);
         transition: transform 0.28s ease;
         z-index: 1200;
         overflow: hidden;
-        background: var(--surface);
-        border-right: 1px solid var(--border);
+        background: #f8fafc;
+        border-right: 1px solid #e2e8f0;
     }
 
     .admin-sidebar-head {
@@ -2942,9 +2942,9 @@ main > * {
     gap: 1rem;
     padding: 1.1rem 1.2rem;
     border-radius: 14px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -2956,8 +2956,8 @@ main > * {
 
 .dash-stats .stat:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    border-color: rgba(37, 99, 235, 0.2);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
 .stat-icon {
@@ -3166,12 +3166,12 @@ main > * {
     align-items: flex-start;
     gap: 0.5rem;
     padding: 1.2rem 1.3rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 14px;
     text-decoration: none;
     color: var(--text-main);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -3189,8 +3189,8 @@ main > * {
 
 .dash-action-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    border-color: rgba(37, 99, 235, 0.2);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
 .dash-action-card:hover::before {
@@ -3230,7 +3230,7 @@ main > * {
     background: var(--accent);
     color: #ffffff;
     border-color: transparent;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .dash-action-primary svg {
@@ -3240,7 +3240,7 @@ main > * {
 .dash-action-primary:hover {
     background: var(--accent-hover);
     border-color: transparent;
-    box-shadow: 0 4px 16px rgba(37,99,235,0.2);
+    box-shadow: 0 6px 20px rgba(37,99,235,0.3);
 }
 
 .dash-action-primary:hover svg {
