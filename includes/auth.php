@@ -62,6 +62,68 @@ function authenticate(string $email, string $password, ?string $expectedRole = n
     return true;
 }
 
+function generateOtp(int $userId): string
+{
+    $conn = db();
+
+    $sql = 'UPDATE otp_codes SET used = 1 WHERE user_id = ? AND used = 0';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+
+    $code = '';
+    for ($i = 0; $i < OTP_LENGTH; $i++) {
+        $code .= random_int(0, 9);
+    }
+
+    $expiresAt = date('Y-m-d H:i:s', time() + OTP_EXPIRY_MINUTES * 60);
+
+    $sql = 'INSERT INTO otp_codes (user_id, code, expires_at) VALUES (?, ?, ?)';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('iss', $userId, $code, $expiresAt);
+    $stmt->execute();
+
+    return $code;
+}
+
+function verifyOtp(int $userId, string $code): ?string
+{
+    $conn = db();
+
+    $sql = 'SELECT id, code, expires_at, attempts, used FROM otp_codes WHERE user_id = ? AND used = 0 ORDER BY id DESC LIMIT 1';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $otp = $stmt->get_result()->fetch_assoc();
+
+    if (!$otp) {
+        return 'no_otp';
+    }
+
+    if (strtotime($otp['expires_at']) < time()) {
+        return 'expired';
+    }
+
+    if ((int) $otp['attempts'] >= OTP_MAX_ATTEMPTS) {
+        return 'max_attempts';
+    }
+
+    if (!hash_equals($otp['code'], $code)) {
+        $sql = 'UPDATE otp_codes SET attempts = attempts + 1 WHERE id = ?';
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $otp['id']);
+        $stmt->execute();
+        return 'invalid';
+    }
+
+    $sql = 'UPDATE otp_codes SET used = 1 WHERE id = ?';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $otp['id']);
+    $stmt->execute();
+
+    return null;
+}
+
 function homePathForRole(string $role): string
 {
     if ($role === 'admin') {
