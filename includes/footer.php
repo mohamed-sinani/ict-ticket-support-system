@@ -2,7 +2,7 @@
 
 <footer class="footer">
     <div class="container">
-        <p>&copy; <?= date('Y') ?> <span data-i18n="footer_title">ICT Ticketing System</span> &mdash; <span data-i18n="footer_subtitle">Institutional ICT Support &amp; Issue Tracking System</span></p>
+        <p>&copy; <?= date('Y') ?> ICT Ticketing System</p>
     </div>
 </footer>
 
