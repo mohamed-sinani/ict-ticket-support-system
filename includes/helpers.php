@@ -328,7 +328,6 @@ function sendNotificationEmail(string $to, string $subject, string $message, ?st
             return true;
         }
 
-        // Log fallback attempt and try PHP mail() as a best-effort fallback.
         error_log('[ict-mail] SMTP send failed for: ' . $to . ' subject: ' . $subject);
     }
 

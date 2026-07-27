@@ -9,23 +9,16 @@ $pageTitle = $pageTitle ?? APP_NAME;
 $user = currentUser();
 $flash = getFlash();
 
-/* Detect whether we are inside a role dashboard path. */
 $isAdminDir = strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
 $isStaffDir = strpos($_SERVER['PHP_SELF'], '/staff/') !== false;
 $isEmployeeDir = strpos($_SERVER['PHP_SELF'], '/employee/') !== false;
 
-/* Admin, staff and employee pages all use the admin/panel app layout so
-    they share the same sidebar, topbar-less appearance and color scheme. */
 $isPanelDir = $isAdminDir || $isStaffDir || $isEmployeeDir;
 
-/* Allow callers to force the panel layout even when the file is not in a
-   subdirectory (e.g. report.php should appear inside the panel for
-   logged-in users). This does not change asset path calculation. */
 if (isset($forcePanel) && $forcePanel) {
     $isPanelDir = true;
 }
 
-/* For correct relative asset paths, treat any role subdirectory as a subdir. */
 $isSubDir = $isAdminDir || $isStaffDir || $isEmployeeDir;
 $baseUrl = $isSubDir ? '../' : '';
 ?>
@@ -40,13 +33,9 @@ $baseUrl = $isSubDir ? '../' : '';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/style.css">
     <?php
-    // Load a user-specific stylesheet when present so each user can have
-    // their own look & feel without changing the shared CSS. Files are
-    // stored under `assets/css/users/user_{id}.css` and are optional.
     if (!empty($user['id'])) {
         $userCssRel = 'assets/css/users/user_' . (int) $user['id'] . '.css';
         $userCssHref = $baseUrl . $userCssRel;
-        // Check file existence using filesystem path relative to includes/
         if (file_exists(__DIR__ . '/../' . $userCssRel)) {
             echo '<link rel="stylesheet" href="' . e($userCssHref) . '">';
         }
@@ -55,24 +44,20 @@ $baseUrl = $isSubDir ? '../' : '';
 </head>
 <body class="<?= $isPanelDir ? 'admin-app-page' : '' ?>">
 
-<!-- Page Header -->
 <header class="topbar">
     <div class="container nav-wrap">
 
-        <!-- App brand -->
         <a href="<?= $baseUrl ?>index.php" class="brand">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
             <span class="brand-text">ICT Support</span>
         </a>
 
-        <!-- Mobile hamburger button -->
         <button class="menu-toggle" id="menuToggle" aria-label="Open menu" data-i18n-aria-label="menu_toggle" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
         </button>
 
-        <!-- Main navigation -->
         <nav id="mainNav">
             <?php if ($user): ?>
                 <span class="nav-user"><?= e($user['full_name']) ?> &mdash; <?= strtoupper(e($user['role'])) ?></span>

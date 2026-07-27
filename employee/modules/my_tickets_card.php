@@ -1,5 +1,4 @@
 <?php
-// Employee module card: My Tickets
 ?>
 <a class="module-summary-item" href="<?= $baseUrl ?? '' ?>employee/my_tickets.php">
     <strong>My Tickets</strong>

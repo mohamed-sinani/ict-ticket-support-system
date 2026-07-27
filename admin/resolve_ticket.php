@@ -64,7 +64,6 @@ function resolvePhotoUpload(array $file): array
     ]];
 }
 
-// Fetch ticket
 $ticketSql = "SELECT t.*, d.name AS department_name, c.name AS category_name, sc.name AS subcategory_name,
                      emp.full_name AS employee_name, emp.email AS employee_email,
                      ict.full_name AS ict_name
@@ -85,7 +84,6 @@ if (!$ticket) {
     redirect('tickets.php');
 }
 
-// Handle POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('tickets.php'); }
     $status = trim($_POST['status'] ?? '');
@@ -206,14 +204,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     redirect('tickets.php');
 }
 
-// Fetch evidence attachments
 $evidenceSql = "SELECT file_name, file_path, file_type, created_at FROM attachments WHERE ticket_id = ? ORDER BY created_at ASC";
 $evidenceStmt = $conn->prepare($evidenceSql);
 $evidenceStmt->bind_param('i', $ticketId);
 $evidenceStmt->execute();
 $attachments = $evidenceStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// Fetch timeline
 $timelineSql = "SELECT c.comment_text AS action, c.created_at, u.full_name
                 FROM comments c
                 LEFT JOIN users u ON u.id = c.user_id
@@ -224,7 +220,6 @@ $timelineStmt->bind_param('i', $ticketId);
 $timelineStmt->execute();
 $timeline = $timelineStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// Fetch comments
 $commentSql = "SELECT c.comment_text, c.created_at, u.full_name
                FROM comments c
                LEFT JOIN users u ON u.id = c.user_id

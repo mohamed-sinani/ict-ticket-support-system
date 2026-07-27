@@ -8,7 +8,6 @@ requireLogin(['admin']);
 
 $conn = db();
 
-// Date range filter
 $startDate = trim($_GET['start_date'] ?? '');
 $endDate = trim($_GET['end_date'] ?? '');
 $where = '';
@@ -26,14 +25,12 @@ if ($endDate !== '') {
     $types .= 's';
 }
 
-// CSV export
 if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="ict_reports_' . date('Y-m-d') . '.csv"');
     $output = fopen('php://output', 'w');
     fputcsv($output, ['Report', 'Label', 'Value']);
 
-    // Staff performance
     $sql = "SELECT u.full_name, COUNT(t.id) AS handled
             FROM users u
             LEFT JOIN tickets t ON t.assigned_to = u.id
@@ -51,7 +48,6 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         fputcsv($output, ['ICT Staff Performance', $row['full_name'], (int) $row['handled']]);
     }
 
-    // Ticket trends
     $sql = "SELECT DATE(created_at) AS day, COUNT(*) AS total FROM tickets WHERE 1=1{$where} GROUP BY DATE(created_at) ORDER BY day ASC";
     $stmt = $conn->prepare($sql);
     if (!empty($params)) {
@@ -62,7 +58,6 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         fputcsv($output, ['Ticket Trends', $row['day'], (int) $row['total']]);
     }
 
-    // Common categories
     $sql = "SELECT c.name AS category, COUNT(t.id) AS total FROM categories c LEFT JOIN tickets t ON t.category_id = c.id WHERE 1=1{$where} GROUP BY c.id ORDER BY total DESC";
     $stmt = $conn->prepare($sql);
     if (!empty($params)) {
@@ -73,7 +68,6 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         fputcsv($output, ['Common Issue Categories', $row['category'], (int) $row['total']]);
     }
 
-    // Department breakdown
     $sql = "SELECT d.name AS department, COUNT(t.id) AS total FROM departments d LEFT JOIN tickets t ON t.department_id = d.id WHERE 1=1{$where} GROUP BY d.id ORDER BY total DESC";
     $stmt = $conn->prepare($sql);
     if (!empty($params)) {
@@ -88,7 +82,6 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     exit;
 }
 
-// Build parameterised query helper
 function buildReport(string $baseSql, string $where, array $params, string $types, mysqli $conn): array
 {
     $sql = $baseSql . $where;
@@ -100,7 +93,6 @@ function buildReport(string $baseSql, string $where, array $params, string $type
     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
-// ICT Staff Performance
 $staffPerformance = buildReport(
     "SELECT u.full_name, COUNT(t.id) AS handled
      FROM users u
@@ -110,13 +102,11 @@ $staffPerformance = buildReport(
 );
 
 if (!empty($params)) {
-    // Need a fresh copy for each query since bind_param mutates
     $trendWhere = $where;
 } else {
     $trendWhere = $where;
 }
 
-// Ticket Trends (last 14 days, respecting date filter)
 $trendSql = "SELECT DATE(created_at) AS day, COUNT(*) AS total FROM tickets WHERE 1=1{$trendWhere} GROUP BY DATE(created_at) ORDER BY day ASC";
 if (empty($params) && empty($startDate) && empty($endDate)) {
     $trendSql = "SELECT DATE(created_at) AS day, COUNT(*) AS total FROM tickets WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 13 DAY) GROUP BY DATE(created_at) ORDER BY day ASC";
@@ -128,7 +118,6 @@ if (!empty($params)) {
 $trendStmt->execute();
 $ticketTrends = $trendStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// Common Issue Categories
 $commonIssues = buildReport(
     "SELECT c.name AS category, COUNT(t.id) AS total
      FROM categories c
@@ -136,7 +125,6 @@ $commonIssues = buildReport(
     $where, $params, $types, $conn
 );
 
-// Department Breakdown
 $deptBreakdown = buildReport(
     "SELECT d.name AS department, COUNT(t.id) AS total
      FROM departments d
@@ -144,20 +132,16 @@ $deptBreakdown = buildReport(
     $where, $params, $types, $conn
 );
 
-// User Activity Trends
 $userActivity = buildReport(
     "SELECT u.full_name, u.role, COUNT(t.id) AS ticket_count
      FROM users u
      LEFT JOIN tickets t ON t.employee_id = u.id WHERE 1=1",
     $where, $params, $types, $conn
 );
-// Add employees with no tickets too (LEFT JOIN already handles this)
-// Group by user and order
 usort($userActivity, function ($a, $b) {
     return (int) $b['ticket_count'] - (int) $a['ticket_count'];
 });
 
-// Status distribution
 $statusSql = "SELECT status, COUNT(*) c FROM tickets WHERE 1=1{$where} GROUP BY status";
 $statusStmt = $conn->prepare($statusSql);
 if (!empty($params)) {
@@ -168,7 +152,6 @@ $statusDist = $statusStmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $statusLabels = array_column($statusDist, 'status');
 $statusCounts = array_map('intval', array_column($statusDist, 'c'));
 
-// Chart data for trends
 $trendLabels = [];
 $trendData = [];
 foreach ($ticketTrends as $row) {
@@ -202,7 +185,6 @@ require_once __DIR__ . '/_nav.php';
 
 <div class="admin-report-grid">
 
-    <!-- Ticket Trends Chart -->
     <section class="panel-card chart-card">
         <h3>Ticket Trends</h3>
         <div style="position:relative;height:220px;">
@@ -210,7 +192,6 @@ require_once __DIR__ . '/_nav.php';
         </div>
     </section>
 
-    <!-- Status Distribution -->
     <section class="panel-card chart-card">
         <h3>Tickets by Status</h3>
         <div style="position:relative;height:220px;">
@@ -218,7 +199,6 @@ require_once __DIR__ . '/_nav.php';
         </div>
     </section>
 
-    <!-- ICT Staff Performance -->
     <section class="panel-card">
         <h3 data-i18n="admin_ict_performance">ICT Staff Performance</h3>
         <div class="table-wrap">
@@ -245,7 +225,6 @@ require_once __DIR__ . '/_nav.php';
         </div>
     </section>
 
-    <!-- Ticket Trends Table -->
     <section class="panel-card">
         <h3>Ticket Trends<?= empty($startDate) && empty($endDate) ? ' (Last 14 Days)' : '' ?></h3>
         <div class="table-wrap">
@@ -272,7 +251,6 @@ require_once __DIR__ . '/_nav.php';
         </div>
     </section>
 
-    <!-- Common Issue Categories -->
     <section class="panel-card">
         <h3 data-i18n="admin_common_categories">Common Issue Categories</h3>
         <div class="table-wrap">
@@ -299,7 +277,6 @@ require_once __DIR__ . '/_nav.php';
         </div>
     </section>
 
-    <!-- Department Breakdown -->
     <section class="panel-card">
         <h3>Department Breakdown</h3>
         <div class="table-wrap">
@@ -326,7 +303,6 @@ require_once __DIR__ . '/_nav.php';
         </div>
     </section>
 
-    <!-- User Activity Trends -->
     <section class="panel-card">
         <h3>User Activity Trends</h3>
         <div class="table-wrap">

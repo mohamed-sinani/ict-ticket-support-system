@@ -93,7 +93,6 @@ require_once __DIR__ . '/_nav.php';
         <?php endforeach; ?>
     </div>
 </section>
-<!-- Confirmation modal (custom, replaces browser confirm) -->
 <div id="confirmOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="confirm-modal" role="document">
         <h3 id="confirmTitle">Confirm</h3>
@@ -145,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Close on Escape
     document.addEventListener('keydown', function (ev) {
         if (ev.key === 'Escape' && !overlay.classList.contains('hidden')) {
             hideConfirm();

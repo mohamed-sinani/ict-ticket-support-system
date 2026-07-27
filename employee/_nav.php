@@ -14,8 +14,6 @@ if (!empty($employeeUser['full_name'])) {
     $avatarInitials = strtoupper(substr($employeeUser['email'] ?? 'E', 0, 2));
 }
 
-// Build absolute links so the nav works consistently when included from
-// pages in different directories (e.g. report.php includes this nav).
 $employeeModules = [
     ['href' => $appRoot . '/employee/dashboard.php', 'label' => 'Dashboard', 'i18n' => 'subnav_dashboard', 'icon' => '<rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect>'],
     ['href' => $appRoot . '/report.php', 'label' => 'Report an Issue', 'i18n' => 'nav_report_issue', 'icon' => '<path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z"></path>'],
@@ -59,4 +57,4 @@ $employeeModules = [
                 <button type="button" class="btn btn-secondary btn-link" aria-label="Switch language" data-language-toggle>SW</button>
             </div>
         </div>
-    <!-- admin-content continues into the page; do not close the section here -->
+    

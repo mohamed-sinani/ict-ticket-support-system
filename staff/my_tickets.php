@@ -208,7 +208,6 @@ $stmt->bind_param('i', $userId);
 $stmt->execute();
 $tickets = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// Debug helper: append ?debug=1 to the URL to dump current user id and fetched tickets
 if (isset($_GET['debug']) && $_GET['debug']) {
     echo '<section class="panel-card"><pre>' . e(print_r(['userId' => $userId, 'tickets_fetched' => $tickets], true)) . '</pre></section>';
 }

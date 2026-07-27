@@ -1,13 +1,12 @@
-/* Global Styles */
 :root {
-    --primary: #0f172a; /* Slate 900 */
-    --accent: #2563eb; /* Blue 600 */
+    --primary: #0f172a; 
+    --accent: #2563eb; 
     --accent-hover: #1d4ed8;
-    --bg: #f8fafc; /* Slate 50 */
+    --bg: #f8fafc; 
     --surface: #ffffff;
-    --text-main: #1e293b; /* Slate 800 */
-    --text-muted: #64748b; /* Slate 500 */
-    --border: #e2e8f0; /* Slate 200 */
+    --text-main: #1e293b; 
+    --text-muted: #64748b; 
+    --border: #e2e8f0; 
     --danger: #ef4444;
     --success: #22c55e;
     --radius-sm: 8px;
@@ -41,13 +40,11 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Main container */
 .container {
     width: min(1200px, 92%);
     margin: 0 auto;
 }
 
-/* Top bar/Header */
 .topbar {
     background-color: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -87,7 +84,6 @@ body {
     transform: translateY(-1px) scale(1.06);
 }
 
-/* Navigation menu */
 nav {
     display: flex;
     align-items: center;
@@ -141,7 +137,6 @@ nav a:not(.btn):focus-visible::after {
     white-space: nowrap;
 }
 
-/* Mobile hamburger menu */
 .menu-toggle {
     display: none;
     background: none;
@@ -165,13 +160,11 @@ nav a:not(.btn):focus-visible::after {
     transition: var(--transition);
 }
 
-/* Main section */
 main {
     flex: 1;
     padding: 2rem 0 4rem;
 }
 
-/* How it works section */
 .how-it-works {
     margin-top: 3rem;
     margin-bottom: 3rem;
@@ -236,7 +229,6 @@ main {
     line-height: 1.55;
 }
 
-/* Features section */
 .features-section {
     margin-bottom: 3rem;
 }
@@ -281,7 +273,6 @@ main {
     line-height: 1.55;
 }
 
-/* CTA section */
 .cta-section {
     margin-bottom: 2rem;
 }
@@ -336,7 +327,6 @@ main {
     }
 }
 
-/* Cards and Panels */
 .hero {
     text-align: center;
     padding: 5rem 2rem 4.5rem;
@@ -433,7 +423,6 @@ main {
     isolation: isolate;
 }
 
-/* Charts layout */
 .chart-grid {
     display: grid;
     grid-template-columns: 1fr 360px;
@@ -511,7 +500,6 @@ main {
     grid-column: 1 / -1;
 }
 
-/* Admin layout */
 .admin-app-page {
     background: #f1f5f9;
 }
@@ -733,14 +721,12 @@ main {
     transform: translateY(-1px);
 }
 
-/* Profile initials styling */
 .admin-profile-icon {
     font-weight: 800;
     font-size: 0.95rem;
     letter-spacing: 0.02em;
 }
 
-/* Departments grid */
 .departments-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -774,7 +760,6 @@ main {
     margin: 0;
 }
 
-/* Custom confirmation modal */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -811,7 +796,6 @@ main {
     gap: 0.65rem;
 }
 
-/* Ticket evidence drawer */
 .evidence-empty {
     color: var(--text-muted);
     font-size: 0.9rem;
@@ -1004,7 +988,6 @@ main {
     margin-top: 1rem;
 }
 
-/* Staff dashboard layout */
 .staff-dashboard-grid {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
@@ -1340,7 +1323,6 @@ main {
     color: var(--accent);
 }
 
-/* Forms and Inputs */
 .auth-card, .wizard-wrap {
     max-width: 420px;
     margin: 0 auto;
@@ -1353,21 +1335,16 @@ main {
     overflow: hidden;
 }
 
-/* When rendering inside the admin panel, make the auth/report cards
-   align with the content area (not centered) and allow a larger width. */
 .admin-content .auth-card,
 .admin-content .wizard-wrap {
     max-width: 760px;
     margin: 48px auto;
 }
 
-/* By default (desktop), hide the mobile-only quick actions card */
 .staff-workload-card {
     display: none;
 }
 
-/* Responsive: on smaller viewports use a two-column form layout and
-   make the card full-width within the content area for better usability. */
 @media (max-width: 880px) {
     .admin-content .auth-card,
     .admin-content .wizard-wrap {
@@ -1393,9 +1370,7 @@ main {
         justify-content: flex-end;
     }
 
-    /* Mobile: hide the persistent left sidebar visually but allow it to
-       slide in with the hamburger. The sidebar is off-canvas by default.
-       Also show the workload/quick-actions as a top card only on mobile. */
+    
     .admin-sidebar {
         position: fixed;
         left: 0;
@@ -1412,7 +1387,7 @@ main {
         grid-template-columns: 1fr;
     }
 
-    /* Hide the main topbar menu toggle when inside the admin shell */
+    
     .admin-app-page .topbar .menu-toggle {
         display: none;
     }
@@ -1431,14 +1406,13 @@ main {
         padding: 1rem;
     }
 
-    /* Show workload/quick-actions only on mobile */
+    
     .staff-workload-card {
         display: block;
         order: -1;
     }
 
-    /* Hide the quick actions on desktop via default rule elsewhere; the
-       mobile media query re-enables it above. */
+    
 }
 
 .auth-card-wide {
@@ -1877,7 +1851,6 @@ button:disabled {
     opacity: 0.65;
 }
 
-/* Buttons */
 .btn {
     padding: 0.62rem 1.1rem;
     border-radius: var(--radius-sm);
@@ -2005,7 +1978,6 @@ button:disabled {
     border-color: #fecaca;
 }
 
-/* Track issue page */
 .track-card {
     width: min(520px, 100%);
     max-width: 520px;
@@ -2179,7 +2151,6 @@ button:disabled {
     }
 }
 
-/* Tables */
 .table-wrap {
     background: #ffffff;
     border-radius: var(--radius-md);
@@ -2229,7 +2200,6 @@ tbody tr:hover {
     transform: translateX(2px);
 }
 
-/* Alerts */
 .alert {
     padding: 0.65rem 0.8rem;
     border-radius: var(--radius-sm);
@@ -2325,7 +2295,6 @@ tbody tr:hover {
     }
 }
 
-/* Stats */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -2378,7 +2347,6 @@ tbody tr:hover {
     line-height: 1.35;
 }
 
-/* Footer */
 .footer {
     background-color: var(--surface);
     border-top: 1px solid var(--border);
@@ -2388,13 +2356,12 @@ tbody tr:hover {
     font-size: 0.9rem;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .container {
         width: min(100% - 1rem, 720px);
     }
 
-    /* Panel pages must show the topbar on mobile so the hamburger remains visible. */
+    
     .admin-app-page .topbar {
         display: block;
     }
@@ -2434,7 +2401,7 @@ tbody tr:hover {
     }
 
     nav {
-        display: none; /* Hidden by default on small screens */
+        display: none; 
         position: absolute;
         top: calc(100% + 0.5rem);
         left: 0.75rem;
@@ -2927,7 +2894,6 @@ tbody tr:hover {
     }
 }
 
-/* Animations */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -2979,7 +2945,6 @@ main > * {
     }
 }
 
-/* Drag-and-drop file upload zone */
 .file-drop-zone {
     position: relative;
     display: flex;
@@ -3120,7 +3085,6 @@ main > * {
     color: var(--accent);
 }
 
-/* Within staff/admin ticket update forms */
 .staff-ticket-update-form .file-drop-zone {
     min-height: 120px;
     padding: 0.85rem;
@@ -3135,8 +3099,6 @@ main > * {
         min-height: 100px;
     }
 }
-
-/* ═══ Dashboard Improvements ═══ */
 
 .dash-greeting {
     margin-bottom: 1.5rem;
@@ -3154,8 +3116,6 @@ main > * {
     font-size: 0.92rem;
     font-weight: 500;
 }
-
-/* ── Stat cards with icons ────────────────────────────────── */
 
 .dash-stats {
     gap: 1rem;
@@ -3251,8 +3211,6 @@ main > * {
     line-height: 1.25;
 }
 
-/* ── KPI row ──────────────────────────────────────────────── */
-
 .dash-kpi-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -3338,8 +3296,6 @@ main > * {
     color: var(--text-muted);
 }
 
-/* ── Chart grid ───────────────────────────────────────────── */
-
 .chart-grid {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -3378,8 +3334,6 @@ main > * {
         grid-template-columns: 1fr;
     }
 }
-
-/* ── Quick action cards ───────────────────────────────────── */
 
 .dash-quick-actions {
     display: grid;
@@ -3482,8 +3436,6 @@ main > * {
 .dash-action-primary .dash-action-count {
     color: rgba(255,255,255,0.7);
 }
-
-/* ── Responsive dashboard tweaks ──────────────────────────── */
 
 @media (max-width: 600px) {
     .dash-stats .stat {

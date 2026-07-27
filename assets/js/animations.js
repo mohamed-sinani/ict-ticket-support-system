@@ -1,12 +1,5 @@
-/**
- * ICT Support – UI Animations & Interactive Enhancements
- * Adds scroll reveals, counter animations, ripple effects, OTP input
- * automation, form validation feedback, and micro-interactions.
- */
 (function () {
     'use strict';
-
-    /* ── Utility helpers ─────────────────────────────────────────── */
 
     function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
     function qsa(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
@@ -15,8 +8,6 @@
         if (document.readyState !== 'loading') fn();
         else document.addEventListener('DOMContentLoaded', fn);
     }
-
-    /* ── 1. Page-load staggered entrance ────────────────────────── */
 
     function initPageEntrance() {
         var targets = qsa(
@@ -40,8 +31,6 @@
             });
         });
     }
-
-    /* ── 2. IntersectionObserver scroll reveals ─────────────────── */
 
     function initScrollReveal() {
         if (!('IntersectionObserver' in window)) return;
@@ -69,8 +58,6 @@
 
         items.forEach(function (el) { observer.observe(el); });
     }
-
-    /* ── 3. Stat counter count-up animation ─────────────────────── */
 
     function initCountUp() {
         var stats = qsa('.stat h3');
@@ -123,8 +110,6 @@
         stats.forEach(function (el) { observer.observe(el); });
     }
 
-    /* ── 4. Button ripple effect ────────────────────────────────── */
-
     function initRipple() {
         var style = document.createElement('style');
         style.textContent =
@@ -147,8 +132,6 @@
             setTimeout(function () { ripple.remove(); }, 600);
         });
     }
-
-    /* ── 5. OTP input auto-advance & paste ──────────────────────── */
 
     function initOTPInput() {
         var otpField = qs('input[name="otp_code"]');
@@ -183,8 +166,6 @@
 
         otpField.focus();
     }
-
-    /* ── 6. Form validation shake ───────────────────────────────── */
 
     function initValidationShake() {
         var style = document.createElement('style');
@@ -222,8 +203,6 @@
         });
     }
 
-    /* ── 7. Input focus glow ring ───────────────────────────────── */
-
     function initFocusGlow() {
         var style = document.createElement('style');
         style.textContent =
@@ -232,8 +211,6 @@
             '.otp-glow{box-shadow:0 0 0 4px rgba(34,197,94,0.3)!important;transform:scale(1.02)!important}';
         document.head.appendChild(style);
     }
-
-    /* ── 8. Flash toast enhanced dismiss ────────────────────────── */
 
     function initFlashToast() {
         var toast = qs('[data-flash-toast]');
@@ -244,8 +221,6 @@
             setTimeout(function () { toast.remove(); }, 300);
         });
     }
-
-    /* ── 9. Admin sidebar link hover micro-interaction ──────────── */
 
     function initSidebarHover() {
         var links = qsa('.admin-module-nav a');
@@ -264,8 +239,6 @@
         });
     }
 
-    /* ── 10. Table row click highlight ──────────────────────────── */
-
     function initTableHighlight() {
         var style = document.createElement('style');
         style.textContent =
@@ -282,8 +255,6 @@
         });
     }
 
-    /* ── 11. Smooth select dropdown animation ───────────────────── */
-
     function initSelectAnimation() {
         var style = document.createElement('style');
         style.textContent =
@@ -291,8 +262,6 @@
             'box-shadow:0 0 0 3px rgba(37,99,235,0.12),0 6px 16px rgba(37,99,235,0.1)!important}';
         document.head.appendChild(style);
     }
-
-    /* ── 12. Card tilt on hover (subtle 3D) ────────────────────── */
 
     function initCardTilt() {
         var cards = qsa('.stat, .panel-card, .auth-card, .track-card');
@@ -312,8 +281,6 @@
             });
         });
     }
-
-    /* ── 13. Loading spinner for form submits ───────────────────── */
 
     function initLoadingState() {
         var style = document.createElement('style');
@@ -338,8 +305,6 @@
         });
     }
 
-    /* ── 14. Alert auto-fade ────────────────────────────────────── */
-
     function initAlertFade() {
         var alerts = qsa('.alert-danger, .alert-success');
         alerts.forEach(function (alert) {
@@ -352,8 +317,6 @@
             }, 5000);
         });
     }
-
-    /* ── 15. Dept card delete pulse ─────────────────────────────── */
 
     function initDeptPulse() {
         var style = document.createElement('style');
@@ -374,8 +337,6 @@
         });
     }
 
-    /* ── 16. Track result slide-in ──────────────────────────────── */
-
     function initTrackSlideIn() {
         var style = document.createElement('style');
         style.textContent =
@@ -395,8 +356,6 @@
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    /* ── 17. Nav active link pulse ──────────────────────────────── */
-
     function initNavActive() {
         var style = document.createElement('style');
         style.textContent =
@@ -411,8 +370,6 @@
             link.classList.add('nav-active-pulse');
         });
     }
-
-    /* ── 18. File drop zone bounce ──────────────────────────────── */
 
     function initFileDropBounce() {
         var style = document.createElement('style');
@@ -431,8 +388,6 @@
         });
     }
 
-    /* ── 19. Evidence drawer slide animation ────────────────────── */
-
     function initDrawerAnimation() {
         var style = document.createElement('style');
         style.textContent =
@@ -441,8 +396,6 @@
             '.evidence-drawer[hidden] .evidence-drawer-panel{transform:translateX(100%);opacity:0}';
         document.head.appendChild(style);
     }
-
-    /* ── 20. Hamburger X animation ──────────────────────────────── */
 
     function initHamburgerAnim() {
         var toggle = qs('#menuToggle');
@@ -460,8 +413,6 @@
         });
     }
 
-    /* ── 21. Smooth scroll for anchor links ─────────────────────── */
-
     function initSmoothScroll() {
         document.addEventListener('click', function (e) {
             var link = e.target.closest('a[href^="#"]');
@@ -473,8 +424,6 @@
             }
         });
     }
-
-    /* ── 22. Settings form success feedback ─────────────────────── */
 
     function initSettingsFeedback() {
         var forms = qsa('.settings-category-grid form, .admin-content form');
@@ -493,8 +442,6 @@
             });
         });
     }
-
-    /* ── 23. Subcategory dropdown slide-in ──────────────────────── */
 
     function initSubcatSlide() {
         var style = document.createElement('style');
@@ -515,8 +462,6 @@
         });
     }
 
-    /* ── 24. Brand icon float animation ─────────────────────────── */
-
     function initBrandFloat() {
         var brand = qs('.brand svg');
         if (!brand) return;
@@ -526,8 +471,6 @@
             '.brand svg{animation:iconFloat 3s ease-in-out infinite}';
         document.head.appendChild(style);
     }
-
-    /* ── 25. Dashboard stat color accents ───────────────────────── */
 
     function initStatAccents() {
         var stats = qsa('.admin-content .stat');
@@ -542,8 +485,6 @@
             document.head.appendChild(after);
         });
     }
-
-    /* ── Boot ───────────────────────────────────────────────────── */
 
     onReady(function () {
         initPageEntrance();

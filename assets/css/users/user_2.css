@@ -1,8 +1,7 @@
-/* Sample user-specific overrides for user_2 (blue accent) */
 :root {
-    --accent: #1e90ff; /* DodgerBlue */
+    --accent: #1e90ff; 
 }
-/* Slightly darker sidebar for this user */
+
 .admin-sidebar {
     background: linear-gradient(135deg, #062a4a 0%, #083965 100%);
 }
@@ -10,7 +9,7 @@
     background: #e6f0ff;
     color: #063970;
 }
-/* Make primary buttons a bit rounder for this user */
+
 .btn-primary {
     border-radius: 12px;
 }

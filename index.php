@@ -4,7 +4,6 @@ require_once __DIR__ . '/config/app.php';
 $pageTitle = 'Home | ' . APP_NAME;
 require_once __DIR__ . '/includes/header.php';
 ?>
-<!-- Hero section -->
 <section class="hero">
     <div class="container">
         <h1 data-i18n="home_hero_title">Report all Technical ICT issues by Submitting a Ticket</h1>
@@ -16,7 +15,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- Info panels -->
 <section class="panel-grid container">
     <article class="panel-card">
         <h3 data-i18n="home_for_employees">For Employees</h3>
@@ -32,7 +30,6 @@ require_once __DIR__ . '/includes/header.php';
     </article>
 </section>
 
-<!-- How it works -->
 <section class="how-it-works container">
     <h2>How It Works</h2>
     <div class="steps-grid">
@@ -59,7 +56,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- Features -->
 <section class="features-section container">
     <h2>Why Use This System?</h2>
     <div class="features-grid">
@@ -86,7 +82,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<!-- CTA section -->
 <section class="cta-section container">
     <div class="cta-card">
         <h2>Ready to Report an Issue?</h2>

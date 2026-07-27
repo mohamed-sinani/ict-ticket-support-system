@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 const APP_NAME = 'Report all Technical ICT issues by Submitting a Ticket';
 const UPLOAD_DIR = __DIR__ . '/../uploads';
-const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
 
 function app_is_localhost(): bool
 {
@@ -75,7 +75,6 @@ const OTP_LENGTH = 6;
 const OTP_EXPIRY_MINUTES = 5;
 const OTP_MAX_ATTEMPTS = 5;
 
-// Load .env file if present for secrets (never commit .env)
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
     $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);

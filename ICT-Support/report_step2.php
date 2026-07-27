@@ -2,7 +2,6 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../includes/header.php';
 
-// Ensure employee is verified
 if (empty($_SESSION['employee_number'])) {
     setFlash('Please verify your employee number first.', 'error');
     redirect('report_step1.php');

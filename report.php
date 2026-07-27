@@ -9,11 +9,9 @@ $departments = getDepartments();
 $categories = getCategories();
 
 $pageTitle = 'Report an Issue | ' . APP_NAME;
-/* Force panel layout for logged-in users to show the sidebar shell. */
 $forcePanel = isLoggedIn();
 require_once __DIR__ . '/includes/header.php';
 
-/* Include role-specific navigation for logged-in users. */
 if (isLoggedIn()) {
     $user = currentUser();
     if ($user['role'] === 'admin') {

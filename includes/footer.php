@@ -1,6 +1,5 @@
 </main>
 
-<!-- Page Footer -->
 <footer class="footer">
     <div class="container">
         <p>&copy; <?= date('Y') ?> <span data-i18n="footer_title">ICT Ticketing System</span> &mdash; <span data-i18n="footer_subtitle">Institutional ICT Support &amp; Issue Tracking System</span></p>
@@ -79,8 +78,6 @@ function _ict_init() {
 
     document.querySelectorAll('form input, form textarea, form select').forEach(addPlaceholderToControl);
 
-    // Toggle the sidebar on logged-in panel pages. The public top navigation
-    // hamburger is handled in header.php, where the public nav already exists.
     var menuToggle = document.getElementById('menuToggle');
     var adminShell = document.querySelector('.admin-shell');
 
@@ -92,7 +89,6 @@ function _ict_init() {
         });
     }
 
-    // Also wire admin-menu-toggle buttons inside the sidebar
     document.querySelectorAll('[data-admin-menu-toggle]').forEach(function (btn) {
         btn.addEventListener('click', function () {
             if (!adminShell) return;
@@ -102,7 +98,6 @@ function _ict_init() {
         });
     });
 
-    // Close sidebar when clicking outside on small screens
     document.addEventListener('click', function (e) {
         if (!adminShell) return;
         if (!adminShell.classList.contains('sidebar-open')) return;
@@ -113,7 +108,6 @@ function _ict_init() {
         }
     }, true);
 
-    // Drag-and-drop file upload zones
     function initFileDropZone(zone) {
         var input = zone.querySelector('.file-drop-input');
         var content = zone.querySelector('.file-drop-content');

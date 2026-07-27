@@ -1,6 +1,5 @@
-/* Sample user-specific overrides for user_3 (green accent) */
 :root {
-    --accent: #10b981; /* Emerald-500 */
+    --accent: #10b981; 
 }
 .admin-sidebar {
     background: linear-gradient(135deg, #072a1f 0%, #0b4b36 100%);

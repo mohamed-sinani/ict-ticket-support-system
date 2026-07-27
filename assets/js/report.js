@@ -1,5 +1,3 @@
-// Multi-step reporting wizard.
-
 document.addEventListener('DOMContentLoaded', function () {
     const wizardForm = document.getElementById('ticketWizard');
     if (!wizardForm) return;

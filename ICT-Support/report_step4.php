@@ -2,7 +2,6 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../includes/header.php';
 
-// Ensure all previous steps completed
 if (empty($_SESSION['employee_id']) || empty($_SESSION['department_id']) || empty($_SESSION['category_id'])) {
     setFlash('Please complete the wizard from the beginning.', 'error');
     redirect('report_step1.php');
@@ -21,7 +20,6 @@ $subcategoryName = trim($_SESSION['subcategory_name'] ?? '');
 $description = trim($_SESSION['description'] ?? '');
 $evidence = $_FILES['evidence'] ?? null;
 
-// Validate evidence
 if (!$evidence || empty($evidence['name']) || (int) ($evidence['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
     setFlash('Please attach an evidence photo before submitting.', 'error');
     redirect('report_step3.php');
@@ -57,7 +55,6 @@ if (!isset($extensionMap[$mimeType])) {
     redirect('report_step3.php');
 }
 
-// Resolve subcategory: use existing subcategory ID or create a new one
 $subcategoryId = 0;
 if ($subcategoryName !== '') {
     $subStmt = $conn->prepare('SELECT id FROM subcategories WHERE name = ? AND category_id = ? LIMIT 1');
@@ -127,7 +124,6 @@ try {
     redirect('report_step3.php');
 }
 
-// Send email notification to employee
 $detailsSql = 'SELECT t.tracking_code, t.status, emp.full_name AS employee_name,
                       d.name AS department_name, c.name AS category_name, sc.name AS subcategory_name
                FROM tickets t
@@ -156,7 +152,6 @@ $isSent = $emailSent ? 1 : 0;
 $notifStmt->bind_param('isssi', $ticketId, $_SESSION['employee_email'], $subject, $message, $isSent);
 $notifStmt->execute();
 
-// Send notification to all admin users
 $adminSql = "SELECT id, full_name, email FROM users WHERE role = 'admin' ORDER BY full_name ASC";
 $adminResult = $conn->query($adminSql);
 $adminUsers = $adminResult ? $adminResult->fetch_all(MYSQLI_ASSOC) : [];
@@ -174,7 +169,6 @@ foreach ($adminUsers as $adminUser) {
     $adminNotifStmt->execute();
 }
 
-// Clear wizard session data
 unset($_SESSION['employee_number'], $_SESSION['employee_id'], $_SESSION['employee_name'], $_SESSION['employee_email'], $_SESSION['employee_job_title'], $_SESSION['employee_department_id'], $_SESSION['department_id'], $_SESSION['category_id'], $_SESSION['subcategory_name'], $_SESSION['description'], $_SESSION['priority']);
 
 $pageTitle = 'Ticket Submitted | ' . APP_NAME;

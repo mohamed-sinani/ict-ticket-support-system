@@ -183,7 +183,6 @@ while ($row = $catRes->fetch_assoc()) {
         'Closed':     palette.slate
     };
 
-    /* ── Ticket Trends Line ────────────────────────────────── */
     const ctx = document.getElementById('ticketTrends');
     new Chart(ctx, {
         type: 'line',
@@ -245,7 +244,6 @@ while ($row = $catRes->fetch_assoc()) {
         }
     });
 
-    /* ── Status Donut ──────────────────────────────────────── */
     const ctx2 = document.getElementById('statusDonut');
     new Chart(ctx2, {
         type: 'doughnut',
@@ -288,7 +286,6 @@ while ($row = $catRes->fetch_assoc()) {
     });
 
     <?php if ($catLabels): ?>
-    /* ── Category Bar ──────────────────────────────────────── */
     const ctx3 = document.getElementById('categoryBar');
     new Chart(ctx3, {
         type: 'bar',

@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = trim($_POST['phone'] ?? '');
     $deptId = (int) ($_POST['department_id'] ?? 0);
 
-    // Strict check: Only update if the target user is an 'employee'
     if ($employeeId > 0 && $fullName !== '' && $email !== '') {
         $stmt = $conn->prepare("UPDATE users SET full_name = ?, email = ?, phone = ?, department_id = ? WHERE id = ? AND role = 'employee'");
         $stmt->bind_param('sssii', $fullName, $email, $phone, $deptId, $employeeId);

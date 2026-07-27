@@ -4,7 +4,6 @@ $appRoot = app_base_path();
 $adminTitle = trim(explode('|', $pageTitle ?? 'Admin Dashboard')[0]);
 $adminUser = currentUser();
 
-// Build avatar initials for profile icon (max 2 chars)
 $avatarInitials = '';
 if (!empty($adminUser['full_name'])) {
     $parts = preg_split('/\s+/', trim($adminUser['full_name']));

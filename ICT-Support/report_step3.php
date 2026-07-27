@@ -2,7 +2,6 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../includes/header.php';
 
-// Ensure previous steps completed
 if (empty($_SESSION['employee_number']) || empty($_SESSION['department_id']) || empty($_SESSION['category_id'])) {
     setFlash('Please complete all previous steps first.', 'error');
     redirect('report_step1.php');

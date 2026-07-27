@@ -26,7 +26,6 @@ function verifyPassword(string $plainPassword, string $storedPassword): bool
         return password_verify($plainPassword, $storedPassword);
     }
 
-    // Development fallback to support seeded plain-text demo users.
     return hash_equals($storedPassword, $plainPassword);
 }
 
