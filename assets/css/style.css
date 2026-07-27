@@ -1606,6 +1606,7 @@ main {
     text-align: center;
     font-size: 0.82rem;
     font-weight: 700;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2773,6 +2774,7 @@ tbody tr:hover {
         min-height: 32px;
         padding: 0.25rem 0.2rem;
         font-size: 0.65rem;
+        white-space: nowrap;
     }
 
     .wizard-actions {
