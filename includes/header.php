@@ -283,7 +283,10 @@ const appTranslations = {
         staff_resolution_placeholder: 'Internal/closure notes',
         staff_save_update: 'Save Update',
         confirm_delete_department: 'Delete this department?',
-        confirm_delete_user: 'Delete user?'
+        confirm_delete_user: 'Delete user?',
+        otp_title: 'Enter Verification Code',
+        otp_code_label: 'Verification Code',
+        otp_verify_btn: 'Verify & Login'
     },
     sw: {
         menu_toggle: 'Fungua menyu',
@@ -456,7 +459,10 @@ const appTranslations = {
         staff_resolution_placeholder: 'Maelezo ya ndani/kufunga',
         staff_save_update: 'Hifadhi Sasisho',
         confirm_delete_department: 'Futa idara hii?',
-        confirm_delete_user: 'Futa mtumiaji?'
+        confirm_delete_user: 'Futa mtumiaji?',
+        otp_title: 'Weka Msimbo wa Uthibitisho',
+        otp_code_label: 'Msimbo wa Uthibitisho',
+        otp_verify_btn: 'Thibitisha & Ingia'
     }
 };
 
