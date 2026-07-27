@@ -28,4 +28,13 @@ if (!$employee) {
     exit;
 }
 
-echo json_encode(['success' => true, 'employee' => $employee]);
+echo json_encode([
+    'success' => true,
+    'employee' => [
+        'id' => (int) $employee['id'],
+        'full_name' => $employee['full_name'],
+        'email' => $employee['email'],
+        'job_title' => $employee['job_title'] ?? '',
+        'department_name' => $employee['department_name'] ?? '',
+    ]
+]);
