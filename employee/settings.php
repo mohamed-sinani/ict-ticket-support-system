@@ -84,7 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     setFlash(implode(' ', $errors), 'error');
-    redirect('settings.php');
+    $profile['full_name'] = $fullName;
+    $profile['email'] = $email;
+    $profile['phone'] = $phone;
+    $profile['job_title'] = $jobTitle;
 }
 
 $pageTitle = 'Settings | ' . APP_NAME;
