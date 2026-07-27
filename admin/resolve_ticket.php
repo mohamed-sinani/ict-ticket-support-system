@@ -111,11 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $resolvedAt = null;
             if ($requiresPhoto) {
                 $resolvedAt = date('Y-m-d H:i:s');
-                $stmt = $conn->prepare('UPDATE tickets SET assigned_to = ?, status = ?, resolution_note = ?, resolved_at = ? WHERE id = ?');
-                $stmt->bind_param('isssi', $userId, $status, $resolutionNote, $resolvedAt, $ticketId);
+                $stmt = $conn->prepare('UPDATE tickets SET status = ?, resolution_note = ?, resolved_at = ? WHERE id = ?');
+                $stmt->bind_param('sssi', $status, $resolutionNote, $resolvedAt, $ticketId);
             } else {
-                $stmt = $conn->prepare('UPDATE tickets SET assigned_to = ?, status = ?, resolution_note = ? WHERE id = ?');
-                $stmt->bind_param('issi', $userId, $status, $resolutionNote, $ticketId);
+                $stmt = $conn->prepare('UPDATE tickets SET status = ?, resolution_note = ? WHERE id = ?');
+                $stmt->bind_param('ssi', $status, $resolutionNote, $ticketId);
             }
             $stmt->execute();
 
