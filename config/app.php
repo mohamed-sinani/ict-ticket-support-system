@@ -71,6 +71,10 @@ function app_absolute_url(string $path = ''): string
 
 define('BASE_URL', app_base_path());
 
+const OTP_LENGTH = 6;
+const OTP_EXPIRY_MINUTES = 5;
+const OTP_MAX_ATTEMPTS = 5;
+
 const SMTP_HOST = 'smtp.gmail.com';
 const SMTP_PORT = 587;
 const SMTP_USERNAME = 'tuma.maoni.app@gmail.com';
