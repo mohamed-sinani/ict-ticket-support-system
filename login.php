@@ -107,7 +107,7 @@ require_once __DIR__ . '/includes/header.php';
         <?php endif; ?>
         <form method="POST" class="form-grid">
             <label><span data-i18n="otp_code_label">Verification Code</span>
-                <input type="text" name="otp_code" required maxlength="<?= OTP_LENGTH ?>" pattern="[0-9]{<?= OTP_LENGTH ?>" inputmode="numeric" autocomplete="one-time-code" placeholder="<?= OTP_LENGTH ?>-digit code" style="text-align:center;font-size:1.4em;letter-spacing:.2em;">
+                <input type="text" name="otp_code" required maxlength="<?= OTP_LENGTH ?>" pattern="[0-9]{<?= OTP_LENGTH ?>}" inputmode="numeric" autocomplete="one-time-code" placeholder="<?= OTP_LENGTH ?>-digit code" style="text-align:center;font-size:1.4em;letter-spacing:.2em;">
             </label>
             <button type="submit" class="btn btn-primary" data-i18n="otp_verify_btn">Verify & Login</button><br>
         </form>
