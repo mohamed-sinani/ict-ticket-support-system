@@ -277,8 +277,8 @@ main {
 }
 
 .chart-card {
-    background: transparent;
-    padding: 0;
+    background: var(--surface);
+    padding: 1.3rem;
 }
 
 .chart-card h3 {
@@ -1065,6 +1065,50 @@ main {
     grid-column: 1 / -1;
 }
 
+.reports-filter-form {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.reports-filter-fields {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.reports-filter-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.reports-filter-form input[type="date"] {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    background: #fff;
+    color: var(--text-main);
+    min-width: 155px;
+}
+
+.reports-filter-form input[type="date"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.reports-export-btn {
+    flex-shrink: 0;
+}
+
 .admin-topbar h1 {
     font-size: 1.25rem;
     line-height: 1.2;
@@ -1078,7 +1122,11 @@ main {
 }
 
 .admin-content > h2 {
-    display: none;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 1rem;
+    padding: 0;
 }
 
 .admin-sidebar-backdrop {
@@ -2509,6 +2557,19 @@ tbody tr:hover {
 
     .admin-report-grid .panel-card:last-child {
         grid-column: auto;
+    }
+
+    .reports-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .reports-filter-fields {
+        flex-direction: column;
+    }
+
+    .reports-export-btn {
+        text-align: center;
     }
 
     .table-actions {

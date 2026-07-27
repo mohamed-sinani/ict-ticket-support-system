@@ -182,20 +182,23 @@ require_once __DIR__ . '/_nav.php';
 ?>
 <h2 data-i18n="admin_reports_title">Reports & Analytics</h2>
 
-<!-- Date Filter -->
-<form method="GET" style="display:flex;gap:0.75rem;align-items:end;flex-wrap:wrap;margin-bottom:1.25rem;">
-    <label>From
-        <input type="date" name="start_date" value="<?= e($startDate) ?>">
-    </label>
-    <label>To
-        <input type="date" name="end_date" value="<?= e($endDate) ?>">
-    </label>
-    <button type="submit" class="btn btn-primary">Filter</button>
-    <?php if ($startDate !== '' || $endDate !== ''): ?>
-        <a href="reports.php" class="btn btn-secondary">Clear</a>
-    <?php endif; ?>
-    <a href="reports.php?export=csv<?= $startDate !== '' ? '&start_date=' . e($startDate) : '' ?><?= $endDate !== '' ? '&end_date=' . e($endDate) : '' ?>" class="btn btn-secondary" style="margin-left:auto;">Export CSV</a>
-</form>
+<section class="panel-card" style="margin-bottom:1rem;">
+    <form method="GET" class="reports-filter-form">
+        <div class="reports-filter-fields">
+            <label><span>From</span>
+                <input type="date" name="start_date" value="<?= e($startDate) ?>">
+            </label>
+            <label><span>To</span>
+                <input type="date" name="end_date" value="<?= e($endDate) ?>">
+            </label>
+            <button type="submit" class="btn btn-primary" data-i18n="common_filter">Filter</button>
+            <?php if ($startDate !== '' || $endDate !== ''): ?>
+                <a href="reports.php" class="btn btn-secondary">Clear</a>
+            <?php endif; ?>
+        </div>
+        <a href="reports.php?export=csv<?= $startDate !== '' ? '&start_date=' . e($startDate) : '' ?><?= $endDate !== '' ? '&end_date=' . e($endDate) : '' ?>" class="btn btn-secondary reports-export-btn">Export CSV</a>
+    </form>
+</section>
 
 <div class="admin-report-grid">
 
