@@ -11,6 +11,7 @@ if (empty($_SESSION['employee_number']) || empty($_SESSION['department_id']) || 
 <section class="wizard-wrap">
     <h2>Report ICT Issue - Step 3: Attach Evidence & Submit</h2>
     <form method="POST" action="report_step4.php" enctype="multipart/form-data" class="form-grid">
+        <?= csrf_field() ?>
         <label>
             Attach Evidence Photo (Required)
             <input type="file" name="evidence" accept="image/*" required />

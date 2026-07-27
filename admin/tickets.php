@@ -9,6 +9,7 @@ requireLogin(['admin']);
 $conn = db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('tickets.php'); }
     $ticketId = (int) ($_POST['ticket_id'] ?? 0);
     $ictId = (int) ($_POST['ict_id'] ?? 0);
 
@@ -169,6 +170,7 @@ require_once __DIR__ . '/_nav.php';
                     <td><?= e((string) $t['ict_name']) ?></td>
                     <td>
                         <form method="POST" class="ticket-assign-form">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="ticket_id" value="<?= (int) $t['id'] ?>">
                             <select name="ict_id" required>
                                 <option value="" data-i18n="admin_select_ict">Select ICT</option>

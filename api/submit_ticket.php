@@ -6,6 +6,11 @@ require_once __DIR__ . '/../includes/helpers.php';
 
 header('Content-Type: application/json');
 
+if (!verify_csrf()) {
+    echo json_encode(['success' => false, 'message' => 'Invalid security token.']);
+    exit;
+}
+
 $employeeId = (int) ($_POST['employee_id'] ?? 0);
 $departmentId = (int) ($_POST['department_id'] ?? 0);
 $categoryId = (int) ($_POST['category_id'] ?? 0);

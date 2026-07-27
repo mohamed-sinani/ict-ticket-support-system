@@ -39,6 +39,7 @@ if (isLoggedIn()) {
     </div>
 
     <form id="ticketWizard" enctype="multipart/form-data">
+        <?= csrf_field() ?>
         <input type="hidden" id="employeeId" name="employee_id" value="">
         <section class="wizard-step active" data-step="1">
             <h3 data-i18n="report_s1_title">Step 1: Employee Verification</h3>

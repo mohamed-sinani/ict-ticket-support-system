@@ -9,6 +9,7 @@ requireLogin(['admin']);
 $conn = db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('departments.php'); }
     $action = $_POST['action'] ?? '';
 
     if ($action === 'create') {
@@ -60,6 +61,7 @@ require_once __DIR__ . '/_nav.php';
 <section class="panel-card">
     <h3 data-i18n="admin_add_department">Add Department</h3>
     <form method="POST" class="inline-form">
+        <?= csrf_field() ?>
         <input type="hidden" name="action" value="create">
         <input type="text" name="name" required placeholder="Department Name" data-i18n-placeholder="admin_department_name_placeholder">
         <button class="btn btn-primary" type="submit" data-i18n="common_add">Add</button>
@@ -72,6 +74,7 @@ require_once __DIR__ . '/_nav.php';
         <?php foreach ($departments as $dept): ?>
             <div class="dept-card">
                 <form method="POST" class="table-edit-form" id="department-form-<?= (int) $dept['id'] ?>">
+                    <?= csrf_field() ?>
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" value="<?= (int) $dept['id'] ?>">
                     <input type="text" name="name" value="<?= e($dept['name']) ?>" required>
@@ -80,6 +83,7 @@ require_once __DIR__ . '/_nav.php';
                 <div class="dept-actions">
                     <button class="btn btn-secondary" type="submit" form="department-form-<?= (int) $dept['id'] ?>" data-i18n="common_update">Update</button>
                     <form method="POST" class="inline-delete-form" id="delete-form-<?= (int) $dept['id'] ?>">
+                        <?= csrf_field() ?>
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="<?= (int) $dept['id'] ?>">
                         <button class="btn btn-danger js-delete-dept" type="button" data-form-id="delete-form-<?= (int) $dept['id'] ?>" data-dept-name="<?= e($dept['name']) ?>" data-i18n="common_delete">Delete</button>

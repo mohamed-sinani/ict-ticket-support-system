@@ -18,6 +18,7 @@ if ($editUserId > 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('users.php'); }
     $action = $_POST['action'] ?? '';
 
     if ($action === 'create') {
@@ -106,6 +107,7 @@ require_once __DIR__ . '/_nav.php';
 <section class="panel-card">
     <h3><?= $editUser ? 'Edit User' : 'Add User' ?></h3>
     <form method="POST" class="form-grid">
+        <?= csrf_field() ?>
         <input type="hidden" name="action" value="<?= $editUser ? 'update' : 'create' ?>">
         <input type="hidden" name="id" value="<?= (int) $formValues['id'] ?>">
         <label><span data-i18n="common_full_name">Full Name</span><input type="text" name="full_name" value="<?= e((string) $formValues['full_name']) ?>" required></label>
@@ -170,6 +172,7 @@ require_once __DIR__ . '/_nav.php';
                         <div class="table-actions">
                             <a class="btn btn-secondary" href="users.php?edit=<?= (int) $u['id'] ?>">Edit</a>
                             <form method="POST" onsubmit="return confirm(window.appI18n ? window.appI18n.t('confirm_delete_user', 'Delete user?') : 'Delete user?')">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
                             <button type="submit" class="btn btn-danger" data-i18n="common_delete">Delete</button>

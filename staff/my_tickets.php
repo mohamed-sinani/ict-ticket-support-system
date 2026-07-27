@@ -59,6 +59,7 @@ function resolveTicketPhotoUpload(array $file): array
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('my_tickets.php'); }
     $ticketId = (int) ($_POST['ticket_id'] ?? 0);
     $status = trim($_POST['status'] ?? '');
     $comment = trim($_POST['comment'] ?? '');
@@ -275,6 +276,7 @@ require_once __DIR__ . '/_nav.php';
                                 <summary class="btn btn-secondary">Update</summary>
                                 <div class="staff-ticket-details-body">
                                     <form method="POST" class="staff-ticket-update-form" enctype="multipart/form-data">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="ticket_id" value="<?= (int) $t['id'] ?>">
                                         <label><span data-i18n="common_status">Status</span>
                                             <select name="status" required>

@@ -20,6 +20,7 @@ $otpEmail = '';
 $otpSuccess = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('login.php'); }
     if ($otpPending && isset($_POST['otp_code'])) {
         $otpCode = trim($_POST['otp_code'] ?? '');
         $userId = (int) $_SESSION['otp_pending_user_id'];
@@ -106,6 +107,7 @@ require_once __DIR__ . '/includes/header.php';
             <p class="alert alert-danger"><?= e($error) ?></p>
         <?php endif; ?>
         <form method="POST" class="form-grid">
+            <?= csrf_field() ?>
             <label><span data-i18n="otp_code_label">Verification Code</span>
                 <input type="text" name="otp_code" required maxlength="<?= OTP_LENGTH ?>" pattern="[0-9]{<?= OTP_LENGTH ?>}" inputmode="numeric" autocomplete="one-time-code" placeholder="<?= OTP_LENGTH ?>-digit code" style="text-align:center;font-size:1.4em;letter-spacing:.2em;">
             </label>
@@ -121,6 +123,7 @@ require_once __DIR__ . '/includes/header.php';
             <p class="alert alert-danger"><?= e($error) ?></p>
         <?php endif; ?>
         <form method="POST" class="form-grid">
+            <?= csrf_field() ?>
             <label><span>Login as</span>
                 <select name="role" required data-no-placeholder>
                     <option value="admin" <?= $selectedRole === 'admin' ? 'selected' : '' ?>>Admin</option>

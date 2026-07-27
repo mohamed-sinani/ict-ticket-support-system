@@ -39,6 +39,7 @@ $categories = getCategories();
 <section class="wizard-wrap">
     <h2>Report ICT Issue - Step 2: Issue Details</h2>
     <form method="POST" action="report_step2.php" class="form-grid">
+        <?= csrf_field() ?>
         <label>
             Department
             <select name="department_id" required>

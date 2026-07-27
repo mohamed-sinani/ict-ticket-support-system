@@ -6,6 +6,11 @@ require_once __DIR__ . '/../includes/helpers.php';
 
 header('Content-Type: application/json');
 
+if (!verify_csrf()) {
+    echo json_encode(['success' => false, 'message' => 'Invalid security token.']);
+    exit;
+}
+
 $employeeNumber = trim($_POST['employee_number'] ?? '');
 if ($employeeNumber === '') {
     echo json_encode(['success' => false, 'message' => 'Employee number is required.']);

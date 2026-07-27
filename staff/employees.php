@@ -9,6 +9,7 @@ requireLogin(['ict']);
 $conn = db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('employees.php'); }
     $employeeId = (int) ($_POST['user_id'] ?? 0);
     $fullName = trim($_POST['full_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -61,6 +62,7 @@ require_once __DIR__ . '/_nav.php';
                 <?php foreach ($employees as $emp): ?>
                     <tr>
                         <form method="POST">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="user_id" value="<?= (int) $emp['id'] ?>">
                             <td>
                                 <input type="text" name="full_name" value="<?= e($emp['full_name']) ?>" required>

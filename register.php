@@ -25,6 +25,7 @@ $old = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('register.php'); }
     $old['full_name'] = trim($_POST['full_name'] ?? '');
     $old['employee_number'] = strtoupper(trim($_POST['employee_number'] ?? ''));
     $old['phone'] = trim($_POST['phone'] ?? '');
@@ -102,6 +103,7 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
     <form method="POST" class="form-grid auth-form" id="registerForm" novalidate>
+        <?= csrf_field() ?>
         <div class="wizard-step active" data-register-step="1">
             <div class="auth-form-grid">
                 <label><span data-i18n="common_full_name">Full Name</span>

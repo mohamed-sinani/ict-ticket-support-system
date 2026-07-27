@@ -3,8 +3,14 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/helpers.php';
 
 header('Content-Type: application/json');
+
+if (!verify_csrf()) {
+    echo json_encode(['success' => false, 'subcategories' => []]);
+    exit;
+}
 
 $categoryId = (int) ($_POST['category_id'] ?? 0);
 if ($categoryId <= 0) {

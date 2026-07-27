@@ -87,6 +87,7 @@ if (!$ticket) {
 
 // Handle POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('tickets.php'); }
     $status = trim($_POST['status'] ?? '');
     $comment = trim($_POST['comment'] ?? '');
     $resolutionNote = trim($_POST['resolution_note'] ?? '');
@@ -276,6 +277,7 @@ require_once __DIR__ . '/_nav.php';
 <section class="panel-card">
     <h3>Update Status</h3>
     <form method="POST" enctype="multipart/form-data" class="staff-ticket-update-form" style="max-width:520px;">
+        <?= csrf_field() ?>
         <label><span data-i18n="common_status">Status</span>
             <select name="status" required>
                 <?php foreach (TICKET_STATUSES as $status): ?>

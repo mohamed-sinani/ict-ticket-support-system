@@ -27,6 +27,7 @@ if ($currentRow) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('settings.php'); }
     $fullName = trim($_POST['full_name'] ?? '');
     $email = strtolower(trim($_POST['email'] ?? ''));
     $phone = trim($_POST['phone'] ?? '');
@@ -102,6 +103,7 @@ require_once __DIR__ . '/_nav.php';
     <p class="small-text" data-i18n="admin_settings_intro">Update your profile details and password.</p>
 
     <form method="POST" class="settings-form" autocomplete="off">
+        <?= csrf_field() ?>
         <section class="panel-card settings-category">
             <div class="settings-category-head">
                 <h4>Profile Information</h4>

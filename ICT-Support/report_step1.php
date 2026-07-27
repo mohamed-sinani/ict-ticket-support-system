@@ -38,6 +38,7 @@ if (!empty($_SESSION['employee_number'])) {
 <section class="wizard-wrap">
     <h2>Report ICT Issue - Step 1: Verify Employee</h2>
     <form method="POST" action="report_step1.php" class="form-grid">
+        <?= csrf_field() ?>
         <label>
             Employee Number / Badge ID
             <input type="text" name="employee_number" required />
