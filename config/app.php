@@ -75,11 +75,33 @@ const OTP_LENGTH = 6;
 const OTP_EXPIRY_MINUTES = 5;
 const OTP_MAX_ATTEMPTS = 5;
 
-const SMTP_HOST = 'smtp.gmail.com';
-const SMTP_PORT = 587;
-const SMTP_USERNAME = 'tuma.maoni.app@gmail.com';
-const SMTP_PASSWORD = 'liqzovplyarquxzt';
-const SMTP_ENCRYPTION = 'tls';
+// Load .env file if present for secrets (never commit .env)
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || $line[0] === '#') continue;
+        if (strpos($line, '=') === false) continue;
+        [$key, $value] = explode('=', $line, 2);
+        $key = trim($key);
+        $value = trim($value);
+        if (!defined($key) && !array_key_exists($key, $_ENV)) {
+            $_ENV[$key] = $value;
+        }
+    }
+}
+
+function env(string $key, string $default = ''): string
+{
+    return $_ENV[$key] ?? $default;
+}
+
+define('SMTP_HOST', env('SMTP_HOST', 'smtp.gmail.com'));
+define('SMTP_PORT', (int) env('SMTP_PORT', '587'));
+define('SMTP_USERNAME', env('SMTP_USERNAME', ''));
+define('SMTP_PASSWORD', env('SMTP_PASSWORD', ''));
+define('SMTP_ENCRYPTION', env('SMTP_ENCRYPTION', 'tls'));
 
 const STATUS_SUBMITTED = 'Submitted';
 const STATUS_ASSIGNED = 'Assigned';
