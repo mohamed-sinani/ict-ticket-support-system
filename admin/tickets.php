@@ -108,86 +108,155 @@ $pageTitle = 'Ticket Oversight | ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/_nav.php';
 ?>
-<h2 data-i18n="admin_ticket_oversight_title">Ticket Oversight</h2>
-<section class="panel-card">
-    <form method="GET" class="inline-form">
-        <select name="status">
-            <option value="" data-i18n="admin_all_statuses">All Statuses</option>
-            <?php foreach (TICKET_STATUSES as $status): ?>
-                <option value="<?= e($status) ?>" <?= $statusFilter === $status ? 'selected' : '' ?>><?= e($status) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <select name="department_id">
-            <option value="" data-i18n="admin_all_departments">All Departments</option>
-            <?php foreach ($departments as $dept): ?>
-                <option value="<?= (int) $dept['id'] ?>" <?= $departmentFilter === (int) $dept['id'] ? 'selected' : '' ?>><?= e($dept['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <button class="btn btn-secondary" type="submit" data-i18n="common_filter">Filter</button>
-    </form>
+<div class="db-hero">
+    <div class="db-hero-left">
+        <div class="db-eyebrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 0 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
+            <span data-i18n="subnav_tickets">Tickets</span>
+        </div>
+        <h1 data-i18n="admin_ticket_oversight_title">Ticket Oversight</h1>
+        <p class="db-sub-desc" data-i18n="tickets_page_subtitle">Review every ticket across the institution, assign ICT staff, and resolve issues.</p>
+    </div>
+    <div class="db-hero-actions">
+        <span class="db-date-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <?= e(date('l, F j, Y')) ?>
+        </span>
+    </div>
+</div>
+
+<section class="db-panel" style="margin-bottom:20px;">
+    <div class="db-panel-header">
+        <div class="db-panel-header-left">
+            <div class="db-panel-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            </div>
+            <div>
+                <h3 class="db-panel-title" data-i18n="reports_filter_title">Filter Tickets</h3>
+                <p class="db-panel-subtitle" data-i18n="reports_filter_sub">Narrow results by submission date</p>
+            </div>
+        </div>
+        <?php if ($statusFilter !== '' || $departmentFilter > 0): ?>
+            <a class="db-view-btn" href="tickets.php" data-i18n="common_clear">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                Clear
+            </a>
+        <?php endif; ?>
+    </div>
+    <div class="db-panel-body">
+        <form method="GET" class="db-filter-bar">
+            <label class="db-filter-field">
+                <span data-i18n="common_status">Status</span>
+                <select name="status">
+                    <option value="" data-i18n="admin_all_statuses">All Statuses</option>
+                    <?php foreach (TICKET_STATUSES as $status): ?>
+                        <option value="<?= e($status) ?>" <?= $statusFilter === $status ? 'selected' : '' ?>><?= e($status) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label class="db-filter-field">
+                <span data-i18n="common_department">Department</span>
+                <select name="department_id">
+                    <option value="" data-i18n="admin_all_departments">All Departments</option>
+                    <?php foreach ($departments as $dept): ?>
+                        <option value="<?= (int) $dept['id'] ?>" <?= $departmentFilter === (int) $dept['id'] ? 'selected' : '' ?>><?= e($dept['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <button class="db-view-btn primary" type="submit" data-i18n="common_filter">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                Filter
+            </button>
+        </form>
+    </div>
 </section>
 
-<section class="panel-card">
-    <div class="table-wrap">
-    <table class="admin-tickets-table">
-        <thead>
-            <tr>
-                <th data-i18n="common_tracking_code">Tracking Code</th>
-                <th data-i18n="common_employee">Employee</th>
-                <th data-i18n="common_department">Department</th>
-                <th data-i18n="common_issue">Issue</th>
-                <th data-i18n="common_status">Status</th>
-                <th>Evidence</th>
-                <th data-i18n="admin_assigned_ict">Assigned ICT</th>
-                <th data-i18n="admin_reassign">Reassign</th>
-                <th data-i18n="staff_save_update">Resolve</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($tickets as $t): ?>
-                <tr>
-                    <td><?= e($t['tracking_code']) ?></td>
-                    <td><?= e((string) $t['employee_name']) ?></td>
-                    <td><?= e((string) $t['department_name']) ?></td>
-                    <td><?= e((string) $t['category_name']) ?> - <?= e((string) $t['subcategory_name']) ?></td>
-                    <td><?= e($t['status']) ?></td>
-                    <td>
-                        <?php if (!empty($t['evidence_path'])): ?>
-                            <button
-                                type="button"
-                                class="btn btn-secondary evidence-view-btn"
-                                data-evidence-url="<?= e(absoluteUrl((string) $t['evidence_path'])) ?>"
-                                data-evidence-name="<?= e((string) $t['evidence_name']) ?>"
-                                data-ticket-code="<?= e((string) $t['tracking_code']) ?>"
-                                data-ticket-employee="<?= e((string) $t['employee_name']) ?>"
-                                data-ticket-issue="<?= e((string) $t['category_name']) ?> - <?= e((string) $t['subcategory_name']) ?>"
-                                data-ticket-status="<?= e($t['status']) ?>"
-                            >View Photo</button>
-                        <?php else: ?>
-                            <span class="evidence-empty">No photo</span>
-                        <?php endif; ?>
-                    </td>
-                    <td><?= e((string) $t['ict_name']) ?></td>
-                    <td>
-                        <form method="POST" class="ticket-assign-form">
-                            <?= csrf_field() ?>
-                            <input type="hidden" name="ticket_id" value="<?= (int) $t['id'] ?>">
-                            <select name="ict_id" required>
-                                <option value="" data-i18n="admin_select_ict">Select ICT</option>
-                                <?php foreach ($ictUsers as $ict): ?>
-                                    <option value="<?= (int) $ict['id'] ?>" <?= (int) $t['assigned_to'] === (int) $ict['id'] ? 'selected' : '' ?>><?= e($ict['full_name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button class="btn btn-primary" type="submit" data-i18n="common_assign"><?= !empty($t['assigned_to']) ? 'Reassign' : 'Assign' ?></button>
-                        </form>
-                    </td>
-                    <td>
-                        <a href="<?= e(app_base_path() . '/admin/resolve_ticket.php?id=' . (int) $t['id']) ?>" class="btn btn-secondary" style="width:100%;justify-content:center;">Resolve</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+<section class="db-panel">
+    <div class="db-panel-header">
+        <div class="db-panel-header-left">
+            <div class="db-panel-icon violet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            </div>
+            <div>
+                <h3 class="db-panel-title" data-i18n="admin_all_tickets">All Tickets</h3>
+                <p class="db-panel-subtitle"><?= count($tickets) ?> ticket(s) match the current filters</p>
+            </div>
+        </div>
+        <span class="db-chart-badge"><?= count($tickets) ?></span>
+    </div>
+    <div class="db-panel-body pad-none">
+        <div class="db-table-wrap">
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th data-i18n="common_tracking_code">Tracking Code</th>
+                        <th data-i18n="common_employee">Employee</th>
+                        <th data-i18n="common_department">Department</th>
+                        <th data-i18n="common_issue">Issue</th>
+                        <th data-i18n="common_status">Status</th>
+                        <th>Evidence</th>
+                        <th data-i18n="admin_assigned_ict">Assigned ICT</th>
+                        <th data-i18n="admin_reassign">Reassign</th>
+                        <th data-i18n="staff_save_update">Resolve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($tickets)): ?>
+                        <tr>
+                            <td colspan="9">
+                                <div class="db-empty">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 0 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
+                                    <h4 data-i18n="admin_no_tickets">No tickets yet</h4>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php foreach ($tickets as $t): ?>
+                        <?php $statusClass = strtolower(str_replace(' ', '', $t['status'])); ?>
+                        <tr>
+                            <td><span class="db-mono"><?= e($t['tracking_code']) ?></span></td>
+                            <td><?= e((string) $t['employee_name']) ?></td>
+                            <td><?= e((string) $t['department_name']) ?></td>
+                            <td><?= e((string) $t['category_name']) ?> - <?= e((string) $t['subcategory_name']) ?></td>
+                            <td><span class="db-status-pill <?= e($statusClass) ?>"><?= e($t['status']) ?></span></td>
+                            <td>
+                                <?php if (!empty($t['evidence_path'])): ?>
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary btn-sm evidence-view-btn"
+                                        data-evidence-url="<?= e(absoluteUrl((string) $t['evidence_path'])) ?>"
+                                        data-evidence-name="<?= e((string) $t['evidence_name']) ?>"
+                                        data-ticket-code="<?= e((string) $t['tracking_code']) ?>"
+                                        data-ticket-employee="<?= e((string) $t['employee_name']) ?>"
+                                        data-ticket-issue="<?= e((string) $t['category_name']) ?> - <?= e((string) $t['subcategory_name']) ?>"
+                                        data-ticket-status="<?= e($t['status']) ?>"
+                                    >View Photo</button>
+                                <?php else: ?>
+                                    <span class="evidence-empty">No photo</span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= e((string) $t['ict_name']) ?></td>
+                            <td>
+                                <form method="POST" class="ticket-assign-form">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="ticket_id" value="<?= (int) $t['id'] ?>">
+                                    <select name="ict_id" required>
+                                        <option value="" data-i18n="admin_select_ict">Select ICT</option>
+                                        <?php foreach ($ictUsers as $ict): ?>
+                                            <option value="<?= (int) $ict['id'] ?>" <?= (int) $t['assigned_to'] === (int) $ict['id'] ? 'selected' : '' ?>><?= e($ict['full_name']) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <button class="btn btn-primary btn-sm" type="submit" data-i18n="common_assign"><?= !empty($t['assigned_to']) ? 'Reassign' : 'Assign' ?></button>
+                                </form>
+                            </td>
+                            <td>
+                                <a href="<?= e(app_base_path() . '/admin/resolve_ticket.php?id=' . (int) $t['id']) ?>" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">Resolve</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 </section>
