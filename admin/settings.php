@@ -97,19 +97,39 @@ $pageTitle = 'Settings | ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/_nav.php';
 ?>
-<h2 data-i18n="admin_settings_title">Settings</h2>
-<section class="panel-card settings-page">
-    <h3 data-i18n="admin_settings_title">Settings</h3>
-    <p class="small-text" data-i18n="admin_settings_intro">Update your profile details and password.</p>
+<div class="db-hero">
+    <div class="db-hero-left">
+        <div class="db-eyebrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v2"></path><path d="M12 21v2"></path><path d="m4.22 4.22 1.42 1.42"></path><path d="m18.36 18.36 1.42 1.42"></path><path d="M1 12h2"></path><path d="M21 12h2"></path><path d="m4.22 19.78 1.42-1.42"></path><path d="m18.36 5.64 1.42-1.42"></path></svg>
+            <span data-i18n="subnav_settings">Settings</span>
+        </div>
+        <h1 data-i18n="admin_settings_title">Settings</h1>
+        <p class="db-sub-desc" data-i18n="settings_page_subtitle">Update your profile details and password.</p>
+    </div>
+    <div class="db-hero-actions">
+        <span class="db-date-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <?= e(date('l, F j, Y')) ?>
+        </span>
+    </div>
+</div>
 
-    <form method="POST" class="settings-form" autocomplete="off">
-        <?= csrf_field() ?>
-        <section class="panel-card settings-category">
-            <div class="settings-category-head">
-                <h4>Profile Information</h4>
-                <p>Update your name, email, phone, and job title.</p>
+<form method="POST" autocomplete="off">
+    <?= csrf_field() ?>
+    <section class="db-panel" style="margin-bottom:20px;">
+        <div class="db-panel-header">
+            <div class="db-panel-header-left">
+                <div class="db-panel-icon blue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div>
+                    <h3 class="db-panel-title">Profile Information</h3>
+                    <p class="db-panel-subtitle">Update your name, email, phone, and job title.</p>
+                </div>
             </div>
-            <div class="settings-category-grid">
+        </div>
+        <div class="db-panel-body">
+            <div class="db-form-grid">
                 <label><span data-i18n="common_full_name">Full Name</span>
                     <input type="text" name="full_name" required value="<?= e((string) $profile['full_name']) ?>" placeholder="Full name">
                 </label>
@@ -123,14 +143,23 @@ require_once __DIR__ . '/_nav.php';
                     <input type="text" name="job_title" required value="<?= e((string) $profile['job_title']) ?>" placeholder="Your job title">
                 </label>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="panel-card settings-category settings-password-card">
-            <div class="settings-category-head">
-                <h4>Security</h4>
-                <p>Change your password when needed.</p>
+    <section class="db-panel" style="margin-bottom:20px;">
+        <div class="db-panel-header">
+            <div class="db-panel-header-left">
+                <div class="db-panel-icon amber">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <div>
+                    <h3 class="db-panel-title">Security</h3>
+                    <p class="db-panel-subtitle">Change your password when needed.</p>
+                </div>
             </div>
-            <div class="settings-category-grid">
+        </div>
+        <div class="db-panel-body">
+            <div class="db-form-grid">
                 <label><span data-i18n="admin_current_password_label">Current Password</span>
                     <span class="password-field">
                         <input type="password" name="current_password" placeholder="Enter current password" data-password-field>
@@ -147,7 +176,7 @@ require_once __DIR__ . '/_nav.php';
                         </button>
                     </span>
                 </label>
-                <label><span data-i18n="admin_confirm_password_label">Confirm New Password</span>
+                <label class="full"><span data-i18n="admin_confirm_password_label">Confirm New Password</span>
                     <span class="password-field">
                         <input type="password" name="confirm_password" minlength="8" placeholder="Repeat new password" data-password-field>
                         <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
@@ -156,14 +185,14 @@ require_once __DIR__ . '/_nav.php';
                     </span>
                 </label>
             </div>
-            <p class="small-text">Leave password fields blank if you only want to update your profile information.</p>
-        </section>
-
-        <div class="auth-actions settings-actions">
-            <button type="submit" class="btn btn-primary" data-i18n="admin_settings_save">Save Changes</button>
+            <p class="small-text" style="margin:12px 0 0;">Leave password fields blank if you only want to update your profile information.</p>
         </div>
-    </form>
-</section>
+    </section>
+
+    <div class="db-form-actions">
+        <button type="submit" class="btn btn-primary" data-i18n="admin_settings_save">Save Changes</button>
+    </div>
+</form>
 </section>
 </div>
 <script>
