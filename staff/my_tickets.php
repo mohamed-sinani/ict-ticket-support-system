@@ -216,106 +216,141 @@ $pageTitle = 'Assigned Tickets | ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/_nav.php';
 ?>
-<h2 data-i18n="staff_assigned_tickets">Assigned Tickets</h2>
+<div class="db-hero">
+    <div class="db-hero-left">
+        <div class="db-eyebrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 0 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
+            <span data-i18n="staff_assigned_tickets">Assigned Tickets</span>
+        </div>
+        <h1 data-i18n="staff_assigned_tickets">Assigned Tickets</h1>
+        <p class="db-sub-desc" data-i18n="staff_assigned_subtitle">Tickets assigned to you — update status and upload resolution photos.</p>
+    </div>
+    <div class="db-hero-actions">
+        <span class="db-date-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <?= e(date('l, F j, Y')) ?>
+        </span>
+    </div>
+</div>
 
 <?php if (count($tickets) === 0): ?>
-    <section class="panel-card">
-        <p><em>No assigned tickets found.</em></p>
+    <section class="db-panel" style="margin-bottom:20px;">
+        <div class="db-panel-body">
+            <div class="db-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 0 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
+                <h4 data-i18n="admin_no_tickets">No assigned tickets found.</h4>
+            </div>
+        </div>
     </section>
 <?php endif; ?>
 
-<section class="panel-card">
-    <div class="table-wrap">
-        <table class="admin-tickets-table">
-            <thead>
-                <tr>
-                    <th data-i18n="common_tracking_code">Tracking Code</th>
-                    <th data-i18n="common_employee">Employee</th>
-                    <th data-i18n="common_department">Department</th>
-                    <th data-i18n="common_issue">Issue</th>
-                    <th data-i18n="common_status">Status</th>
-                    <th>Evidence</th>
-                    <th data-i18n="common_description">Description</th>
-                    <th data-i18n="staff_save_update">Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($tickets as $t): ?>
-                    <?php $issueLabel = trim((string) ($t['category_name'] ?? '') . ' - ' . (string) ($t['subcategory_name'] ?? ''), ' -'); ?>
+<section class="db-panel">
+    <div class="db-panel-header">
+        <div class="db-panel-header-left">
+            <div class="db-panel-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            </div>
+            <div>
+                <h3 class="db-panel-title" data-i18n="staff_my_assigned_tickets">My Assigned Tickets</h3>
+                <p class="db-panel-subtitle"><?= count($tickets) ?> ticket(s) currently in your queue</p>
+            </div>
+        </div>
+        <span class="db-chart-badge"><?= count($tickets) ?></span>
+    </div>
+    <div class="db-panel-body pad-none">
+        <div class="db-table-wrap">
+            <table class="db-table">
+                <thead>
                     <tr>
-                        <td><?= e((string) $t['tracking_code']) ?></td>
-                        <td>
-                            <div class="staff-ticket-meta">
-                                <strong><?= e((string) $t['employee_name']) ?></strong>
-                                <span><?= e((string) $t['employee_email']) ?></span>
-                            </div>
-                        </td>
-                        <td><?= e((string) $t['department_name']) ?></td>
-                        <td><?= e($issueLabel) ?></td>
-                        <td><?= e((string) $t['status']) ?></td>
-                        <td>
-                            <?php if (!empty($t['evidence_path'])): ?>
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary evidence-view-btn"
-                                    data-evidence-url="<?= e(absoluteUrl((string) $t['evidence_path'])) ?>"
-                                    data-evidence-name="<?= e((string) $t['evidence_name']) ?>"
-                                    data-ticket-code="<?= e((string) $t['tracking_code']) ?>"
-                                    data-ticket-employee="<?= e((string) $t['employee_name']) ?>"
-                                    data-ticket-issue="<?= e($issueLabel) ?>"
-                                    data-ticket-status="<?= e((string) $t['status']) ?>"
-                                >View Photo</button>
-                            <?php else: ?>
-                                <span class="evidence-empty">No photo</span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="staff-ticket-description"><?= e((string) $t['description']) ?></td>
-                        <td>
-                            <details class="staff-ticket-details">
-                                <summary class="btn btn-secondary">Update</summary>
-                                <div class="staff-ticket-details-body">
-                                    <form method="POST" class="staff-ticket-update-form" enctype="multipart/form-data">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="ticket_id" value="<?= (int) $t['id'] ?>">
-                                        <label><span data-i18n="common_status">Status</span>
-                                            <select name="status" required>
-                                                <?php foreach (TICKET_STATUSES as $status): ?>
-                                                    <option value="<?= e($status) ?>" <?= $t['status'] === $status ? 'selected' : '' ?>><?= e($status) ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </label>
-                                        <label><span data-i18n="staff_comment_update">Comment / Update</span>
-                                            <textarea name="comment" rows="3" placeholder="Visible in employee tracking timeline" data-i18n-placeholder="staff_comment_placeholder"></textarea>
-                                        </label>
-                                        <label><span data-i18n="staff_resolution_notes">Resolution Notes</span>
-                                            <textarea name="resolution_note" rows="3" placeholder="Internal/closure notes" data-i18n-placeholder="staff_resolution_placeholder"><?= e((string) $t['resolution_note']) ?></textarea>
-                                        </label>
-                                        <div><span>Resolution Photo</span>
-                                            <label class="file-drop-zone">
-                                                <input type="file" class="file-drop-input" name="resolution_photo" accept="image/*" capture="environment">
-                                                <span class="file-drop-content">
-                                                    <svg class="file-drop-icon" xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                                    <span class="file-drop-text">
-                                                        <strong>Drag &amp; drop or click to browse</strong>
-                                                        <span>Supports: JPG, PNG, WebP, GIF</span>
-                                                    </span>
-                                                </span>
-                                                <span class="file-drop-preview hidden">
-                                                    <img src="" alt="Preview">
-                                                    <span class="file-drop-name"></span>
-                                                    <button type="button" class="file-drop-remove" aria-label="Remove file">&times;</button>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <button class="btn btn-primary" type="submit" data-i18n="staff_save_update">Save Update</button>
-                                    </form>
-                                </div>
-                            </details>
-                        </td>
+                        <th data-i18n="common_tracking_code">Tracking Code</th>
+                        <th data-i18n="common_employee">Employee</th>
+                        <th data-i18n="common_department">Department</th>
+                        <th data-i18n="common_issue">Issue</th>
+                        <th data-i18n="common_status">Status</th>
+                        <th>Evidence</th>
+                        <th data-i18n="common_description">Description</th>
+                        <th data-i18n="staff_save_update">Update</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($tickets as $t): ?>
+                        <?php $issueLabel = trim((string) ($t['category_name'] ?? '') . ' - ' . (string) ($t['subcategory_name'] ?? ''), ' -'); ?>
+                        <?php $statusClass = strtolower(str_replace(' ', '', (string) $t['status'])); ?>
+                        <tr>
+                            <td><span class="db-mono"><?= e((string) $t['tracking_code']) ?></span></td>
+                            <td>
+                                <div class="staff-ticket-meta">
+                                    <strong><?= e((string) $t['employee_name']) ?></strong>
+                                    <span><?= e((string) $t['employee_email']) ?></span>
+                                </div>
+                            </td>
+                            <td><?= e((string) $t['department_name']) ?></td>
+                            <td><?= e($issueLabel) ?></td>
+                            <td><span class="db-status-pill <?= e($statusClass) ?>"><?= e((string) $t['status']) ?></span></td>
+                            <td>
+                                <?php if (!empty($t['evidence_path'])): ?>
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary btn-sm evidence-view-btn"
+                                        data-evidence-url="<?= e(absoluteUrl((string) $t['evidence_path'])) ?>"
+                                        data-evidence-name="<?= e((string) $t['evidence_name']) ?>"
+                                        data-ticket-code="<?= e((string) $t['tracking_code']) ?>"
+                                        data-ticket-employee="<?= e((string) $t['employee_name']) ?>"
+                                        data-ticket-issue="<?= e($issueLabel) ?>"
+                                        data-ticket-status="<?= e((string) $t['status']) ?>"
+                                    >View Photo</button>
+                                <?php else: ?>
+                                    <span class="evidence-empty">No photo</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="staff-ticket-description"><?= e((string) $t['description']) ?></td>
+                            <td>
+                                <details class="staff-ticket-details">
+                                    <summary class="btn btn-secondary">Update</summary>
+                                    <div class="staff-ticket-details-body">
+                                        <form method="POST" class="staff-ticket-update-form" enctype="multipart/form-data">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="ticket_id" value="<?= (int) $t['id'] ?>">
+                                            <label><span data-i18n="common_status">Status</span>
+                                                <select name="status" required>
+                                                    <?php foreach (TICKET_STATUSES as $status): ?>
+                                                        <option value="<?= e($status) ?>" <?= $t['status'] === $status ? 'selected' : '' ?>><?= e($status) ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </label>
+                                            <label><span data-i18n="staff_comment_update">Comment / Update</span>
+                                                <textarea name="comment" rows="3" placeholder="Visible in employee tracking timeline" data-i18n-placeholder="staff_comment_placeholder"></textarea>
+                                            </label>
+                                            <label><span data-i18n="staff_resolution_notes">Resolution Notes</span>
+                                                <textarea name="resolution_note" rows="3" placeholder="Internal/closure notes" data-i18n-placeholder="staff_resolution_placeholder"><?= e((string) $t['resolution_note']) ?></textarea>
+                                            </label>
+                                            <div><span>Resolution Photo</span>
+                                                <label class="file-drop-zone">
+                                                    <input type="file" class="file-drop-input" name="resolution_photo" accept="image/*" capture="environment">
+                                                    <span class="file-drop-content">
+                                                        <svg class="file-drop-icon" xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                                        <span class="file-drop-text">
+                                                            <strong>Drag &amp; drop or click to browse</strong>
+                                                            <span>Supports: JPG, PNG, WebP, GIF</span>
+                                                        </span>
+                                                    </span>
+                                                    <span class="file-drop-preview hidden">
+                                                        <img src="" alt="Preview">
+                                                        <span class="file-drop-name"></span>
+                                                        <button type="button" class="file-drop-remove" aria-label="Remove file">&times;</button>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit" data-i18n="staff_save_update">Save Update</button>
+                                        </form>
+                                    </div>
+                                </details>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 
