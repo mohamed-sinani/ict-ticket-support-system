@@ -15,19 +15,28 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<section class="panel-grid container">
-    <article class="panel-card">
-        <h3 data-i18n="home_for_employees">For Employees</h3>
-        <p data-i18n="home_for_employees_text">No login needed. Verify your badge, submit your issue, and keep your tracking code.</p>
-    </article>
-    <article class="panel-card">
-        <h3 data-i18n="home_for_ict">For ICT Staff</h3>
-        <p data-i18n="home_for_ict_text">Login to view assignments, update ticket status, and communicate resolutions.</p>
-    </article>
-    <article class="panel-card">
-        <h3 data-i18n="home_for_admins">For Admins</h3>
-        <p data-i18n="home_for_admins_text">Manage users, departments, and institutional support performance analytics.</p>
-    </article>
+<section class="container stats-grid">
+    <div class="stat-card stat-card-inner stat-accent-blue">
+        <div class="stat-icon stat-icon-blue"><i class="fas fa-user"></i></div>
+        <div class="stat-body">
+            <div class="stat-value" data-i18n="home_for_employees">For Employees</div>
+            <p data-i18n="home_for_employees_text">No login needed. Verify your badge, submit your issue, and keep your tracking code.</p>
+        </div>
+    </div>
+    <div class="stat-card stat-card-inner stat-accent-amber">
+        <div class="stat-icon stat-icon-amber"><i class="fas fa-tools"></i></div>
+        <div class="stat-body">
+            <div class="stat-value" data-i18n="home_for_ict">For ICT Staff</div>
+            <p data-i18n="home_for_ict_text">Login to view assignments, update ticket status, and communicate resolutions.</p>
+        </div>
+    </div>
+    <div class="stat-card stat-card-inner stat-accent-indigo">
+        <div class="stat-icon stat-icon-indigo"><i class="fas fa-cogs"></i></div>
+        <div class="stat-body">
+            <div class="stat-value" data-i18n="home_for_admins">For Admins</div>
+            <p data-i18n="home_for_admins_text">Manage users, departments, and institutional support performance analytics.</p>
+        </div>
+    </div>
 </section>
 
 <section class="how-it-works container">
