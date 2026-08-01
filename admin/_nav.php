@@ -47,14 +47,12 @@ $adminModules = [
             <button type="button" class="admin-menu-toggle" aria-label="Open menu" data-admin-menu-toggle>
                 <span></span><span></span><span></span>
             </button>
-            <div>
-                <h1><?= e($adminTitle) ?></h1>
-                <p><?= e($adminUser['full_name'] ?? 'Administrator') ?></p>
-            </div>
+            <div style="flex: 1;"></div>
             <div class="admin-topbar-actions">
                 <button type="button" class="admin-profile-icon" aria-label="Profile" title="<?= e($adminUser['full_name'] ?? 'Administrator') ?>">
                     <?= e($avatarInitials) ?>
                 </button>
                 <button type="button" class="btn btn-secondary btn-link" aria-label="Switch language" data-language-toggle>SW</button>
+                <button type="button" class="btn btn-secondary btn-link" aria-label="Toggle dark mode" data-theme-toggle>🌙</button>
             </div>
         </div>
