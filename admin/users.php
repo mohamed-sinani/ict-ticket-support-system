@@ -103,86 +103,208 @@ $pageTitle = 'Users Management | ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/_nav.php';
 ?>
-<h2 data-i18n="admin_users_title">Users Management</h2>
-<section class="panel-card">
-    <h3><?= $editUser ? 'Edit User' : 'Add User' ?></h3>
-    <form method="POST" class="form-grid">
-        <?= csrf_field() ?>
-        <input type="hidden" name="action" value="<?= $editUser ? 'update' : 'create' ?>">
-        <input type="hidden" name="id" value="<?= (int) $formValues['id'] ?>">
-        <label><span data-i18n="common_full_name">Full Name</span><input type="text" name="full_name" value="<?= e((string) $formValues['full_name']) ?>" required></label>
-        <label><span data-i18n="common_employee_number">Employee Number</span><input type="text" name="employee_number" value="<?= e((string) $formValues['employee_number']) ?>"></label>
-        <label><span data-i18n="common_phone_number">Phone Number</span><input type="text" name="phone" value="<?= e((string) $formValues['phone']) ?>"></label>
-        <label><span data-i18n="common_email">Email</span><input type="email" name="email" value="<?= e((string) $formValues['email']) ?>" required></label>
-        <label><span data-i18n="common_job_title">Job Title</span><input type="text" name="job_title" value="<?= e((string) $formValues['job_title']) ?>"></label>
-        <label><span data-i18n="common_department">Department</span>
-            <select name="department_id">
-                <option value="" data-i18n="report_department_placeholder">Select Department</option>
-                <?php foreach ($departments as $dept): ?>
-                    <option value="<?= (int) $dept['id'] ?>" <?= (string) $formValues['department_id'] === (string) $dept['id'] ? 'selected' : '' ?>><?= e($dept['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </label>
-        <label><span data-i18n="common_role">Role</span>
-            <select name="role" required>
-                <option value="employee" data-i18n="common_role_employee" <?= $formValues['role'] === 'employee' ? 'selected' : '' ?>>Employee</option>
-                <option value="ict" data-i18n="common_role_ict" <?= $formValues['role'] === 'ict' ? 'selected' : '' ?>>ICT Staff</option>
-                <option value="admin" data-i18n="common_role_admin" <?= $formValues['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
-            </select>
-        </label>
-        <label><span data-i18n="admin_password_label">Password (leave blank to keep current)</span>
-            <input type="password" name="password" value="" placeholder="<?= $editUser ? 'Leave blank to keep current' : 'Required for new users' ?>">
-        </label>
-        <div class="table-actions">
-            <button class="btn btn-primary" type="submit"><?= $editUser ? 'Save Changes' : 'Create User' ?></button>
-            <?php if ($editUser): ?>
-                <a class="btn btn-secondary" href="users.php">Cancel Edit</a>
-            <?php endif; ?>
+<div class="db-hero">
+    <div class="db-hero-left">
+        <div class="db-eyebrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span data-i18n="subnav_users">Users</span>
         </div>
-    </form>
-</section>
+        <h1 data-i18n="admin_users_title">Users Management</h1>
+        <p class="db-sub-desc" data-i18n="users_page_subtitle">Create, edit, and manage user accounts and their roles.</p>
+    </div>
+    <div class="db-hero-actions">
+        <button type="button" class="db-view-btn primary" data-open-user-modal data-i18n="admin_add_user">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add User
+        </button>
+    </div>
+</div>
 
-<section class="panel-card">
-    <h3 data-i18n="admin_all_users">All Users</h3>
-    <div class="table-wrap">
-    <table>
-        <thead>
-            <tr>
-                <th data-i18n="common_name">Name</th>
-                <th data-i18n="common_role">Role</th>
-                <th data-i18n="admin_employee_no">Employee No.</th>
-                <th data-i18n="common_email">Email</th>
-                <th data-i18n="common_phone">Phone</th>
-                <th data-i18n="common_job_title">Job Title</th>
-                <th data-i18n="common_department">Department</th>
-                <th data-i18n="common_action">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $u): ?>
-                <tr>
-                    <td><?= e($u['full_name']) ?></td>
-                    <td><?= strtoupper(e($u['role'])) ?></td>
-                    <td><?= e((string) $u['employee_number']) ?></td>
-                    <td><?= e($u['email']) ?></td>
-                    <td><?= e((string) $u['phone']) ?></td>
-                    <td><?= e((string) $u['job_title']) ?></td>
-                    <td><?= e((string) $u['department_name']) ?></td>
-                    <td>
-                        <div class="table-actions">
-                            <a class="btn btn-secondary" href="users.php?edit=<?= (int) $u['id'] ?>">Edit</a>
-                            <form method="POST" onsubmit="return confirm(window.appI18n ? window.appI18n.t('confirm_delete_user', 'Delete user?') : 'Delete user?')">
-                            <?= csrf_field() ?>
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
-                            <button type="submit" class="btn btn-danger" data-i18n="common_delete">Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+<?php if ($editUser): ?>
+<section class="db-panel" id="userForm" style="margin-bottom:20px;">
+    <div class="db-panel-header">
+        <div class="db-panel-header-left">
+            <div class="db-panel-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+            </div>
+            <div>
+                <h3 class="db-panel-title"><?= $editUser ? 'Edit User' : 'Add User' ?></h3>
+                <p class="db-panel-subtitle"><?= $editUser ? 'Update this account profile and role.' : 'Register a new account for the institution.' ?></p>
+            </div>
+        </div>
+        <?php if ($editUser): ?>
+            <a class="db-view-btn" href="users.php" data-i18n="admin_cancel_edit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                Cancel Edit
+            </a>
+        <?php endif; ?>
+    </div>
+    <div class="db-panel-body">
+        <form method="POST" class="db-form-grid">
+            <?= csrf_field() ?>
+            <input type="hidden" name="action" value="<?= $editUser ? 'update' : 'create' ?>">
+            <input type="hidden" name="id" value="<?= (int) $formValues['id'] ?>">
+            <label><span data-i18n="common_full_name">Full Name</span><input type="text" name="full_name" value="<?= e((string) $formValues['full_name']) ?>" required></label>
+            <label><span data-i18n="common_employee_number">Employee Number</span><input type="text" name="employee_number" value="<?= e((string) $formValues['employee_number']) ?>"></label>
+            <label><span data-i18n="common_phone_number">Phone Number</span><input type="text" name="phone" value="<?= e((string) $formValues['phone']) ?>"></label>
+            <label><span data-i18n="common_email">Email</span><input type="email" name="email" value="<?= e((string) $formValues['email']) ?>" required></label>
+            <label><span data-i18n="common_job_title">Job Title</span><input type="text" name="job_title" value="<?= e((string) $formValues['job_title']) ?>"></label>
+            <label><span data-i18n="common_department">Department</span>
+                <select name="department_id">
+                    <option value="" data-i18n="report_department_placeholder">Select Department</option>
+                    <?php foreach ($departments as $dept): ?>
+                        <option value="<?= (int) $dept['id'] ?>" <?= (string) $formValues['department_id'] === (string) $dept['id'] ? 'selected' : '' ?>><?= e($dept['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label><span data-i18n="common_role">Role</span>
+                <select name="role" required>
+                    <option value="employee" data-i18n="common_role_employee" <?= $formValues['role'] === 'employee' ? 'selected' : '' ?>>Employee</option>
+                    <option value="ict" data-i18n="common_role_ict" <?= $formValues['role'] === 'ict' ? 'selected' : '' ?>>ICT Staff</option>
+                    <option value="admin" data-i18n="common_role_admin" <?= $formValues['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
+                </select>
+            </label>
+            <label class="full"><span data-i18n="admin_password_label">Password (leave blank to keep current)</span>
+                <input type="password" name="password" value="" placeholder="<?= $editUser ? 'Leave blank to keep current' : 'Required for new users' ?>">
+            </label>
+            <div class="db-form-actions">
+                <button class="btn btn-primary" type="submit"><?= $editUser ? 'Save Changes' : 'Create User' ?></button>
+                <?php if ($editUser): ?>
+                    <a class="btn btn-secondary" href="users.php">Cancel Edit</a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+</section>
+<?php endif; ?>
+
+<div id="addUserModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="addUserTitle">
+    <div class="confirm-modal db-modal-card" role="document">
+        <div class="modal-head">
+            <h3 id="addUserTitle" data-i18n="admin_add_user">Add User</h3>
+            <button type="button" class="modal-close" data-close-user-modal aria-label="Close">&times;</button>
+        </div>
+        <p class="modal-desc">Register a new account for the institution</p>
+        <form method="POST" id="addUserForm" class="db-form-grid">
+            <?= csrf_field() ?>
+            <input type="hidden" name="action" value="create">
+            <label><span data-i18n="common_full_name">Full Name</span><input type="text" name="full_name" required></label>
+            <label><span data-i18n="common_employee_number">Employee Number</span><input type="text" name="employee_number"></label>
+            <label><span data-i18n="common_phone_number">Phone Number</span><input type="text" name="phone"></label>
+            <label><span data-i18n="common_email">Email</span><input type="email" name="email" required></label>
+            <label><span data-i18n="common_job_title">Job Title</span><input type="text" name="job_title"></label>
+            <label><span data-i18n="common_department">Department</span>
+                <select name="department_id">
+                    <option value="" data-i18n="report_department_placeholder">Select Department</option>
+                    <?php foreach ($departments as $dept): ?>
+                        <option value="<?= (int) $dept['id'] ?>"><?= e($dept['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label><span data-i18n="common_role">Role</span>
+                <select name="role" required>
+                    <option value="employee" data-i18n="common_role_employee">Employee</option>
+                    <option value="ict" data-i18n="common_role_ict">ICT Staff</option>
+                    <option value="admin" data-i18n="common_role_admin">Admin</option>
+                </select>
+            </label>
+            <label class="full"><span data-i18n="admin_password_label">Password</span>
+                <input type="password" name="password" required placeholder="Required for new users">
+            </label>
+            <div class="db-form-actions full">
+                <button type="button" class="btn btn-secondary" data-close-user-modal data-i18n="common_cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary" data-i18n="common_add">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var addUserModal = document.getElementById('addUserModal');
+    var addUserForm = document.getElementById('addUserForm');
+    if (!addUserModal || !addUserForm) return;
+
+    function openAddUserModal() {
+        addUserForm.reset();
+        addUserModal.classList.remove('hidden');
+        addUserModal.setAttribute('aria-hidden', 'false');
+        var first = addUserForm.querySelector('input[name="full_name"]');
+        if (first) first.focus();
+    }
+    function closeAddUserModal() {
+        addUserModal.classList.add('hidden');
+        addUserModal.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('[data-open-user-modal]').forEach(function (btn) {
+        btn.addEventListener('click', openAddUserModal);
+    });
+    document.querySelectorAll('[data-close-user-modal]').forEach(function (btn) {
+        btn.addEventListener('click', closeAddUserModal);
+    });
+    addUserModal.addEventListener('click', function (e) {
+        if (e.target === addUserModal) closeAddUserModal();
+    });
+    document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && !addUserModal.classList.contains('hidden')) closeAddUserModal();
+    });
+});
+</script>
+
+<section class="db-panel">
+    <div class="db-panel-header">
+        <div class="db-panel-header-left">
+            <div class="db-panel-icon violet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <div>
+                <h3 class="db-panel-title" data-i18n="admin_all_users">All Users</h3>
+                <p class="db-panel-subtitle"><?= count($users) ?> account(s) in the system</p>
+            </div>
+        </div>
+        <span class="db-chart-badge"><?= count($users) ?></span>
+    </div>
+    <div class="db-panel-body pad-none">
+        <div class="db-table-wrap">
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th data-i18n="common_name">Name</th>
+                        <th data-i18n="common_role">Role</th>
+                        <th data-i18n="admin_employee_no">Employee No.</th>
+                        <th data-i18n="common_email">Email</th>
+                        <th data-i18n="common_phone">Phone</th>
+                        <th data-i18n="common_job_title">Job Title</th>
+                        <th data-i18n="common_department">Department</th>
+                        <th data-i18n="common_action">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $u): ?>
+                        <tr>
+                            <td><?= e($u['full_name']) ?></td>
+                            <td><span class="db-role-pill <?= e(strtolower((string) $u['role'])) ?>"><?= e($u['role']) ?></span></td>
+                            <td><span class="db-mono"><?= e((string) $u['employee_number']) ?></span></td>
+                            <td><?= e($u['email']) ?></td>
+                            <td><?= e((string) $u['phone']) ?></td>
+                            <td><?= e((string) $u['job_title']) ?></td>
+                            <td><?= e((string) $u['department_name']) ?></td>
+                            <td>
+                                <div class="table-actions">
+                                    <a class="btn btn-secondary btn-sm" href="users.php?edit=<?= (int) $u['id'] ?>">Edit</a>
+                                    <form method="POST" onsubmit="return confirm(window.appI18n ? window.appI18n.t('confirm_delete_user', 'Delete user?') : 'Delete user?')">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm" data-i18n="common_delete">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 </div>
