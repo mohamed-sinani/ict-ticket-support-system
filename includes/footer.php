@@ -78,36 +78,6 @@ function _ict_init() {
 
     document.querySelectorAll('form input, form textarea, form select').forEach(addPlaceholderToControl);
 
-    var menuToggle = document.getElementById('menuToggle');
-    var adminShell = document.querySelector('.admin-shell');
-
-    if (menuToggle && adminShell) {
-        menuToggle.addEventListener('click', function () {
-            var expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-            adminShell.classList.toggle('sidebar-open');
-        });
-    }
-
-    document.querySelectorAll('[data-admin-menu-toggle]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            if (!adminShell) return;
-            adminShell.classList.toggle('sidebar-open');
-            var expanded = btn.getAttribute('aria-expanded') === 'true';
-            btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (!adminShell) return;
-        if (!adminShell.classList.contains('sidebar-open')) return;
-        var sidebar = adminShell.querySelector('.admin-sidebar');
-        if (!sidebar) return;
-        if (!sidebar.contains(e.target) && !(menuToggle && menuToggle.contains(e.target))) {
-            adminShell.classList.remove('sidebar-open');
-        }
-    }, true);
-
     function initFileDropZone(zone) {
         var input = zone.querySelector('.file-drop-input');
         var content = zone.querySelector('.file-drop-content');
