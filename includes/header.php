@@ -32,6 +32,7 @@ $baseUrl = $isSubDir ? '../' : '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/dashboard.css?v=<?= filemtime(__DIR__ . '/../assets/css/dashboard.css') ?>">
     <?php
     if (!empty($user['id'])) {
         $userCssRel = 'assets/css/users/user_' . (int) $user['id'] . '.css';
@@ -41,6 +42,11 @@ $baseUrl = $isSubDir ? '../' : '';
         }
     }
     ?>
+    <script>
+        if (localStorage.getItem('app_theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
 </head>
 <body class="<?= $isPanelDir ? 'admin-app-page' : '' ?>">
 
@@ -81,6 +87,9 @@ $baseUrl = $isSubDir ? '../' : '';
                 <a class="btn btn-primary btn-link" href="<?= $baseUrl ?>login.php" target="_self" data-i18n="nav_login">Login</a>
             <?php endif; ?>
             <button type="button" id="languageToggle" class="btn btn-secondary btn-link" aria-label="Switch language" data-language-toggle>SW</button>
+            <?php if ($user): ?>
+            <button type="button" class="btn btn-secondary btn-link" id="themeToggle" aria-label="Toggle dark mode" data-theme-toggle>🌙</button>
+            <?php endif; ?>
         </nav>
 
     </div>
@@ -197,6 +206,7 @@ const appTranslations = {
         report_submit_note: 'Submit your issue now. A unique tracking code will be generated and sent to your registered email.',
         report_submit_btn: 'Submit Ticket',
         common_add: 'Add',
+        common_cancel: 'Cancel',
         common_update: 'Update',
         common_delete: 'Delete',
         common_filter: 'Filter',
@@ -206,6 +216,11 @@ const appTranslations = {
         common_department: 'Department',
         common_issue: 'Issue',
         common_status: 'Status',
+        common_priority: 'Priority',
+        common_created: 'Created',
+        common_updated: 'Updated',
+        common_all_tickets: 'All Issues',
+        common_no_tickets: 'No tickets yet',
         common_tickets: 'tickets',
         common_full_name: 'Full Name',
         common_employee_number: 'Employee Number',
@@ -252,6 +267,7 @@ const appTranslations = {
         admin_add_user: 'Add User',
         admin_password_label: 'Password (for Admin/ICT)',
         admin_create_user: 'Create User',
+        admin_cancel_edit: 'Cancel Edit',
         admin_all_users: 'All Users',
         admin_employee_no: 'Employee No.',
         staff_dashboard_title: 'ICT Staff Dashboard',
@@ -271,7 +287,81 @@ const appTranslations = {
         confirm_delete_user: 'Delete user?',
         otp_title: 'Enter Verification Code',
         otp_code_label: 'Verification Code',
-        otp_verify_btn: 'Verify & Login'
+        otp_verify_btn: 'Verify & Login',
+        admin_good_morning: 'Good Morning',
+        admin_good_afternoon: 'Good Afternoon',
+        admin_good_evening: 'Good Evening',
+        admin_dashboard_overview: 'Dashboard Overview',
+        admin_daily_insight: 'Daily Insight',
+        admin_badge_alltime: 'All Time',
+        admin_badge_open: 'Open',
+        admin_badge_active: 'Active',
+        admin_badge_done: 'Done',
+        admin_badge_new: 'New',
+        admin_badge_14d: '14 Days',
+        admin_tickets_status: 'Tickets by Status',
+        admin_tickets_status_sub: 'Distribution across the full ticket lifecycle',
+        admin_top_categories_sub: 'Where problems are concentrated',
+        admin_no_categories: 'No categories yet',
+        admin_ticket_trends_title: 'Ticket Trends',
+        admin_ticket_trends_sub: 'New tickets over the last 14 days',
+        admin_performance_title: 'Performance Snapshot',
+        admin_performance_sub: 'Speed and completion overview',
+        admin_open_rate: 'Open Rate',
+        admin_recent_tickets: 'Recent Tickets',
+        admin_recent_tickets_sub: 'Latest submissions across all departments',
+        admin_view_all: 'View All',
+        admin_view_all_tickets: 'View All Tickets',
+        admin_insights_title: 'Insights',
+        admin_insights_sub: 'Quick signals worth your attention',
+        admin_no_tickets: 'No tickets yet',
+        staff_new_assigned: 'New Assigned',
+        staff_my_tickets_link: 'My Assigned Tickets',
+        staff_performance_title: 'My Performance',
+        staff_performance_sub: 'How you are tracking on assigned work',
+        staff_completion_rate: 'Completion Rate',
+        staff_open_now: 'Open Now',
+        staff_insights_sub: 'Signals from your ticket queue',
+        staff_recent_tickets: 'Recent Assigned Tickets',
+        staff_recent_tickets_sub: 'Latest tickets in your queue',
+        staff_quick_links: 'Quick Links',
+        staff_quick_links_sub: 'Jump straight to what you need',
+        staff_employees: 'Employees',
+        employee_report_issue: 'Report an Issue',
+        employee_activity_title: 'My Activity',
+        employee_activity_sub: 'A snapshot of your request history',
+        employee_insights_sub: 'What is happening with your requests',
+        employee_recent_tickets: 'My Recent Tickets',
+        employee_recent_tickets_sub: 'Your latest support requests',
+        employee_no_tickets: 'No tickets yet',
+        employee_no_tickets_hint: 'Report your first issue to get started.',
+        reports_page_title: 'Reports & Analytics',
+        reports_page_subtitle: 'Filter by date range to explore ticket performance across the institution.',
+        reports_badge_range: 'Range',
+        reports_filter_title: 'Filter Reports',
+        reports_filter_sub: 'Narrow results by submission date',
+        reports_trends_sub: 'Tickets in the selected period',
+        reports_status_sub: 'Distribution within the selected range',
+        reports_staff_sub: 'Tickets handled per ICT staff member',
+        reports_categories_sub: 'Where problems are concentrated',
+        reports_department_breakdown: 'Department Breakdown',
+        reports_dept_sub: 'Tickets reported per department',
+        reports_user_activity: 'User Activity Trends',
+        reports_activity_sub: 'Most active reporters of tickets',
+        reports_no_data: 'No data',
+        reports_no_data_range: 'No data in selected range',
+        tickets_page_subtitle: 'Review every ticket across the institution, assign ICT staff, and resolve issues.',
+        admin_all_tickets: 'All Tickets',
+        users_page_subtitle: 'Create, edit, and manage user accounts and their roles.',
+        departments_page_subtitle: 'Organise the institution into departments for cleaner ticket routing.',
+        staff_assigned_subtitle: 'Tickets assigned to you — update status and upload resolution photos.',
+        employees_page_subtitle: 'Manage employee profiles and contact details.',
+        my_tickets_employee_subtitle: 'Track the status and history of all your support requests.',
+        settings_page_subtitle: 'Update your profile details and password.',
+        common_export: 'Export CSV',
+        common_clear: 'Clear',
+        common_from: 'From',
+        common_to: 'To'
     },
     sw: {
         menu_toggle: 'Fungua menyu',
@@ -373,6 +463,7 @@ const appTranslations = {
         report_submit_note: 'Tuma tatizo lako sasa. Namba ya ufuatiliaji itatengenezwa na kutumwa kwenye barua pepe yako.',
         report_submit_btn: 'Tuma Tiketi',
         common_add: 'Ongeza',
+        common_cancel: 'Ghairi',
         common_update: 'Sasisha',
         common_delete: 'Futa',
         common_filter: 'Chuja',
@@ -382,6 +473,11 @@ const appTranslations = {
         common_department: 'Idara',
         common_issue: 'Tatizo',
         common_status: 'Hali',
+        common_priority: 'Kipaumbele',
+        common_created: 'Imeundwa',
+        common_updated: 'Imesasishwa',
+        common_all_tickets: 'Masuala Yote',
+        common_no_tickets: 'Hakuna tiketi bado',
         common_tickets: 'tiketi',
         common_full_name: 'Jina Kamili',
         common_employee_number: 'Namba ya Mfanyakazi',
@@ -428,6 +524,7 @@ const appTranslations = {
         admin_add_user: 'Ongeza Mtumiaji',
         admin_password_label: 'Nenosiri (kwa Admin/ICT)',
         admin_create_user: 'Unda Mtumiaji',
+        admin_cancel_edit: 'Ghairi Uhariri',
         admin_all_users: 'Watumiaji Wote',
         admin_employee_no: 'Na. ya Mfanyakazi',
         staff_dashboard_title: 'Dashibodi ya Wafanyakazi wa ICT',
@@ -447,7 +544,81 @@ const appTranslations = {
         confirm_delete_user: 'Futa mtumiaji?',
         otp_title: 'Weka Msimbo wa Uthibitisho',
         otp_code_label: 'Msimbo wa Uthibitisho',
-        otp_verify_btn: 'Thibitisha & Ingia'
+        otp_verify_btn: 'Thibitisha & Ingia',
+        admin_good_morning: 'Habari za Asubuhi',
+        admin_good_afternoon: 'Habari za Mchana',
+        admin_good_evening: 'Habari za Jioni',
+        admin_dashboard_overview: 'Muhtasari wa Dashibodi',
+        admin_daily_insight: 'Uchambuzi wa Kila Siku',
+        admin_badge_alltime: 'Muda Wote',
+        admin_badge_open: 'Wazi',
+        admin_badge_active: 'Inayoendelea',
+        admin_badge_done: 'Imekamilika',
+        admin_badge_new: 'Mpya',
+        admin_badge_14d: 'Siku 14',
+        admin_tickets_status: 'Tiketi kwa Hali',
+        admin_tickets_status_sub: 'Usambazaji katika mzunguko mzima wa tiketi',
+        admin_top_categories_sub: 'Ambapo matatizo yamejilimbikizia',
+        admin_no_categories: 'Bado hakuna kategoria',
+        admin_ticket_trends_title: 'Mwelekeo wa Tiketi',
+        admin_ticket_trends_sub: 'Tiketi mpya kwa siku 14 zilizopita',
+        admin_performance_title: 'Muhtasari wa Utendaji',
+        admin_performance_sub: 'Muhtasari wa kasi na ukamilishaji',
+        admin_open_rate: 'Kiwango cha Wazi',
+        admin_recent_tickets: 'Tiketi za Karibuni',
+        admin_recent_tickets_sub: 'Mawasilisho ya hivi karibuni kutoka idara zote',
+        admin_view_all: 'Angalia Zote',
+        admin_view_all_tickets: 'Angalia Tiketi Zote',
+        admin_insights_title: 'Uchambuzi',
+        admin_insights_sub: 'Ishara za haraka zinazostahili umakini wako',
+        admin_no_tickets: 'Bado hakuna tiketi',
+        staff_new_assigned: 'Zilizopangiwa Mpya',
+        staff_my_tickets_link: 'Tiketi Zangu Zilizopangiwa',
+        staff_performance_title: 'Utendaji Wangu',
+        staff_performance_sub: 'Jinsi unavyofuatilia kazi zilizopangiwa',
+        staff_completion_rate: 'Kiwango cha Ukamilishaji',
+        staff_open_now: 'Wazi Sasa',
+        staff_insights_sub: 'Ishara kutoka foleni yako ya tiketi',
+        staff_recent_tickets: 'Tiketi za Karibuni Zilizopangiwa',
+        staff_recent_tickets_sub: 'Tiketi za hivi karibuni kwenye foleni yako',
+        staff_quick_links: 'Viungo vya Haraka',
+        staff_quick_links_sub: 'Rukia moja kwa moja unachohitaji',
+        staff_employees: 'Wafanyakazi',
+        employee_report_issue: 'Ripoti Tatizo',
+        employee_activity_title: 'Shughuli Zangu',
+        employee_activity_sub: 'Muhtasari wa historia ya maombi yako',
+        employee_insights_sub: 'Kinachotokea kwa maombi yako',
+        employee_recent_tickets: 'Tiketi Zangu za Karibuni',
+        employee_recent_tickets_sub: 'Maombi yako ya hivi karibuni ya usaidizi',
+        employee_no_tickets: 'Bado hakuna tiketi',
+        employee_no_tickets_hint: 'Ripoti tatizo lako la kwanza kuanza.',
+        reports_page_title: 'Ripoti na Takwimu',
+        reports_page_subtitle: 'Chuja kwa muda wa tarehe kuona utendaji wa tiketi katika taasisi nzima.',
+        reports_badge_range: 'Kipindi',
+        reports_filter_title: 'Chuja Ripoti',
+        reports_filter_sub: 'Punguza matokeo kwa tarehe ya kuwasilishwa',
+        reports_trends_sub: 'Tiketi katika kipindi kilichochaguliwa',
+        reports_status_sub: 'Usambazaji katika kipindi kilichochaguliwa',
+        reports_staff_sub: 'Tiketi zinazoshughulikiwa na kila mfanyakazi wa ICT',
+        reports_categories_sub: 'Ambapo matatizo yamejilimbikizia',
+        reports_department_breakdown: 'Mgawanyo kwa Idara',
+        reports_dept_sub: 'Tiketi zilizoripotiwa kwa kila idara',
+        reports_user_activity: 'Mielekeo ya Shughuli za Watumiaji',
+        reports_activity_sub: 'Wanaoripoti tiketi zaidi',
+        reports_no_data: 'Hakuna data',
+        reports_no_data_range: 'Hakuna data katika kipindi kilichochaguliwa',
+        tickets_page_subtitle: 'Pitia kila tiketi katika taasisi nzima, panga wafanyakazi wa ICT, na tatua matatizo.',
+        admin_all_tickets: 'Tiketi Zote',
+        users_page_subtitle: 'Unda, hariri, na simamia akaunti za watumiaji na majukumu yao.',
+        departments_page_subtitle: 'Panga taasisi kwa idara ili mwelekeo wa tiketi uwe rahisi.',
+        staff_assigned_subtitle: 'Tiketi ulizopangiwa — sasisha hali na pakia picha za utatuzi.',
+        employees_page_subtitle: 'Simamia taarifa za wafanyakazi na mawasiliano yao.',
+        my_tickets_employee_subtitle: 'Fuatilia hali na historia ya maombi yako yote ya usaidizi.',
+        settings_page_subtitle: 'Sasisha taarifa zako binafsi na nenosiri.',
+        common_export: 'Hamisha CSV',
+        common_clear: 'Futa',
+        common_from: 'Kuanzia',
+        common_to: 'Hadi'
     }
 };
 
@@ -497,46 +668,75 @@ window.appI18n = {
     t: appTranslate
 };
 
-const menuToggle = document.getElementById('menuToggle');
-if (menuToggle) {
-    menuToggle.addEventListener('click', function () {
-        const nav = document.getElementById('mainNav');
-        const isOpen = nav.classList.toggle('active');
-        this.setAttribute('aria-expanded', String(isOpen));
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function () {
+            const nav = document.getElementById('mainNav');
+            const isOpen = nav.classList.toggle('active');
+            this.setAttribute('aria-expanded', String(isOpen));
+        });
+    }
+
+    const adminShell = document.querySelector('.admin-shell');
+    const adminToggles = document.querySelectorAll('[data-admin-menu-toggle]');
+    if (adminShell && adminToggles.length > 0) {
+        const backdrop = document.createElement('div');
+        backdrop.className = 'admin-sidebar-backdrop';
+        document.body.appendChild(backdrop);
+
+        const setSidebar = (open) => {
+            adminShell.classList.toggle('sidebar-open', open);
+            adminToggles.forEach(t => t.setAttribute('aria-expanded', String(open)));
+        };
+
+        const toggleSidebar = () => setSidebar(!adminShell.classList.contains('sidebar-open'));
+
+        adminToggles.forEach(btn => btn.addEventListener('click', toggleSidebar));
+        backdrop.addEventListener('click', () => setSidebar(false));
+
+        document.addEventListener('click', (e) => {
+            if (!adminShell.classList.contains('sidebar-open')) return;
+            const sidebar = adminShell.querySelector('.admin-sidebar');
+            if (!sidebar) return;
+            if (sidebar.contains(e.target)) return;
+            if (e.target.closest && e.target.closest('[data-admin-menu-toggle]')) return;
+            setSidebar(false);
+        });
+    }
+
+    document.querySelectorAll('[data-language-toggle]').forEach(function (languageToggle) {
+        languageToggle.addEventListener('click', function () {
+            applyAppLanguage(appLanguage === 'en' ? 'sw' : 'en');
+        });
     });
-}
 
-const adminShell = document.querySelector('.admin-shell');
-const adminToggles = document.querySelectorAll('[data-admin-menu-toggle]');
-if (adminShell && adminToggles.length > 0) {
-    const backdrop = document.createElement('div');
-    backdrop.className = 'admin-sidebar-backdrop';
-    document.body.appendChild(backdrop);
-
-    const toggleSidebar = () => {
-        const isOpen = adminShell.classList.toggle('sidebar-open');
-        adminToggles.forEach(t => t.setAttribute('aria-expanded', String(isOpen)));
-    };
-
-    adminToggles.forEach(btn => btn.addEventListener('click', toggleSidebar));
-    backdrop.addEventListener('click', toggleSidebar);
-}
-
-document.querySelectorAll('[data-language-toggle]').forEach(function (languageToggle) {
-    languageToggle.addEventListener('click', function () {
-        applyAppLanguage(appLanguage === 'en' ? 'sw' : 'en');
+    document.querySelectorAll('[data-theme-toggle]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('app_theme', 'light');
+                document.querySelectorAll('[data-theme-toggle]').forEach(b => b.textContent = '🌙');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('app_theme', 'dark');
+                document.querySelectorAll('[data-theme-toggle]').forEach(b => b.textContent = '☀️');
+            }
+        });
+        btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
     });
-});
 
-const flashToast = document.querySelector('[data-flash-toast]');
-if (flashToast) {
-    window.setTimeout(function () {
-        flashToast.classList.add('flash-toast-hide');
+    const flashToast = document.querySelector('[data-flash-toast]');
+    if (flashToast) {
         window.setTimeout(function () {
-            flashToast.remove();
-        }, 260);
-    }, 2000);
-}
+            flashToast.classList.add('flash-toast-hide');
+            window.setTimeout(function () {
+                flashToast.remove();
+            }, 260);
+        }, 2000);
+    }
+});
 
 applyAppLanguage(appLanguage);
 </script>
