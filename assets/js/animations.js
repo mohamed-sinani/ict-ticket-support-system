@@ -263,25 +263,6 @@
         document.head.appendChild(style);
     }
 
-    function initCardTilt() {
-        var cards = qsa('.stat, .panel-card, .auth-card, .track-card');
-        cards.forEach(function (card) {
-            card.addEventListener('mousemove', function (e) {
-                var rect = this.getBoundingClientRect();
-                var x = e.clientX - rect.left;
-                var y = e.clientY - rect.top;
-                var centerX = rect.width / 2;
-                var centerY = rect.height / 2;
-                var rotateX = ((y - centerY) / centerY) * -3;
-                var rotateY = ((x - centerX) / centerX) * 3;
-                this.style.transform = 'perspective(600px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-3px)';
-            });
-            card.addEventListener('mouseleave', function () {
-                this.style.transform = '';
-            });
-        });
-    }
-
     function initLoadingState() {
         var style = document.createElement('style');
         style.textContent =
@@ -498,7 +479,6 @@
         initSidebarHover();
         initTableHighlight();
         initSelectAnimation();
-        initCardTilt();
         initLoadingState();
         initAlertFade();
         initDeptPulse();
