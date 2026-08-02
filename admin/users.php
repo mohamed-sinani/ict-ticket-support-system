@@ -120,6 +120,59 @@ require_once __DIR__ . '/_nav.php';
     </div>
 </div>
 
+<?php
+$pendingApprovals = 0;
+$admins = 0;
+$employees = 0;
+foreach ($users as $u) {
+    if (($u['approval_status'] ?? 'approved') === 'pending') { $pendingApprovals++; }
+    if ($u['role'] === 'admin') { $admins++; }
+    if ($u['role'] === 'employee') { $employees++; }
+}
+?>
+<div class="db-stats-grid">
+    <a class="db-stat-card c-blue" href="users" style="text-decoration:none;">
+        <div class="db-stat-top">
+            <div class="db-stat-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <span class="db-period-badge alltime" data-i18n="admin_total_users">Total Users</span>
+        </div>
+        <div class="db-stat-value"><?= count($users) ?></div>
+        <div class="db-stat-label" data-i18n="admin_total_users">Total Users</div>
+    </a>
+    <a class="db-stat-card c-amber" href="approvals" style="text-decoration:none;">
+        <div class="db-stat-top">
+            <div class="db-stat-icon amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <span class="db-period-badge open" data-i18n="admin_pending_approvals">Pending</span>
+        </div>
+        <div class="db-stat-value"><?= $pendingApprovals ?></div>
+        <div class="db-stat-label" data-i18n="admin_pending_approvals">Pending Approvals</div>
+    </a>
+    <div class="db-stat-card c-violet">
+        <div class="db-stat-top">
+            <div class="db-stat-icon purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </div>
+            <span class="db-period-badge alltime" data-i18n="admin_administrators">Admins</span>
+        </div>
+        <div class="db-stat-value"><?= $admins ?></div>
+        <div class="db-stat-label" data-i18n="admin_administrators">Administrators</div>
+    </div>
+    <div class="db-stat-card c-green">
+        <div class="db-stat-top">
+            <div class="db-stat-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <span class="db-period-badge alltime" data-i18n="admin_employees">Employees</span>
+        </div>
+        <div class="db-stat-value"><?= $employees ?></div>
+        <div class="db-stat-label" data-i18n="admin_employees">Employees</div>
+    </div>
+</div>
+
 <?php if ($editUser): ?>
 <section class="db-panel" id="userForm" style="margin-bottom:20px;">
     <div class="db-panel-header">
@@ -133,7 +186,7 @@ require_once __DIR__ . '/_nav.php';
             </div>
         </div>
         <?php if ($editUser): ?>
-            <a class="db-view-btn" href="users.php" data-i18n="admin_cancel_edit">
+            <a class="db-view-btn" href="users" data-i18n="admin_cancel_edit">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 Cancel Edit
             </a>
@@ -170,7 +223,7 @@ require_once __DIR__ . '/_nav.php';
             <div class="db-form-actions">
                 <button class="btn btn-primary" type="submit"><?= $editUser ? 'Save Changes' : 'Create User' ?></button>
                 <?php if ($editUser): ?>
-                    <a class="btn btn-secondary" href="users.php">Cancel Edit</a>
+                    <a class="btn btn-secondary" href="users">Cancel Edit</a>
                 <?php endif; ?>
             </div>
         </form>
@@ -336,32 +389,51 @@ document.addEventListener('DOMContentLoaded', function () {
                     <tr>
                         <th data-i18n="common_name">Name</th>
                         <th data-i18n="common_role">Role</th>
+                        <th data-i18n="common_approval">Approval</th>
                         <th data-i18n="admin_employee_no">Employee No.</th>
                         <th data-i18n="common_email">Email</th>
-                        <th data-i18n="common_phone">Phone</th>
-                        <th data-i18n="common_job_title">Job Title</th>
                         <th data-i18n="common_department">Department</th>
+                        <th data-i18n="common_registered">Registered</th>
                         <th data-i18n="common_action">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($users as $u): ?>
+                        <?php
+                        $nameParts = preg_split('/\s+/', trim((string) $u['full_name']));
+                        $firstPart = $nameParts[0] ?? '';
+                        $lastPart = count($nameParts) > 1 ? end($nameParts) : '';
+                        $initials = mb_strtoupper(mb_substr($firstPart, 0, 1) . mb_substr($lastPart !== '' && $lastPart !== $firstPart ? $lastPart : '', 0, 1));
+                        if ($initials === '') { $initials = '?'; }
+                        $apStatus = $u['approval_status'] ?? 'approved';
+                        $apClass = $apStatus === 'approved' ? 'resolved' : ($apStatus === 'pending' ? 'pending' : 'rejected');
+                        $apLabel = $apStatus === 'approved' ? 'Approved' : ($apStatus === 'pending' ? 'Pending' : 'Rejected');
+                        ?>
                         <tr>
-                            <td><?= e($u['full_name']) ?></td>
+                            <td>
+                                <div class="db-user-cell">
+                                    <span class="db-t-avatar"><?= e($initials) ?></span>
+                                    <span class="db-t-name"><?= e($u['full_name']) ?></span>
+                                </div>
+                            </td>
                             <td><span class="db-role-pill <?= e(strtolower((string) $u['role'])) ?>"><?= e($u['role']) ?></span></td>
+                            <td><span class="db-status-pill <?= $apClass ?>"><?= $apLabel ?></span></td>
                             <td><span class="db-mono"><?= e((string) $u['employee_number']) ?></span></td>
                             <td><?= e($u['email']) ?></td>
-                            <td><?= e((string) $u['phone']) ?></td>
-                            <td><?= e((string) $u['job_title']) ?></td>
                             <td><?= e((string) $u['department_name']) ?></td>
+                            <td><span class="db-mono"><?= $u['created_at'] ? date('d M Y', strtotime($u['created_at'])) : '—' ?></span></td>
                             <td>
                                 <div class="table-actions">
-                                    <a class="btn btn-secondary btn-sm" href="users.php?edit=<?= (int) $u['id'] ?>">Edit</a>
+                                    <a class="btn btn-icon" href="users?edit=<?= (int) $u['id'] ?>" title="Edit" aria-label="Edit user">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                    </a>
                                     <form method="POST" onsubmit="return confirm(window.appI18n ? window.appI18n.t('confirm_delete_user', 'Delete user?') : 'Delete user?')">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
-                                    <button type="submit" class="btn btn-danger btn-sm" data-i18n="common_delete">Delete</button>
+                                    <button type="submit" class="btn btn-icon danger" title="Delete" aria-label="Delete user">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    </button>
                                     </form>
                                 </div>
                             </td>

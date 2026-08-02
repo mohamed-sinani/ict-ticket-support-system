@@ -432,6 +432,7 @@
 }
 .db-ticket-item:last-child { border-bottom: none; }
 .db-ticket-item:hover { background: var(--bg); }
+.db-user-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .db-t-avatar {
     width: 36px;
     height: 36px;
@@ -694,6 +695,8 @@
 .db-status-pill.inprogress { background: rgba(139, 92, 246, 0.1); color: #6d28d9; border-color: rgba(139, 92, 246, 0.2); }
 .db-status-pill.resolved { background: rgba(34, 197, 94, 0.1); color: #166534; border-color: rgba(34, 197, 94, 0.22); }
 .db-status-pill.closed { background: rgba(100, 116, 139, 0.12); color: #475569; border-color: rgba(100, 116, 139, 0.22); }
+.db-status-pill.rejected { background: rgba(239, 68, 68, 0.1); color: #b91c1c; border-color: rgba(239, 68, 68, 0.25); }
+.db-status-pill.pending { background: rgba(245, 158, 11, 0.1); color: #b45309; border-color: rgba(245, 158, 11, 0.25); }
 
 .db-prio-pill {
     display: inline-flex;
