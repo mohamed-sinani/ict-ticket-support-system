@@ -185,35 +185,59 @@ require_once __DIR__ . '/_nav.php';
             <button type="button" class="modal-close" data-close-user-modal aria-label="Close">&times;</button>
         </div>
         <p class="modal-desc">Register a new account for the institution</p>
+        <div class="wizard-steps">
+            <div class="wizard-step active" data-step="1">
+                <span class="wizard-dot">1</span>
+                <span class="wizard-label" data-i18n="modal_step_personal">Personal Info</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step" data-step="2">
+                <span class="wizard-dot">2</span>
+                <span class="wizard-label" data-i18n="modal_step_work">Work Info</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step" data-step="3">
+                <span class="wizard-dot">3</span>
+                <span class="wizard-label" data-i18n="modal_step_password">Password</span>
+            </div>
+        </div>
         <form method="POST" id="addUserForm" class="db-form-grid">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="create">
-            <label><span data-i18n="common_full_name">Full Name</span><input type="text" name="full_name" required></label>
-            <label><span data-i18n="common_employee_number">Employee Number</span><input type="text" name="employee_number"></label>
-            <label><span data-i18n="common_phone_number">Phone Number</span><input type="text" name="phone"></label>
-            <label><span data-i18n="common_email">Email</span><input type="email" name="email" required></label>
-            <label><span data-i18n="common_job_title">Job Title</span><input type="text" name="job_title"></label>
-            <label><span data-i18n="common_department">Department</span>
-                <select name="department_id">
-                    <option value="" data-i18n="report_department_placeholder">Select Department</option>
-                    <?php foreach ($departments as $dept): ?>
-                        <option value="<?= (int) $dept['id'] ?>"><?= e($dept['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </label>
-            <label><span data-i18n="common_role">Role</span>
-                <select name="role" required>
-                    <option value="employee" data-i18n="common_role_employee">Employee</option>
-                    <option value="ict" data-i18n="common_role_ict">ICT Staff</option>
-                    <option value="admin" data-i18n="common_role_admin">Admin</option>
-                </select>
-            </label>
-            <label class="full"><span data-i18n="admin_password_label">Password</span>
-                <input type="password" name="password" required placeholder="Required for new users">
-            </label>
-            <div class="db-form-actions full">
+            <div class="wizard-panel" data-panel="1">
+                <label><span data-i18n="common_full_name">Full Name</span><input type="text" name="full_name" required></label>
+                <label><span data-i18n="common_employee_number">Employee Number</span><input type="text" name="employee_number"></label>
+                <label><span data-i18n="common_phone_number">Phone Number</span><input type="text" name="phone"></label>
+                <label><span data-i18n="common_email">Email</span><input type="email" name="email" required></label>
+            </div>
+            <div class="wizard-panel" data-panel="2" hidden>
+                <label><span data-i18n="common_job_title">Job Title</span><input type="text" name="job_title"></label>
+                <label><span data-i18n="common_department">Department</span>
+                    <select name="department_id">
+                        <option value="" data-i18n="report_department_placeholder">Select Department</option>
+                        <?php foreach ($departments as $dept): ?>
+                            <option value="<?= (int) $dept['id'] ?>"><?= e($dept['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label><span data-i18n="common_role">Role</span>
+                    <select name="role" required>
+                        <option value="employee" data-i18n="common_role_employee">Employee</option>
+                        <option value="ict" data-i18n="common_role_ict">ICT Staff</option>
+                        <option value="admin" data-i18n="common_role_admin">Admin</option>
+                    </select>
+                </label>
+            </div>
+            <div class="wizard-panel" data-panel="3" hidden>
+                <label class="full"><span data-i18n="admin_password_label">Password</span>
+                    <input type="password" name="password" required placeholder="Required for new users">
+                </label>
+            </div>
+            <div class="db-form-actions full wizard-actions">
                 <button type="button" class="btn btn-secondary" data-close-user-modal data-i18n="common_cancel">Cancel</button>
-                <button type="submit" class="btn btn-primary" data-i18n="common_add">Add</button>
+                <button type="button" class="btn btn-secondary" data-wizard-prev data-i18n="common_back">Back</button>
+                <button type="button" class="btn btn-primary" data-wizard-next data-i18n="common_next">Next</button>
+                <button type="submit" class="btn btn-primary" data-wizard-submit data-i18n="common_add">Add</button>
             </div>
         </form>
     </div>
@@ -224,8 +248,49 @@ document.addEventListener('DOMContentLoaded', function () {
     var addUserForm = document.getElementById('addUserForm');
     if (!addUserModal || !addUserForm) return;
 
+    var wizardPanels = addUserForm.querySelectorAll('.wizard-panel');
+    var wizardSteps = addUserModal.querySelectorAll('.wizard-step');
+    var wizardLines = addUserModal.querySelectorAll('.wizard-line');
+    var btnPrev = addUserForm.querySelector('[data-wizard-prev]');
+    var btnNext = addUserForm.querySelector('[data-wizard-next]');
+    var btnSubmit = addUserForm.querySelector('[data-wizard-submit]');
+    var currentStep = 1;
+    var totalSteps = wizardPanels.length;
+
+    function showStep(step) {
+        currentStep = Math.min(Math.max(1, step), totalSteps);
+        wizardPanels.forEach(function (panel, i) {
+            panel.hidden = (i + 1) !== currentStep;
+        });
+        wizardSteps.forEach(function (el, i) {
+            var n = i + 1;
+            el.classList.toggle('active', n === currentStep);
+            el.classList.toggle('done', n < currentStep);
+        });
+        wizardLines.forEach(function (line, i) {
+            line.classList.toggle('done', i < currentStep - 1);
+        });
+        btnPrev.style.display = currentStep === 1 ? 'none' : '';
+        btnNext.style.display = currentStep === totalSteps ? 'none' : '';
+        btnSubmit.style.display = currentStep === totalSteps ? '' : 'none';
+        var focusEl = wizardPanels[currentStep - 1].querySelector('input, select');
+        if (focusEl) focusEl.focus();
+    }
+
+    btnNext.addEventListener('click', function () {
+        if (addUserForm.checkValidity()) {
+            showStep(currentStep + 1);
+        } else {
+            addUserForm.reportValidity();
+        }
+    });
+    btnPrev.addEventListener('click', function () {
+        showStep(currentStep - 1);
+    });
+
     function openAddUserModal() {
         addUserForm.reset();
+        showStep(1);
         addUserModal.classList.remove('hidden');
         addUserModal.setAttribute('aria-hidden', 'false');
         var first = addUserForm.querySelector('input[name="full_name"]');
