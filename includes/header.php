@@ -20,7 +20,7 @@ if (isset($forcePanel) && $forcePanel) {
 }
 
 $isSubDir = $isAdminDir || $isStaffDir || $isEmployeeDir;
-$baseUrl = $isSubDir ? '../' : '';
+$baseUrl = (BASE_URL === '' ? '/' : rtrim(BASE_URL, '/') . '/');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +53,7 @@ $baseUrl = $isSubDir ? '../' : '';
 <header class="topbar">
     <div class="container nav-wrap">
 
-        <a href="<?= $baseUrl ?>index.php" class="brand">
+        <a href="<?= $baseUrl ?>" class="brand">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
             <span class="brand-text">ICT Support</span>
         </a>
@@ -68,23 +68,23 @@ $baseUrl = $isSubDir ? '../' : '';
             <?php if ($user): ?>
                 <span class="nav-user"><?= e($user['full_name']) ?> &mdash; <?= strtoupper(e($user['role'])) ?></span>
                 <?php if ($user['role'] === 'admin'): ?>
-                    <a href="<?= $baseUrl ?>admin/dashboard.php" data-i18n="nav_dashboard">Dashboard</a>
-                    <a href="<?= $baseUrl ?>admin/settings.php" data-i18n="subnav_settings">Settings</a>
+                    <a href="<?= $baseUrl ?>admin/dashboard" data-i18n="nav_dashboard">Dashboard</a>
+                    <a href="<?= $baseUrl ?>admin/settings" data-i18n="subnav_settings">Settings</a>
                 <?php elseif ($user['role'] === 'ict'): ?>
-                    <a href="<?= $baseUrl ?>staff/dashboard.php" data-i18n="nav_my_panel">My Panel</a>
-                    <a href="<?= $baseUrl ?>staff/my_tickets.php" data-i18n="subnav_tickets_reported">Tickets Reported</a>
-                    <a href="<?= $baseUrl ?>staff/settings.php" data-i18n="subnav_settings">Settings</a>
+                    <a href="<?= $baseUrl ?>staff/dashboard" data-i18n="nav_my_panel">My Panel</a>
+                    <a href="<?= $baseUrl ?>staff/my_tickets" data-i18n="subnav_tickets_reported">Tickets Reported</a>
+                    <a href="<?= $baseUrl ?>staff/settings" data-i18n="subnav_settings">Settings</a>
                 <?php else: ?>
-                    <a href="<?= $baseUrl ?>employee/dashboard.php" data-i18n="nav_dashboard">Dashboard</a>
-                    <a href="<?= $baseUrl ?>report.php" data-i18n="nav_report_issue">Report Issue</a>
-                    <a href="<?= $baseUrl ?>employee/my_tickets.php" data-i18n="subnav_my_tickets">My Tickets</a>
-                    <a href="<?= $baseUrl ?>employee/settings.php" data-i18n="subnav_settings">Settings</a>
+                    <a href="<?= $baseUrl ?>employee/dashboard" data-i18n="nav_dashboard">Dashboard</a>
+                    <a href="<?= $baseUrl ?>report" data-i18n="nav_report_issue">Report Issue</a>
+                    <a href="<?= $baseUrl ?>employee/my_tickets" data-i18n="subnav_my_tickets">My Tickets</a>
+                    <a href="<?= $baseUrl ?>employee/settings" data-i18n="subnav_settings">Settings</a>
                 <?php endif; ?>
-                <a class="btn btn-secondary btn-link" href="<?= $baseUrl ?>logout.php" data-i18n="nav_logout">Logout</a>
+                <a class="btn btn-secondary btn-link" href="<?= $baseUrl ?>logout" data-i18n="nav_logout">Logout</a>
             <?php else: ?>
-                <a href="<?= $baseUrl ?>report.php" target="_self" data-i18n="nav_report_issue">Report Issue</a>
-                <a href="<?= $baseUrl ?>track.php" data-i18n="nav_check_status">Check Status</a>
-                <a class="btn btn-primary btn-link" href="<?= $baseUrl ?>login.php" target="_self" data-i18n="nav_login">Login</a>
+                <a href="<?= $baseUrl ?>report" target="_self" data-i18n="nav_report_issue">Report Issue</a>
+                <a href="<?= $baseUrl ?>track" data-i18n="nav_check_status">Check Status</a>
+                <a class="btn btn-primary btn-link" href="<?= $baseUrl ?>login" target="_self" data-i18n="nav_login">Login</a>
             <?php endif; ?>
             <button type="button" id="languageToggle" class="admin-icon-btn admin-lang-btn" aria-label="Switch language" data-language-toggle>
                 <svg class="admin-lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
@@ -183,10 +183,18 @@ const appTranslations = {
         track_result_no_updates: 'No updates yet.',
         report_title: 'Report ICT Issue',
         report_intro: 'Complete all required steps. Invalid employee numbers are blocked automatically.',
-        report_stepper_1: '1. Verify',
-        report_stepper_2: '2. Issue Details',
-        report_stepper_3: '3. Evidence',
-        report_stepper_4: '4. Submit',
+        report_stepper_1: 'Verify',
+        report_stepper_2: 'Issue Details',
+        report_stepper_3: 'Evidence',
+        report_stepper_4: 'Submit',
+        report_stepper_5: 'Submitted',
+        report_side_title: 'How it works',
+        report_side_step1: 'Verify your identity with your employee number.',
+        report_side_step2: 'Select your department and describe the issue.',
+        report_side_step3: 'Attach a photo or screenshot as evidence.',
+        report_side_step4: 'Submit and keep your tracking code to check status.',
+        report_side_help_title: 'Need assistance?',
+        report_side_help_text: 'Our ICT support team is ready to help you.',
         report_s1_title: 'Step 1: Employee Verification',
         report_s1_desc: 'Category: Identity and access validation.',
         report_employee_label: 'Employee Number / Badge ID',
@@ -234,6 +242,29 @@ const appTranslations = {
         admin_edit_department: 'Edit Department',
         admin_edit_user: 'Edit User',
         staff_edit_employee: 'Edit Employee',
+        common_reason: 'Reason',
+        common_registered: 'Registered',
+        subnav_approvals: 'Approvals',
+        admin_approvals_title: 'Account Approvals',
+        admin_approvals_subtitle: 'Review and approve employee registrations before they can access the system.',
+        admin_approvals_pending: 'Pending Registrations',
+        admin_approve: 'Approve',
+        admin_reject: 'Reject',
+        admin_reject_reason: 'Reason for rejection',
+        admin_approvals_none: 'No pending registrations',
+        admin_approvals_none_sub: 'New employee accounts will appear here for review.',
+        admin_approvals_recent: 'Recently Reviewed',
+        admin_approvals_no_reviewed: 'No accounts have been reviewed yet.',
+        waiting_title: 'Account Awaiting Approval',
+        waiting_intro: 'Your registration has been received and is waiting for review by the administrator.',
+        waiting_notice: 'You will be able to log in as soon as your account is approved.',
+        waiting_notice_sub: 'An email will be sent to you once the administrator approves or rejects your request.',
+        waiting_support: 'If you believe this is taking too long, please contact the ICT support team: 0763364721',
+        waiting_login_link: 'Try Login Again',
+        nav_home: 'Home',
+        thank_you_pending_title: 'Registration Received',
+        thank_you_pending_intro: 'Your registration has been submitted and is now awaiting administrator approval.',
+        thank_you_pending_hint: 'Once approved, you will receive an email with your login details and can start submitting tickets.',
         common_updated: 'Updated',
         common_all_tickets: 'All Issues',
         common_no_tickets: 'No tickets yet',
@@ -286,6 +317,11 @@ const appTranslations = {
         admin_cancel_edit: 'Cancel Edit',
         admin_all_users: 'All Users',
         admin_employee_no: 'Employee No.',
+        admin_total_users: 'Total Users',
+        admin_pending_approvals: 'Pending Approvals',
+        admin_administrators: 'Administrators',
+        admin_employees: 'Employees',
+        common_approval: 'Approval',
         staff_dashboard_title: 'ICT Staff Dashboard',
         staff_assigned_tickets: 'Assigned Tickets',
         staff_pending_tickets: 'Pending Tickets',
@@ -450,10 +486,18 @@ const appTranslations = {
         track_result_no_updates: 'Bado hakuna masasisho.',
         report_title: 'Ripoti Tatizo la ICT',
         report_intro: 'Kamilisha hatua zote muhimu. Namba zisizo sahihi za mfanyakazi zitazuiwa kiotomatiki.',
-        report_stepper_1: '1. Hakiki',
-        report_stepper_2: '2. Maelezo ya Tatizo',
-        report_stepper_3: '3. Ushahidi',
-        report_stepper_4: '4. Tuma',
+        report_stepper_1: 'Hakiki',
+        report_stepper_2: 'Maelezo ya Tatizo',
+        report_stepper_3: 'Ushahidi',
+        report_stepper_4: 'Tuma',
+        report_stepper_5: 'Imetumwa',
+        report_side_title: 'Jinsi Inavyofanya Kazi',
+        report_side_step1: 'Thibitisha utambulisho wako kwa nambari yako ya mfanyakazi.',
+        report_side_step2: 'Chagua idara yako na ueleze tatizo.',
+        report_side_step3: 'Ambatanisha picha au skrini kama ushahidi.',
+        report_side_step4: 'Tuma na uhifadhi msimbo wako wa ufuatiliaji kuangalia hali.',
+        report_side_help_title: 'Unahitaji Usaidizi?',
+        report_side_help_text: 'Timu yetu ya usaidizi wa ICT iko tayari kukusaidia.',
         report_s1_title: 'Hatua ya 1: Uhakiki wa Mfanyakazi',
         report_s1_desc: 'Kategoria: Uthibitisho wa utambulisho na ruhusa.',
         report_employee_label: 'Namba ya Mfanyakazi / Kitambulisho',
@@ -501,6 +545,29 @@ const appTranslations = {
         admin_edit_department: 'Hariri Idara',
         admin_edit_user: 'Hariri Mtumiaji',
         staff_edit_employee: 'Hariri Mfanyakazi',
+        common_reason: 'Sababu',
+        common_registered: 'Alisajiliwa',
+        subnav_approvals: 'Idhini',
+        admin_approvals_title: 'Idhini za Akaunti',
+        admin_approvals_subtitle: 'Kagua na uidhinishe usajili wa wafanyakazi kabla ya kufikia mfumo.',
+        admin_approvals_pending: 'Usajili Unaosubiri',
+        admin_approve: 'Idhinisha',
+        admin_reject: 'Kataa',
+        admin_reject_reason: 'Sababu ya kukataa',
+        admin_approvals_none: 'Hakuna usajili unaosubiri',
+        admin_approvals_none_sub: 'Akaunti mpya za wafanyakazi zitaonekana hapa kwa ukaguzi.',
+        admin_approvals_recent: 'Zilizokaguliwa Hivi Karibuni',
+        admin_approvals_no_reviewed: 'Hakuna akaunti zilizokaguliwa bado.',
+        waiting_title: 'Akaunti Inasubiri Idhini',
+        waiting_intro: 'Usajili wako umepokelewa na unasubiri ukaguzi wa msimamizi.',
+        waiting_notice: 'Utaweza kuingia mara tu akaunti yako itakapoidhinishwa.',
+        waiting_notice_sub: 'Barua pepe itatumwa kwako mara tu msimamizi atakapoidhinisha au kukataa ombi lako.',
+        waiting_support: 'Ikiwa unafikiri hii inachukua muda mrefu, tafadhali wasiliana na timu ya usaidizi wa ICT: 0763364721',
+        waiting_login_link: 'Jaribu Kuingia Tena',
+        nav_home: 'Nyumbani',
+        thank_you_pending_title: 'Usajili Umepokelewa',
+        thank_you_pending_intro: 'Usajili wako umewasilishwa na sasa unasubiri idhini ya msimamizi.',
+        thank_you_pending_hint: 'Mara tu utakapoidhinishwa, utapokea barua pepe na utaweza kuanza kuwasilisha tiketi.',
         common_updated: 'Imesasishwa',
         common_all_tickets: 'Masuala Yote',
         common_no_tickets: 'Hakuna tiketi bado',
@@ -553,6 +620,11 @@ const appTranslations = {
         admin_cancel_edit: 'Ghairi Uhariri',
         admin_all_users: 'Watumiaji Wote',
         admin_employee_no: 'Na. ya Mfanyakazi',
+        admin_total_users: 'Jumla ya Watumiaji',
+        admin_pending_approvals: 'Idhini Zinazosubiri',
+        admin_administrators: 'Wasimamizi',
+        admin_employees: 'Wafanyakazi',
+        common_approval: 'Idhini',
         staff_dashboard_title: 'Dashibodi ya Wafanyakazi wa ICT',
         staff_assigned_tickets: 'Tiketi Zilizopangiwa',
         staff_pending_tickets: 'Tiketi Zinazosubiri',

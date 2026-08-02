@@ -965,7 +965,8 @@ main {
     flex-shrink: 0;
 }
 
-button.btn-icon {
+button.btn-icon,
+a.btn-icon {
     width: 38px;
     height: 38px;
     min-height: 38px;
@@ -985,24 +986,30 @@ button.btn-icon {
     position: static;
 }
 
-button.btn-icon svg {
+button.btn-icon svg,
+a.btn-icon svg {
     width: 17px;
     height: 17px;
 }
 
-button.btn-icon::before {
+button.btn-icon::before,
+a.btn-icon::before {
     display: none;
 }
 
 button.btn-icon:hover,
-button.btn-icon:focus-visible {
+button.btn-icon:focus-visible,
+a.btn-icon:hover,
+a.btn-icon:focus-visible {
     color: var(--accent);
     border-color: rgba(48, 156, 197, 0.4);
     background: rgba(48, 156, 197, 0.06);
 }
 
 button.btn-icon.danger:hover,
-button.btn-icon.danger:focus-visible {
+button.btn-icon.danger:focus-visible,
+a.btn-icon.danger:hover,
+a.btn-icon.danger:focus-visible {
     color: #dc2626;
     border-color: rgba(239, 68, 68, 0.35);
     background: rgba(239, 68, 68, 0.06);
@@ -2003,6 +2010,226 @@ button.btn-icon.danger:focus-visible {
     overflow-wrap: anywhere;
 }
 
+.report-page {
+    width: 100%;
+}
+
+body:not(.admin-app-page) .report-page {
+    padding: 2.5rem 0 3rem;
+}
+
+.report-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+body:not(.admin-app-page) .report-layout {
+    grid-template-columns: 280px 1fr;
+}
+
+.report-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: 1rem;
+}
+
+.report-side-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.15rem 1.2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.report-side-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.9rem;
+}
+
+.report-side-head svg {
+    width: 18px;
+    height: 18px;
+    color: var(--primary);
+    flex: 0 0 auto;
+}
+
+.report-side-head h3 {
+    margin: 0;
+    font-size: 0.98rem;
+    color: var(--text-main);
+}
+
+.report-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.report-steps li {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+}
+
+.report-step-num {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(48, 156, 197, 0.1);
+    color: var(--primary);
+    font-size: 0.78rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
+
+.report-steps p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.report-side-support {
+    background: linear-gradient(180deg, rgba(48, 156, 197, 0.06), transparent);
+}
+
+.report-side-support .small-text {
+    margin: 0 0 0.9rem;
+    text-align: left;
+}
+
+.report-side-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: rgba(48, 156, 197, 0.1);
+    color: var(--primary);
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.report-side-phone:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+.report-side-phone svg {
+    width: 16px;
+    height: 16px;
+}
+
+body:not(.admin-app-page) .report-wizard {
+    max-width: 620px;
+    margin: 0;
+}
+
+.wizard-wrap .stepper {
+    gap: 0;
+    position: relative;
+    margin: 1.15rem 0 1.6rem;
+}
+
+.wizard-wrap .stepper::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 14%;
+    right: 14%;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+}
+
+.wizard-wrap .stepper .step {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+    box-shadow: none;
+}
+
+.wizard-wrap .stepper .step::before {
+    content: attr(data-num);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    font-weight: 800;
+    line-height: 1;
+    transition: var(--transition);
+}
+
+.wizard-wrap .stepper .step.active {
+    color: var(--accent);
+    box-shadow: none;
+}
+
+.wizard-wrap .stepper .step.active::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(48, 156, 197, 0.32);
+}
+
+@media (max-width: 880px) {
+    body:not(.admin-app-page) .report-page {
+        padding: 1.5rem 0 2rem;
+    }
+
+    .report-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .report-side {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .report-side-card {
+        flex: 1 1 240px;
+    }
+
+    body:not(.admin-app-page) .report-wizard {
+        max-width: none;
+    }
+}
+
 .wizard-actions {
     display: flex;
     gap: 0.75rem;
@@ -2183,6 +2410,17 @@ button:disabled {
 
 .btn-danger:hover {
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background-color: #16a34a;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #15803d;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
     transform: translateY(-1px);
 }
 
@@ -2480,6 +2718,32 @@ tbody tr:hover {
     background: #f0fdf4;
     color: #166534;
     border: 1px solid #dcfce7;
+}
+
+.alert-waiting {
+    background: #f0f9ff;
+    color: #075985;
+    border: 1px solid #bae6fd;
+}
+
+.auth-status-icon {
+    width: 74px;
+    height: 74px;
+    margin: 0 auto 1rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-status-icon svg {
+    width: 38px;
+    height: 38px;
+}
+
+.auth-status-icon.pending {
+    background: linear-gradient(135deg, rgba(48, 156, 197, 0.14), rgba(48, 156, 197, 0.26));
+    color: #1d7aa3;
 }
 
 .flash-wrap {
