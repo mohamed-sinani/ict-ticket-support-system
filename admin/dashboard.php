@@ -452,8 +452,8 @@ require_once __DIR__ . '/_nav.php';
     const catCounts = <?= json_encode($catCounts) ?>;
 
     const palette = {
-        blue:    '#2563eb',
-        blueBg:  'rgba(37,99,235,0.10)',
+        blue:    '#309CC5',
+        blueBg:  'rgba(48,156,197,0.10)',
         amber:   '#f59e0b',
         green:   '#22c55e',
         violet:  '#8b5cf6',
@@ -516,9 +516,9 @@ require_once __DIR__ . '/_nav.php';
                     const {ctx: c, chartArea} = chart;
                     if (!chartArea) return palette.blueBg;
                     const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                    gradient.addColorStop(0, 'rgba(37,99,235,0.18)');
-                    gradient.addColorStop(0.6, 'rgba(37,99,235,0.04)');
-                    gradient.addColorStop(1, 'rgba(37,99,235,0)');
+                    gradient.addColorStop(0, 'rgba(48,156,197,0.18)');
+                    gradient.addColorStop(0.6, 'rgba(48,156,197,0.04)');
+                    gradient.addColorStop(1, 'rgba(48,156,197,0)');
                     return gradient;
                 },
                 tension: 0.4,

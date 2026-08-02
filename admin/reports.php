@@ -528,7 +528,7 @@ require_once __DIR__ . '/_nav.php';
     const statusCounts = <?= json_encode($statusCounts) ?>;
 
     const palette = {
-        blue:    '#2563eb',
+        blue:    '#309CC5',
         cyan:    '#06b6d4',
         violet:  '#8b5cf6',
         green:   '#22c55e',
@@ -557,11 +557,11 @@ require_once __DIR__ . '/_nav.php';
                     backgroundColor: function(context) {
                         const chart = context.chart;
                         const {ctx: c, chartArea} = chart;
-                        if (!chartArea) return 'rgba(37,99,235,0.10)';
+                        if (!chartArea) return 'rgba(48,156,197,0.10)';
                         const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-                        gradient.addColorStop(0, 'rgba(37,99,235,0.18)');
-                        gradient.addColorStop(0.6, 'rgba(37,99,235,0.04)');
-                        gradient.addColorStop(1, 'rgba(37,99,235,0)');
+                        gradient.addColorStop(0, 'rgba(48,156,197,0.18)');
+                        gradient.addColorStop(0.6, 'rgba(48,156,197,0.04)');
+                        gradient.addColorStop(1, 'rgba(48,156,197,0)');
                         return gradient;
                     },
                     tension: 0.4,

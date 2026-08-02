@@ -287,7 +287,7 @@ require_once __DIR__ . '/_nav.php';
                             <span class="db-tag db-tag-dept"><?= e($t['dept']) ?></span>
                             <span class="db-tag db-tag-cat"><?= e($t['cat']) ?></span>
                             <span class="db-tag db-tag-prio <?= in_array($t['priority'], ['High', 'Critical'], true) ? 'high' : '' ?>"><?= e($t['priority']) ?></span>
-                            <span class="db-tag db-tag-prio <?= $t['status'] === 'In Progress' ? 'high' : '' ?>" style="background:rgba(37,99,235,0.08);color:#2563eb;"><?= e($t['status']) ?></span>
+                            <span class="db-tag db-tag-prio <?= $t['status'] === 'In Progress' ? 'high' : '' ?>" style="background:rgba(48,156,197,0.08);color:#309CC5;"><?= e($t['status']) ?></span>
                         </div>
                     </div>
                     <span class="db-t-date"><?= e(date('M j, Y', strtotime($t['created_at']))) ?></span>
@@ -348,7 +348,7 @@ require_once __DIR__ . '/_nav.php';
     const labels = <?= json_encode($labels) ?>;
 
     const palette = {
-        blue:    '#2563eb',
+        blue:    '#309CC5',
         amber:   '#f59e0b',
         green:   '#22c55e',
         violet:  '#8b5cf6',

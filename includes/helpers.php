@@ -100,11 +100,11 @@ function buildTicketCreatedEmail(array $ticket): string
 
     return '<!doctype html>
 <html>
-<body style="margin:0;background:#eff6ff;font-family:Inter,Arial,sans-serif;color:#1e293b;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eff6ff;padding:28px 12px;">
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
         <tr>
             <td align="center">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #dbeafe;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d3f0f9;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
                     <tr>
                         <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
                             <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
@@ -115,7 +115,7 @@ function buildTicketCreatedEmail(array $ticket): string
                         <td style="padding:24px;">
                             <p style="margin:0 0 14px;">Hello ' . $employeeName . ',</p>
                             <p style="margin:0 0 18px;color:#475569;">Your ICT issue has been received. Keep this tracking code for follow-up.</p>
-                            <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:10px;padding:16px;text-align:center;margin:18px 0;">
+                            <div style="background:#d3f0f9;border:1px solid #7bc9e8;border-radius:10px;padding:16px;text-align:center;margin:18px 0;">
                                 <div style="font-size:12px;font-weight:800;color:#1e3a8a;text-transform:uppercase;letter-spacing:.04em;">Tracking Code</div>
                                 <div style="font-size:26px;font-weight:800;color:#0f2f61;letter-spacing:.04em;margin-top:4px;">' . $trackingCode . '</div>
                             </div>
@@ -124,7 +124,7 @@ function buildTicketCreatedEmail(array $ticket): string
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Department</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $department . '</td></tr>
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Issue</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $category . '</td></tr>
                             </table>
-                            <a href="' . $trackUrl . '" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Track Ticket</a>
+                            <a href="' . $trackUrl . '" style="display:inline-block;background:#309CC5;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Track Ticket</a>
                             <p style="margin:20px 0 0;color:#64748b;font-size:13px;">Use the tracking page in the support portal to view updates.</p>
                         </td>
                     </tr>
@@ -148,11 +148,11 @@ function buildTicketAdminAlertEmail(array $ticket): string
 
     return '<!doctype html>
 <html>
-<body style="margin:0;background:#eff6ff;font-family:Inter,Arial,sans-serif;color:#1e293b;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eff6ff;padding:28px 12px;">
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
         <tr>
             <td align="center">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #dbeafe;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d3f0f9;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
                     <tr>
                         <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
                             <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
@@ -163,7 +163,7 @@ function buildTicketAdminAlertEmail(array $ticket): string
                         <td style="padding:24px;">
                             <p style="margin:0 0 14px;">Hello Admin,</p>
                             <p style="margin:0 0 18px;color:#475569;">A new ICT issue has been submitted and is ready for assignment.</p>
-                            <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:10px;padding:16px;text-align:center;margin:18px 0;">
+                            <div style="background:#d3f0f9;border:1px solid #7bc9e8;border-radius:10px;padding:16px;text-align:center;margin:18px 0;">
                                 <div style="font-size:12px;font-weight:800;color:#1e3a8a;text-transform:uppercase;letter-spacing:.04em;">Tracking Code</div>
                                 <div style="font-size:26px;font-weight:800;color:#0f2f61;letter-spacing:.04em;margin-top:4px;">' . $trackingCode . '</div>
                             </div>
@@ -174,7 +174,7 @@ function buildTicketAdminAlertEmail(array $ticket): string
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Priority</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $priority . '</td></tr>
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Status</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $status . '</td></tr>
                             </table>
-                            <a href="' . $adminUrl . '" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Assign Ticket</a>
+                            <a href="' . $adminUrl . '" style="display:inline-block;background:#309CC5;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Assign Ticket</a>
                         </td>
                     </tr>
                 </table>
@@ -197,11 +197,11 @@ function buildTicketAssignmentEmail(array $ticket): string
 
     return '<!doctype html>
 <html>
-<body style="margin:0;background:#eff6ff;font-family:Inter,Arial,sans-serif;color:#1e293b;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eff6ff;padding:28px 12px;">
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
         <tr>
             <td align="center">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #dbeafe;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d3f0f9;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
                     <tr>
                         <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
                             <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
@@ -212,7 +212,7 @@ function buildTicketAssignmentEmail(array $ticket): string
                         <td style="padding:24px;">
                             <p style="margin:0 0 14px;">Hello ' . $staffName . ',</p>
                             <p style="margin:0 0 18px;color:#475569;">A ticket has been assigned to you by the admin team.</p>
-                            <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:10px;padding:16px;text-align:center;margin:18px 0;">
+                            <div style="background:#d3f0f9;border:1px solid #7bc9e8;border-radius:10px;padding:16px;text-align:center;margin:18px 0;">
                                 <div style="font-size:12px;font-weight:800;color:#1e3a8a;text-transform:uppercase;letter-spacing:.04em;">Tracking Code</div>
                                 <div style="font-size:26px;font-weight:800;color:#0f2f61;letter-spacing:.04em;margin-top:4px;">' . $trackingCode . '</div>
                             </div>
@@ -222,7 +222,7 @@ function buildTicketAssignmentEmail(array $ticket): string
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Issue</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $category . '</td></tr>
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Status</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $status . '</td></tr>
                             </table>
-                            <a href="' . $staffUrl . '" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Open Assigned Tickets</a>
+                            <a href="' . $staffUrl . '" style="display:inline-block;background:#309CC5;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Open Assigned Tickets</a>
                         </td>
                     </tr>
                 </table>
@@ -245,11 +245,11 @@ function buildTicketResolvedEmail(array $ticket): string
 
     return '<!doctype html>
 <html>
-<body style="margin:0;background:#eff6ff;font-family:Inter,Arial,sans-serif;color:#1e293b;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eff6ff;padding:28px 12px;">
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
         <tr>
             <td align="center">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #dbeafe;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d3f0f9;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
                     <tr>
                         <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
                             <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
@@ -269,9 +269,9 @@ function buildTicketResolvedEmail(array $ticket): string
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Department</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $department . '</td></tr>
                                 <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Issue</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $category . '</td></tr>
                             </table>
-                            <a href="' . $trackUrl . '" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">View Ticket</a>
+                            <a href="' . $trackUrl . '" style="display:inline-block;background:#309CC5;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">View Ticket</a>
                             <p style="margin:20px 0 0;color:#475569;font-size:13px;">If you still need help, reply to the ICT team with the tracking code.</p>
-                            ' . ($resolutionNote !== '' ? '<div style="margin-top:18px;padding:14px 16px;background:#f8fafc;border:1px solid #dbeafe;border-radius:10px;"><div style="font-size:12px;font-weight:800;color:#0f2f61;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Resolution Note</div><div style="color:#334155;line-height:1.55;">' . $resolutionNote . '</div></div>' : '') . '
+                            ' . ($resolutionNote !== '' ? '<div style="margin-top:18px;padding:14px 16px;background:#f8fafc;border:1px solid #d3f0f9;border-radius:10px;"><div style="font-size:12px;font-weight:800;color:#0f2f61;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Resolution Note</div><div style="color:#334155;line-height:1.55;">' . $resolutionNote . '</div></div>' : '') . '
                         </td>
                     </tr>
                 </table>
@@ -290,11 +290,11 @@ function buildOtpEmail(string $fullName, string $otpCode): string
 
     return '<!doctype html>
 <html>
-<body style="margin:0;background:#eff6ff;font-family:Inter,Arial,sans-serif;color:#1e293b;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#eff6ff;padding:28px 12px;">
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
         <tr>
             <td align="center">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #dbeafe;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d3f0f9;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
                     <tr>
                         <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
                             <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
@@ -305,7 +305,7 @@ function buildOtpEmail(string $fullName, string $otpCode): string
                         <td style="padding:24px;">
                             <p style="margin:0 0 14px;">Hello ' . $name . ',</p>
                             <p style="margin:0 0 18px;color:#475569;">Use the following one-time code to complete your login. This code expires in ' . $minutes . ' minutes.</p>
-                            <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:10px;padding:20px;text-align:center;margin:18px 0;">
+                            <div style="background:#d3f0f9;border:1px solid #7bc9e8;border-radius:10px;padding:20px;text-align:center;margin:18px 0;">
                                 <div style="font-size:12px;font-weight:800;color:#1e3a8a;text-transform:uppercase;letter-spacing:.08em;">Verification Code</div>
                                 <div style="font-size:36px;font-weight:800;color:#0f2f61;letter-spacing:.15em;margin-top:8px;">' . $code . '</div>
                             </div>
