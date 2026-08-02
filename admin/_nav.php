@@ -49,10 +49,45 @@ $adminModules = [
             </button>
             <div style="flex: 1;"></div>
             <div class="admin-topbar-actions">
-                <button type="button" class="admin-profile-icon" aria-label="Profile" title="<?= e($adminUser['full_name'] ?? 'Administrator') ?>">
-                    <?= e($avatarInitials) ?>
+                <div class="admin-profile-wrap" data-profile-menu>
+                    <button type="button" class="admin-profile-icon" aria-label="Profile" aria-haspopup="true" aria-expanded="false" title="<?= e($adminUser['full_name'] ?? 'Administrator') ?>">
+                        <svg class="admin-avatar-svg" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true">
+                            <defs>
+                                <radialGradient id="avh1" cx="35%" cy="30%" r="80%">
+                                    <stop offset="0%" stop-color="#e6f6fb"></stop>
+                                    <stop offset="100%" stop-color="#94a3b8"></stop>
+                                </radialGradient>
+                                <linearGradient id="avb1" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#7bc9e8"></stop>
+                                    <stop offset="100%" stop-color="#1d7aa3"></stop>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="32" cy="23" r="13" fill="url(#avh1)" stroke="rgba(15,23,42,0.15)" stroke-width="1.5"></circle>
+                            <path d="M9 58c0-13.5 10.5-22 23-22s23 8.5 23 22v6H9z" fill="url(#avb1)"></path>
+                        </svg>
+                    </button>
+                    <div class="admin-profile-menu hidden" role="menu" aria-label="Account menu">
+                        <div class="admin-profile-menu-head">
+                            <div class="admin-profile-menu-name"><?= e($adminUser['full_name'] ?? 'Administrator') ?></div>
+                            <div class="admin-profile-menu-role"><?= e(ucfirst((string) ($adminUser['role'] ?? ''))) ?></div>
+                        </div>
+                        <a href="<?= e($appRoot . '/admin/settings.php') ?>" class="admin-profile-menu-item" role="menuitem">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V22a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.05a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.05a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 15a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.05A1.7 1.7 0 0 0 19.4 15z"></path></svg>
+                            <span data-i18n="subnav_settings">Settings</span>
+                        </a>
+                        <a href="<?= e($appRoot . '/logout.php') ?>" class="admin-profile-menu-item danger" role="menuitem" data-i18n="nav_logout">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                <button type="button" class="admin-icon-btn admin-lang-btn" aria-label="Switch language" data-language-toggle>
+                    <svg class="admin-lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    <span class="admin-lang-code" data-lang-code>EN</span>
                 </button>
-                <button type="button" class="btn btn-secondary btn-link" aria-label="Switch language" data-language-toggle>SW</button>
-                <button type="button" class="btn btn-secondary btn-link" aria-label="Toggle dark mode" data-theme-toggle>🌙</button>
+                <button type="button" class="admin-icon-btn" aria-label="Toggle dark mode" data-theme-toggle>
+                    <svg data-theme-icon="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg data-theme-icon="sun" class="admin-icon-svg-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
             </div>
         </div>
