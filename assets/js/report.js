@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const localizedMessages = {
         en: {
             enter_employee_number: 'Please enter an employee number.',
-            verify_failed: 'Employee record not found.',
+            verify_failed: 'Employee badge is invalid. Please check again or contact ICT support team for help.',
+            employee_verified: 'Employee verified successfully.',
             submit_failed: 'Could not submit ticket. Please try again.',
             employee_preview: 'Employee: {employee} | Email: {email} | Department: {department}',
             employee_welcome: 'Welcome, {employee}',
@@ -28,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         sw: {
             enter_employee_number: 'Tafadhali ingiza nambari ya mfanyakazi.',
-            verify_failed: 'Taarifa za mfanyakazi hazijapatikana.',
+            verify_failed: 'Beji ya mfanyakazi si sahihi. Tafadhali angalia tena au wasiliana na timu ya msaada wa ICT.',
+            employee_verified: 'Mfanyakazi amethibitishwa kikamilifu.',
             submit_failed: 'Tiketi haikuweza kutumwa. Tafadhali jaribu tena.',
             employee_preview: 'Mfanyakazi: {employee} | Barua pepe: {email} | Idara: {department}',
             employee_welcome: 'Karibu, {employee}',
@@ -96,6 +98,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function showToast(message, type) {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container';
+            container.setAttribute('aria-live', 'polite');
+            document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        const isSuccess = type === 'success';
+        toast.className = 'toast ' + (isSuccess ? 'toast-success' : 'toast-error');
+        const icon = isSuccess
+            ? '<svg class="toast-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg>'
+            : '<svg class="toast-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M9 9l6 6M15 9l-6 6"></path></svg>';
+        toast.innerHTML = icon + '<span>' + escapeHtml(message) + '</span>';
+        container.appendChild(toast);
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                toast.classList.add('visible');
+            });
+        });
+        setTimeout(function () {
+            toast.classList.remove('visible');
+            setTimeout(function () { toast.remove(); }, 300);
+        }, 4500);
+    }
+
     async function verifyEmployee() {
         const empNum = document.getElementById('employeeNumber').value.trim();
         const errorBox = document.getElementById('verifyError');
@@ -113,6 +142,8 @@ document.addEventListener('DOMContentLoaded', function () {
         setBusy(verifyBtn, true, msg('verifying'));
         const body = new FormData();
         body.append('employee_number', empNum);
+        const csrf = wizardForm.querySelector('input[name="_csrf_token"]');
+        if (csrf) body.append('_csrf_token', csrf.value);
 
         try {
             const response = await fetch('api/verify_employee', { method: 'POST', body });
@@ -136,6 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             previewBox.classList.remove('hidden');
             errorBox.classList.add('hidden');
+            showToast(msg('employee_verified'), 'success');
             showStep(2);
         } catch (error) {
             employeeId.value = '';
@@ -146,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
             errorBox.textContent = error.message || msg('verify_failed');
             errorBox.classList.remove('hidden');
             previewBox.classList.add('hidden');
+            showToast(error.message || msg('verify_failed'), 'error');
         } finally {
             setBusy(verifyBtn, false);
         }
@@ -191,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 + '<p>' + escapeHtml(successText) + '</p>'
                 + '<div class="submit-success-code">' + escapeHtml(code) + '</div>'
                 + '</div>';
+            showToast(msg('ticket_success_title'), 'success');
             ticketSubmitted = true;
             showStep(5);
             document.querySelector('.wizard-wrap')?.classList.add('wizard-submitted');
@@ -203,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             resultBox.innerHTML = '<p class="alert alert-danger">' + (error.message || msg('submit_failed')) + '</p>';
+            showToast(error.message || msg('submit_failed'), 'error');
         } finally {
             if (!ticketSubmitted) {
                 setBusy(submitBtn, false);
@@ -218,6 +253,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const body = new FormData();
         body.append('category_id', categorySelect.value);
+        const csrf = wizardForm.querySelector('input[name="_csrf_token"]');
+        if (csrf) body.append('_csrf_token', csrf.value);
 
         try {
             const response = await fetch('api/get_subcategories', { method: 'POST', body });

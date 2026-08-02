@@ -25,6 +25,7 @@ if (isLoggedIn()) {
 
 ?>
 <section class="report-page">
+    <div class="report-layout">
     <?php if (!$forcePanel): ?>
     <aside class="report-side">
         <div class="report-side-card">
@@ -163,6 +164,7 @@ if (isLoggedIn()) {
             <div id="submitResult" class="preview-box hidden"></div>
         </section>
     </form>
+    </div>
 </div>
 </section>
 <script src="assets/js/report.js"></script>

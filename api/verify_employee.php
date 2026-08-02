@@ -29,7 +29,7 @@ $result = $stmt->get_result();
 $employee = $result->fetch_assoc();
 
 if (!$employee) {
-    echo json_encode(['success' => false, 'message' => 'Employee record not found.']);
+    echo json_encode(['success' => false, 'message' => 'Employee badge is invalid. Please check again or contact ICT support team for help.']);
     exit;
 }
 

@@ -12,8 +12,8 @@ function app_is_localhost(): bool
     $host = preg_replace('/:\d+$/', '', $host);
 
     return in_array($host, ['localhost', '127.0.0.1', '::1'], true)
-        || str_ends_with($host, '.local')
-        || str_ends_with($host, '.test');
+        || substr($host, -6) === '.local'
+        || substr($host, -5) === '.test';
 }
 
 function app_scheme(): string
@@ -40,7 +40,7 @@ function app_base_path(): string
         $docRoot = rtrim(str_replace('\\', '/', $docRoot), '/');
         $projectRoot = rtrim(str_replace('\\', '/', $projectRoot), '/');
 
-        if ($docRoot !== '' && str_starts_with($projectRoot, $docRoot)) {
+        if ($docRoot !== '' && strpos($projectRoot, $docRoot) === 0) {
             $basePath = substr($projectRoot, strlen($docRoot));
             $basePath = '/' . trim((string) $basePath, '/');
             $basePath = $basePath === '/' ? '' : $basePath;
