@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $selectedRole = $_POST['role'] ?? 'employee';
+    $rememberMe = ($_POST['remember_me'] ?? '') !== '';
     $failureReason = null;
 
     if (!verify_csrf()) {
@@ -50,6 +51,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $reason = trim((string) ($user['review_reason'] ?? ''));
                 unset($_SESSION['user']);
                 $error = 'Your account was not approved.' . ($reason !== '' ? ' Reason: ' . $reason : ' Please contact the ICT support team.');
+            } elseif ($rememberMe) {
+                // Remember-me login: skip OTP and keep the session for 7 days.
+                session_regenerate_id(true);
+                $_SESSION['remember_me'] = true;
+                setcookie('ict_remember', '1', [
+                    'expires' => time() + 7 * 86400,
+                    'path' => '/',
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]);
+                redirect($allowedNext !== '' ? $allowedNext : homePathForRole($user['role']));
+                exit;
             } else {
                 $otpCode = generateOtp($user['id']);
 
@@ -116,6 +129,10 @@ require_once __DIR__ . '/includes/header.php';
                     <span aria-hidden="true">👁</span>
                 </button>
             </span>
+        </label>
+        <label class="remember-me">
+            <input type="checkbox" name="remember_me" value="1">
+            <span data-i18n="login_remember_me">Remember me for 7 days</span>
         </label>
         <button type="submit" class="btn btn-primary" data-i18n="login_submit">Login</button>
     </form>

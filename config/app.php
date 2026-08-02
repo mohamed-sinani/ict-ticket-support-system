@@ -120,3 +120,29 @@ const TICKET_STATUSES = [
     STATUS_RESOLVED,
     STATUS_CLOSED,
 ];
+
+// Remember-me sessions last 7 days when the marker cookie is present or when
+// the login form requests it. This must run before any session_start().
+$rememberDays = 7;
+$rememberMarker = (string) ($_COOKIE['ict_remember'] ?? '');
+$requestRemember = ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && ($_POST['remember_me'] ?? '') !== '';
+$useRememberLifetime = $rememberMarker === '1' || $requestRemember;
+
+if ($useRememberLifetime) {
+    $rememberSeconds = $rememberDays * 86400;
+    session_set_cookie_params([
+        'lifetime' => $rememberSeconds,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    ini_set('session.gc_maxlifetime', (string) $rememberSeconds);
+} else {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    ini_set('session.gc_maxlifetime', '1440');
+}
