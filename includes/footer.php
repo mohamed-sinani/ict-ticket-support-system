@@ -174,5 +174,7 @@ if (document.readyState === 'loading') {
 
 <script src="<?= $baseUrl ?>assets/js/animations.js"></script>
 
+<script src="<?= $baseUrl ?>assets/js/ai-support.js?v=<?= filemtime(__DIR__ . '/../assets/js/ai-support.js') ?>"></script>
+
 </body>
 </html>

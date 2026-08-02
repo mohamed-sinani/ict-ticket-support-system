@@ -28,11 +28,13 @@ $baseUrl = (BASE_URL === '' ? '/' : rtrim(BASE_URL, '/') . '/');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle) ?></title>
+    <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/style.css">
     <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/dashboard.css?v=<?= filemtime(__DIR__ . '/../assets/css/dashboard.css') ?>">
+    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/ai-support.css?v=<?= filemtime(__DIR__ . '/../assets/css/ai-support.css') ?>">
     <?php
     if (!empty($user['id'])) {
         $userCssRel = 'assets/css/users/user_' . (int) $user['id'] . '.css';
