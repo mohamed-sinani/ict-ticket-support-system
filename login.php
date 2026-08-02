@@ -115,6 +115,9 @@ require_once __DIR__ . '/includes/header.php';
         <button type="submit" class="btn btn-primary" data-i18n="login_submit">Login</button>
     </form>
     <p class="small-text">
+        <a href="<?= $baseUrl ?>forgot_password" data-i18n="login_forgot_link">Forgot password?</a>
+    </p>
+    <p class="small-text">
         <span data-i18n="login_register_prompt">New employee?</span>
         <a href="<?= $baseUrl ?>register<?php echo $allowedNext !== '' ? '?next=' . e($allowedNext) : '' ?>" data-i18n="login_register_link">Register with your badge</a>
     </p>

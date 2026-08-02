@@ -130,6 +130,80 @@ function verifyOtp(int $userId, string $code): ?string
     return null;
 }
 
+function createPasswordReset(int $userId): string
+{
+    $conn = db();
+
+    $sql = 'UPDATE password_resets SET used = 1 WHERE user_id = ? AND used = 0';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+
+    $token = bin2hex(random_bytes(32));
+    $tokenHash = hash('sha256', $token);
+    $expiresAt = date('Y-m-d H:i:s', time() + PASSWORD_RESET_MINUTES * 60);
+
+    $sql = 'INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES (?, ?, ?)';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('iss', $userId, $tokenHash, $expiresAt);
+    $stmt->execute();
+
+    return $token;
+}
+
+function findPasswordReset(string $rawToken): ?array
+{
+    $conn = db();
+    $tokenHash = hash('sha256', $rawToken);
+
+    $sql = 'SELECT id, user_id, expires_at, attempts, used FROM password_resets WHERE token_hash = ? LIMIT 1';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $tokenHash);
+    $stmt->execute();
+    $reset = $stmt->get_result()->fetch_assoc();
+
+    return is_array($reset) ? $reset : null;
+}
+
+function consumePasswordReset(string $rawToken, string $newPassword): ?string
+{
+    $reset = findPasswordReset($rawToken);
+
+    if ($reset === null) {
+        return 'invalid_token';
+    }
+
+    if ((int) $reset['used'] === 1) {
+        return 'already_used';
+    }
+
+    if (strtotime($reset['expires_at']) < time()) {
+        return 'expired';
+    }
+
+    if ((int) $reset['attempts'] >= PASSWORD_RESET_MAX_ATTEMPTS) {
+        return 'max_attempts';
+    }
+
+    $conn = db();
+    $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $sql = 'UPDATE users SET password = ? WHERE id = ?';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('si', $passwordHash, $reset['user_id']);
+    $stmt->execute();
+    if ($stmt->affected_rows < 0) {
+        return 'failed';
+    }
+
+    $sql = 'UPDATE password_resets SET used = 1 WHERE id = ?';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $reset['id']);
+    $stmt->execute();
+
+    return null;
+}
+
 function homePathForRole(string $role): string
 {
     if ($role === 'admin') {

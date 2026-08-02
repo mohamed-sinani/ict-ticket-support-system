@@ -75,6 +75,11 @@ const OTP_LENGTH = 6;
 const OTP_EXPIRY_MINUTES = 5;
 const OTP_MAX_ATTEMPTS = 5;
 
+const PASSWORD_RESET_MINUTES = 30;
+const PASSWORD_RESET_MAX_ATTEMPTS = 5;
+const PASSWORD_RESET_MAX_REQUESTS = 3;
+const PASSWORD_RESET_RATE_WINDOW = 600;
+
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
     $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
