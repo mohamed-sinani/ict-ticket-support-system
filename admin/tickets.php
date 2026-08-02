@@ -237,17 +237,15 @@ require_once __DIR__ . '/_nav.php';
                             </td>
                             <td><?= e((string) $t['ict_name']) ?></td>
                             <td>
-                                <form method="POST" class="ticket-assign-form">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="ticket_id" value="<?= (int) $t['id'] ?>">
-                                    <select name="ict_id" required>
-                                        <option value="" data-i18n="admin_select_ict">Select ICT</option>
-                                        <?php foreach ($ictUsers as $ict): ?>
-                                            <option value="<?= (int) $ict['id'] ?>" <?= (int) $t['assigned_to'] === (int) $ict['id'] ? 'selected' : '' ?>><?= e($ict['full_name']) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    <button class="btn btn-primary btn-sm" type="submit" data-i18n="common_assign"><?= !empty($t['assigned_to']) ? 'Reassign' : 'Assign' ?></button>
-                                </form>
+                                <button type="button" class="btn btn-primary btn-sm assign-open-btn"
+                                    data-ticket-id="<?= (int) $t['id'] ?>"
+                                    data-ticket-code="<?= e($t['tracking_code']) ?>"
+                                    data-ticket-employee="<?= e((string) $t['employee_name']) ?>"
+                                    data-ticket-issue="<?= e((string) $t['category_name']) ?> - <?= e((string) $t['subcategory_name']) ?>"
+                                    data-current-ict="<?= e((string) $t['ict_name']) ?>"
+                                    data-current-ict-id="<?= (int) $t['assigned_to'] ?>"
+                                    data-has-assignment="<?= !empty($t['assigned_to']) ? '1' : '0' ?>"
+                                ><?= !empty($t['assigned_to']) ? 'Reassign' : 'Assign' ?></button>
                             </td>
                             <td>
                                 <a href="<?= e(app_base_path() . '/admin/resolve_ticket.php?id=' . (int) $t['id']) ?>" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">Resolve</a>
@@ -260,6 +258,50 @@ require_once __DIR__ . '/_nav.php';
     </div>
 </section>
 </section>
+</div>
+<div id="assignModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="assignModalTitle">
+    <div class="confirm-modal db-modal-card" role="document">
+        <div class="modal-head">
+            <h3 id="assignModalTitle" data-i18n="admin_reassign">Reassign</h3>
+            <button type="button" class="modal-close" data-close-assign-modal aria-label="Close">&times;</button>
+        </div>
+        <p class="modal-desc">Select an ICT staff member to assign this ticket.</p>
+        <div class="assign-summary">
+            <div class="assign-summary-item">
+                <span data-i18n="common_tracking_code">Tracking Code</span>
+                <strong id="assignTicketCode">-</strong>
+            </div>
+            <div class="assign-summary-item">
+                <span data-i18n="common_employee">Employee</span>
+                <strong id="assignTicketEmployee">-</strong>
+            </div>
+            <div class="assign-summary-item">
+                <span data-i18n="common_issue">Issue</span>
+                <strong id="assignTicketIssue">-</strong>
+            </div>
+            <div class="assign-summary-item">
+                <span data-i18n="common_current">Current</span>
+                <strong id="assignTicketCurrent">None</strong>
+            </div>
+        </div>
+        <form method="POST" id="assignForm">
+            <?= csrf_field() ?>
+            <input type="hidden" name="ticket_id" id="assignTicketId">
+            <label class="modal-label">
+                <span data-i18n="admin_select_ict">ICT Staff</span>
+                <select name="ict_id" id="assignIctSelect" required>
+                    <option value="" data-i18n="admin_select_ict">Select ICT</option>
+                    <?php foreach ($ictUsers as $ict): ?>
+                        <option value="<?= (int) $ict['id'] ?>"><?= e($ict['full_name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <div class="confirm-actions">
+                <button type="button" class="btn btn-secondary" data-close-assign-modal data-i18n="common_cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary" data-i18n="common_assign">Assign</button>
+            </div>
+        </form>
+    </div>
 </div>
 <div id="evidenceDrawer" class="evidence-drawer hidden" aria-hidden="true">
     <div class="evidence-drawer-backdrop" data-evidence-close></div>
@@ -322,6 +364,53 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.key === 'Escape') {
             closeDrawer();
         }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const assignModal = document.getElementById('assignModal');
+    if (!assignModal) return;
+    const assignForm = document.getElementById('assignForm');
+    const assignSelect = document.getElementById('assignIctSelect');
+
+    function openAssignModal() {
+        assignModal.classList.remove('hidden');
+        assignModal.setAttribute('aria-hidden', 'false');
+        if (assignSelect) assignSelect.focus();
+    }
+    function closeAssignModal() {
+        assignModal.classList.add('hidden');
+        assignModal.setAttribute('aria-hidden', 'true');
+        if (assignForm) assignForm.reset();
+    }
+
+    document.querySelectorAll('.assign-open-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const idBox = document.getElementById('assignTicketId');
+            const codeBox = document.getElementById('assignTicketCode');
+            const empBox = document.getElementById('assignTicketEmployee');
+            const issueBox = document.getElementById('assignTicketIssue');
+            const currentBox = document.getElementById('assignTicketCurrent');
+            if (idBox) idBox.value = btn.dataset.ticketId || '';
+            if (codeBox) codeBox.textContent = btn.dataset.ticketCode || '-';
+            if (empBox) empBox.textContent = btn.dataset.ticketEmployee || '-';
+            if (issueBox) issueBox.textContent = btn.dataset.ticketIssue || '-';
+            if (currentBox) currentBox.textContent = btn.dataset.hasAssignment === '1' ? (btn.dataset.currentIct || '-') : 'None';
+            if (assignSelect) {
+                assignSelect.value = btn.dataset.hasAssignment === '1' ? (btn.dataset.currentIctId || '') : '';
+            }
+            openAssignModal();
+        });
+    });
+
+    document.querySelectorAll('[data-close-assign-modal]').forEach(function (el) {
+        el.addEventListener('click', closeAssignModal);
+    });
+    assignModal.addEventListener('click', function (e) {
+        if (e.target === assignModal) closeAssignModal();
+    });
+    document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && !assignModal.classList.contains('hidden')) closeAssignModal();
     });
 });
 </script>
