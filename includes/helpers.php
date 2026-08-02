@@ -96,7 +96,7 @@ function buildTicketCreatedEmail(array $ticket): string
     $status = e((string) $ticket['status']);
     $department = e((string) ($ticket['department_name'] ?? 'Not specified'));
     $category = e(trim((string) ($ticket['category_name'] ?? '') . ' - ' . (string) ($ticket['subcategory_name'] ?? ''), ' -'));
-    $trackUrl = e(absoluteUrl('track.php'));
+    $trackUrl = e(absoluteUrl('track'));
 
     return '<!doctype html>
 <html>
@@ -144,7 +144,7 @@ function buildTicketAdminAlertEmail(array $ticket): string
     $category = e(trim((string) ($ticket['category_name'] ?? '') . ' - ' . (string) ($ticket['subcategory_name'] ?? ''), ' -'));
     $priority = e((string) ($ticket['priority'] ?? 'Medium'));
     $status = e((string) ($ticket['status'] ?? STATUS_SUBMITTED));
-    $adminUrl = e(absoluteUrl('admin/tickets.php'));
+    $adminUrl = e(absoluteUrl('admin/tickets'));
 
     return '<!doctype html>
 <html>
@@ -193,7 +193,7 @@ function buildTicketAssignmentEmail(array $ticket): string
     $category = e(trim((string) ($ticket['category_name'] ?? '') . ' - ' . (string) ($ticket['subcategory_name'] ?? ''), ' -'));
     $status = e((string) ($ticket['status'] ?? STATUS_ASSIGNED));
     $staffName = e((string) ($ticket['assigned_name'] ?? 'ICT Staff'));
-    $staffUrl = e(absoluteUrl('staff/my_tickets.php'));
+    $staffUrl = e(absoluteUrl('staff/my_tickets'));
 
     return '<!doctype html>
 <html>
@@ -241,7 +241,7 @@ function buildTicketResolvedEmail(array $ticket): string
     $category = e(trim((string) ($ticket['category_name'] ?? '') . ' - ' . (string) ($ticket['subcategory_name'] ?? ''), ' -'));
     $status = e((string) ($ticket['status'] ?? STATUS_RESOLVED));
     $resolutionNote = e((string) ($ticket['resolution_note'] ?? ''));
-    $trackUrl = e(absoluteUrl('track.php'));
+    $trackUrl = e(absoluteUrl('track'));
 
     return '<!doctype html>
 <html>
@@ -310,6 +310,119 @@ function buildOtpEmail(string $fullName, string $otpCode): string
                                 <div style="font-size:36px;font-weight:800;color:#0f2f61;letter-spacing:.15em;margin-top:8px;">' . $code . '</div>
                             </div>
                             <p style="margin:18px 0 0;color:#64748b;font-size:13px;">If you did not request this login, please ignore this email or contact ICT support immediately.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>';
+}
+
+function buildAccountApprovedEmail(string $fullName): string
+{
+    $name = e($fullName);
+    $loginUrl = e(absoluteUrl('login'));
+
+    return '<!doctype html>
+<html>
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d3f0f9;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                    <tr>
+                        <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
+                            <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
+                            <div style="font-size:22px;font-weight:800;line-height:1.25;margin-top:4px;">Account Approved</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:24px;">
+                            <p style="margin:0 0 14px;">Hello ' . $name . ',</p>
+                            <p style="margin:0 0 18px;color:#475569;">Good news — your ICT Support account has been approved by the administrator. You can now log in and start submitting tickets.</p>
+                            <a href="' . $loginUrl . '" style="display:inline-block;background:#309CC5;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Log In to Your Account</a>
+                            <p style="margin:20px 0 0;color:#64748b;font-size:13px;">If you did not request this account, please contact the ICT support team.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>';
+}
+
+function buildAccountRejectedEmail(string $fullName, string $reason): string
+{
+    $name = e($fullName);
+    $reason = e($reason);
+
+    return '<!doctype html>
+<html>
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #fecaca;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                    <tr>
+                        <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
+                            <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
+                            <div style="font-size:22px;font-weight:800;line-height:1.25;margin-top:4px;">Account Registration Update</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:24px;">
+                            <p style="margin:0 0 14px;">Hello ' . $name . ',</p>
+                            <p style="margin:0 0 18px;color:#475569;">Unfortunately, your ICT Support account registration was not approved.</p>
+                            <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px;margin:18px 0;">
+                                <div style="font-size:12px;font-weight:800;color:#991b1b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Reason</div>
+                                <div style="color:#7f1d1d;line-height:1.55;">' . $reason . '</div>
+                            </div>
+                            <p style="margin:0 0 18px;color:#64748b;font-size:13px;">If you believe this is a mistake, please contact the ICT support team for assistance.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>';
+}
+
+function buildRegistrationAlertEmail(string $fullName, string $badge, string $email, string $jobTitle): string
+{
+    $name = e($fullName);
+    $badge = e($badge);
+    $email = e($email);
+    $jobTitle = e($jobTitle);
+    $reviewUrl = e(absoluteUrl('admin/approvals'));
+
+    return '<!doctype html>
+<html>
+<body style="margin:0;background:#ecf8fc;font-family:Inter,Arial,sans-serif;color:#1e293b;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#ecf8fc;padding:28px 12px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d3f0f9;border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(15,47,97,0.12);">
+                    <tr>
+                        <td style="background:#0f2f61;color:#ffffff;padding:22px 24px;">
+                            <div style="font-size:13px;font-weight:800;color:#bfdbfe;">ICT Support</div>
+                            <div style="font-size:22px;font-weight:800;line-height:1.25;margin-top:4px;">New Registration Awaiting Approval</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:24px;">
+                            <p style="margin:0 0 14px;">Hello Admin,</p>
+                            <p style="margin:0 0 18px;color:#475569;">A new employee has registered and is waiting for your approval before they can access the system.</p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:18px 0;border-collapse:collapse;">
+                                <tr><td style="padding:9px 0;color:#64748b;">Name</td><td style="padding:9px 0;font-weight:800;text-align:right;">' . $name . '</td></tr>
+                                <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Badge No.</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $badge . '</td></tr>
+                                <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Email</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $email . '</td></tr>
+                                <tr><td style="padding:9px 0;color:#64748b;border-top:1px solid #e2e8f0;">Job Title</td><td style="padding:9px 0;font-weight:700;text-align:right;border-top:1px solid #e2e8f0;">' . $jobTitle . '</td></tr>
+                            </table>
+                            <a href="' . $reviewUrl . '" style="display:inline-block;background:#309CC5;color:#ffffff;text-decoration:none;font-weight:800;border-radius:8px;padding:12px 16px;">Review Registration</a>
                         </td>
                     </tr>
                 </table>

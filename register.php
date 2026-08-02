@@ -6,7 +6,7 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/helpers.php';
 
 $next = $_GET['next'] ?? '';
-$allowedNext = in_array($next, ['report.php', 'track.php'], true) ? $next : '';
+$allowedNext = in_array($next, ['report', 'track'], true) ? $next : '';
 
 if (isLoggedIn()) {
     redirect($allowedNext !== '' ? $allowedNext : homePathForRole(currentUser()['role']));
@@ -25,7 +25,7 @@ $old = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('register.php'); }
+    if (!verify_csrf()) { setFlash('Invalid security token. Please try again.', 'error'); redirect('register'); }
     $old['full_name'] = trim($_POST['full_name'] ?? '');
     $old['employee_number'] = strtoupper(trim($_POST['employee_number'] ?? ''));
     $old['phone'] = trim($_POST['phone'] ?? '');
@@ -72,12 +72,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$errors) {
         $role = 'employee';
+        $approvalStatus = 'pending';
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare('INSERT INTO users (full_name, employee_number, phone, email, job_title, department_id, role, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssssiss', $old['full_name'], $old['employee_number'], $old['phone'], $old['email'], $old['job_title'], $departmentId, $role, $passwordHash);
+        $stmt = $conn->prepare('INSERT INTO users (full_name, employee_number, phone, email, job_title, department_id, role, password, approval_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->bind_param('sssssisss', $old['full_name'], $old['employee_number'], $old['phone'], $old['email'], $old['job_title'], $departmentId, $role, $passwordHash, $approvalStatus);
         $stmt->execute();
+        $newUserId = (int) $conn->insert_id;
 
-        redirect('thank_you.php' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : ''));
+        $adminRows = $conn->query("SELECT email FROM users WHERE role = 'admin' LIMIT 5");
+        $adminEmails = [];
+        if ($adminRows) {
+            while ($adminRow = $adminRows->fetch_assoc()) {
+                $adminEmails[] = (string) $adminRow['email'];
+            }
+        }
+
+        $plainMessage = 'A new employee account is awaiting your approval:' . "\n\n"
+            . 'Name: ' . $old['full_name'] . "\n"
+            . 'Badge: ' . $old['employee_number'] . "\n"
+            . 'Email: ' . $old['email'] . "\n"
+            . 'Job Title: ' . $old['job_title'] . "\n\n"
+            . 'Review pending registrations here: ' . absoluteUrl('admin/approvals');
+
+        foreach ($adminEmails as $adminEmail) {
+            sendNotificationEmail($adminEmail, 'New Registration Awaiting Approval', $plainMessage, buildRegistrationAlertEmail($old['full_name'], $old['employee_number'], $old['email'], $old['job_title']));
+        }
+
+        redirect('thank_you' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : ''));
     }
 }
 
@@ -151,7 +172,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </form>
 
-    <p class="small-text"><span data-i18n="register_login_prompt">Already registered?</span> <a href="login.php<?= $allowedNext !== '' ? '?next=' . e($allowedNext) : '' ?>" target="_self" data-i18n="register_login_link">Login</a></p>
+    <p class="small-text"><span data-i18n="register_login_prompt">Already registered?</span> <a href="<?= $baseUrl ?>login<?= $allowedNext !== '' ? '?next=' . e($allowedNext) : '' ?>" target="_self" data-i18n="register_login_link">Login</a></p>
 </section>
 <script>
 document.addEventListener('DOMContentLoaded', function () {

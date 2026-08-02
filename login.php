@@ -6,7 +6,7 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/helpers.php';
 
 $next = $_GET['next'] ?? '';
-$allowedNext = in_array($next, ['report.php', 'track.php'], true) ? $next : '';
+$allowedNext = in_array($next, ['report', 'track'], true) ? $next : '';
 
 if (isLoggedIn()) {
     $role = currentUser()['role'];
@@ -22,7 +22,7 @@ $otpSuccess = false;
 // If an OTP is pending, forward the user to the dedicated OTP page.
 if ($otpPending) {
     // Preserve any 'next' destination.
-    $redirect = 'otp.php' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : '');
+    $redirect = 'otp' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : '');
     redirect($redirect);
     exit;
 }
@@ -39,27 +39,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if (authenticate($email, $password, $selectedRole, $failureReason)) {
             $user = currentUser();
-            $otpCode = generateOtp($user['id']);
 
-            // Store pending OTP info
-            $_SESSION['otp_pending_user_id'] = $user['id'];
-            $_SESSION['otp_pending_role'] = $user['role'];
-            $_SESSION['otp_pending_email'] = $user['email'];
-            $_SESSION['otp_pending_full_name'] = $user['full_name'];
+            if (approvalStatus() === 'pending') {
+                unset($_SESSION['user']);
+                redirect('waiting');
+                exit;
+            }
 
-            // Ensure user is not logged in yet
-            unset($_SESSION['user']);
+            if (approvalStatus() === 'rejected') {
+                $reason = trim((string) ($user['review_reason'] ?? ''));
+                unset($_SESSION['user']);
+                $error = 'Your account was not approved.' . ($reason !== '' ? ' Reason: ' . $reason : ' Please contact the ICT support team.');
+            } else {
+                $otpCode = generateOtp($user['id']);
 
-            $otpEmail = $user['email'];
-            $otpPending = true;
+                // Store pending OTP info
+                $_SESSION['otp_pending_user_id'] = $user['id'];
+                $_SESSION['otp_pending_role'] = $user['role'];
+                $_SESSION['otp_pending_email'] = $user['email'];
+                $_SESSION['otp_pending_full_name'] = $user['full_name'];
 
-            $plainMessage = 'Your ICT Support login verification code is: ' . $otpCode . '. This code expires in ' . OTP_EXPIRY_MINUTES . ' minutes.';
-            $htmlMessage = buildOtpEmail($user['full_name'], $otpCode);
-            sendNotificationEmail($user['email'], 'Your ICT Support Login Code', $plainMessage, $htmlMessage);
+                // Ensure user is not logged in yet
+                unset($_SESSION['user']);
 
-            $redirect = 'otp.php' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : '');
-            redirect($redirect);
-            exit;
+                $otpEmail = $user['email'];
+                $otpPending = true;
+
+                $plainMessage = 'Your ICT Support login verification code is: ' . $otpCode . '. This code expires in ' . OTP_EXPIRY_MINUTES . ' minutes.';
+                $htmlMessage = buildOtpEmail($user['full_name'], $otpCode);
+                sendNotificationEmail($user['email'], 'Your ICT Support Login Code', $plainMessage, $htmlMessage);
+
+                $redirect = 'otp' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : '');
+                redirect($redirect);
+                exit;
+            }
         } else {
             $error = $failureReason === 'wrong_role'
                 ? 'Wrong role selected for this account. Please choose the correct login role.'
@@ -69,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+<?php
 $pageTitle = ($otpPending ? 'Verify OTP' : 'Employee Login') . ' | ' . APP_NAME;
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -102,7 +116,7 @@ require_once __DIR__ . '/includes/header.php';
     </form>
     <p class="small-text">
         <span data-i18n="login_register_prompt">New employee?</span>
-        <a href="register.php<?php echo $allowedNext !== '' ? '?next=' . e($allowedNext) : '' ?>" data-i18n="login_register_link">Register with your badge</a>
+        <a href="<?= $baseUrl ?>register<?php echo $allowedNext !== '' ? '?next=' . e($allowedNext) : '' ?>" data-i18n="login_register_link">Register with your badge</a>
     </p>
     <p class="small-text auth-notice" data-i18n="login_support_notice">If you face any problem, please contact the ICT support team: 0763364721</p>
 </section>

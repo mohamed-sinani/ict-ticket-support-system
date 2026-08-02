@@ -34,7 +34,7 @@ function authenticate(string $email, string $password, ?string $expectedRole = n
     $failureReason = null;
 
     $conn = db();
-    $sql = 'SELECT id, full_name, email, role, password FROM users WHERE email = ? LIMIT 1';
+    $sql = 'SELECT id, full_name, email, role, password, approval_status, review_reason FROM users WHERE email = ? LIMIT 1';
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('s', $email);
     $stmt->execute();
@@ -56,9 +56,16 @@ function authenticate(string $email, string $password, ?string $expectedRole = n
         'full_name' => $user['full_name'],
         'email' => $user['email'],
         'role' => $user['role'],
+        'approval_status' => $user['approval_status'] ?? 'approved',
+        'review_reason' => $user['review_reason'] ?? null,
     ];
 
     return true;
+}
+
+function approvalStatus(): string
+{
+    return (string) (currentUser()['approval_status'] ?? 'approved');
 }
 
 function generateOtp(int $userId): string
@@ -126,20 +133,20 @@ function verifyOtp(int $userId, string $code): ?string
 function homePathForRole(string $role): string
 {
     if ($role === 'admin') {
-        return 'admin/dashboard.php';
+        return 'admin/dashboard';
     }
 
     if ($role === 'ict') {
-        return 'staff/dashboard.php';
+        return 'staff/dashboard';
     }
 
-    return 'employee/dashboard.php';
+    return 'employee/dashboard';
 }
 
 function requireLogin(array $roles = ['admin', 'ict']): void
 {
     if (!isLoggedIn()) {
-        header('Location: ../login.php');
+        header('Location: ../login');
         exit;
     }
 

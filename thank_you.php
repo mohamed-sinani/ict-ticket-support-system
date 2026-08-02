@@ -6,8 +6,8 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/helpers.php';
 
 $next = $_GET['next'] ?? '';
-$allowedNext = in_array($next, ['report.php', 'track.php'], true) ? $next : '';
-$loginUrl = 'login.php' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : '');
+$allowedNext = in_array($next, ['report', 'track'], true) ? $next : '';
+$continueUrl = 'waiting' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : '');
 
 if (isLoggedIn()) {
     redirect($allowedNext !== '' ? $allowedNext : homePathForRole(currentUser()['role']));
@@ -18,26 +18,25 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 <section class="auth-card auth-card-wide register-card">
     <br>
-    <h2 data-i18n="thank_you_title">Thank you for registering</h2>
-    <p class="small-text" data-i18n="thank_you_intro">Your account has been created successfully.</p>
+    <h2 data-i18n="thank_you_pending_title">Registration Received</h2>
+    <p class="small-text" data-i18n="thank_you_pending_intro">Your registration has been submitted and is now awaiting administrator approval.</p>
 
-    <div class="alert alert-success" role="status" aria-live="polite">
+    <div class="alert alert-waiting" role="status" aria-live="polite">
         <p>
             <strong>
-                <span data-i18n="thank_you_redirect_prefix">You will be redirected to the login page in</span>
-                <span id="thankYouCountdown">1</span>
-                seconds.
+                <span data-i18n="thank_you_pending_hint">Once approved, you will receive an email and can start submitting tickets.</span>
             </strong>
         </p>
+        <p class="small-text" data-i18n="waiting_notice_sub">An email will be sent to you once the administrator approves or rejects your request.</p>
     </div>
 
     <p class="small-text" data-i18n="thank_you_fallback">If the redirect does not start automatically, use the button below.</p>
-    <a class="btn btn-primary" href="<?= e($loginUrl) ?>" data-i18n="thank_you_login_now">Go to Login</a>
+    <a class="btn btn-primary" href="<?= e($continueUrl) ?>" data-i18n="waiting_login_link">Try Login Again</a>
 </section>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var countdownElement = document.getElementById('thankYouCountdown');
-    var redirectUrl = <?= json_encode($loginUrl, JSON_UNESCAPED_SLASHES) ?>;
+    var redirectUrl = <?= json_encode($continueUrl, JSON_UNESCAPED_SLASHES) ?>;
     var remaining = 5;
 
     var timer = setInterval(function () {
