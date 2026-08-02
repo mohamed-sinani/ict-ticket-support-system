@@ -51,18 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $reason = trim((string) ($user['review_reason'] ?? ''));
                 unset($_SESSION['user']);
                 $error = 'Your account was not approved.' . ($reason !== '' ? ' Reason: ' . $reason : ' Please contact the ICT support team.');
-            } elseif ($rememberMe) {
-                // Remember-me login: skip OTP and keep the session for 7 days.
-                session_regenerate_id(true);
-                $_SESSION['remember_me'] = true;
-                setcookie('ict_remember', '1', [
-                    'expires' => time() + 7 * 86400,
-                    'path' => '/',
-                    'httponly' => true,
-                    'samesite' => 'Lax',
-                ]);
-                redirect($allowedNext !== '' ? $allowedNext : homePathForRole($user['role']));
-                exit;
             } else {
                 $otpCode = generateOtp($user['id']);
 
@@ -71,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['otp_pending_role'] = $user['role'];
                 $_SESSION['otp_pending_email'] = $user['email'];
                 $_SESSION['otp_pending_full_name'] = $user['full_name'];
+                $_SESSION['otp_pending_remember_me'] = $rememberMe;
 
                 // Ensure user is not logged in yet
                 unset($_SESSION['user']);

@@ -54,8 +54,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'email' => $email,
                 'role' => $role,
             ];
+            if (!empty($_SESSION['otp_pending_remember_me'])) {
+                session_regenerate_id(true);
+                $_SESSION['remember_me'] = true;
+                setcookie('ict_remember', '1', [
+                    'expires' => time() + 7 * 86400,
+                    'path' => '/',
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]);
+            }
             // Clean pending data
-            unset($_SESSION['otp_pending_user_id'], $_SESSION['otp_pending_role'], $_SESSION['otp_pending_email'], $_SESSION['otp_pending_full_name']);
+            unset($_SESSION['otp_pending_user_id'], $_SESSION['otp_pending_role'], $_SESSION['otp_pending_email'], $_SESSION['otp_pending_full_name'], $_SESSION['otp_pending_remember_me']);
             // Redirect to intended page or role home
             redirect($allowedNext !== '' ? $allowedNext : homePathForRole($role));
             exit;
@@ -85,6 +95,9 @@ require_once __DIR__ . '/includes/header.php';
     <?php endif; ?>
     <form method="POST" class="form-grid">
         <?= csrf_field() ?>
+        <?php if (!empty($_SESSION['otp_pending_remember_me'])): ?>
+            <input type="hidden" name="remember_me" value="1">
+        <?php endif; ?>
         <label>
             <span data-i18n="otp_code_label">Verification Code</span>
             <input type="text" name="otp_code" required maxlength="<?= OTP_LENGTH ?>" pattern="[0-9]{<?= OTP_LENGTH ?>}" inputmode="numeric" autocomplete="one-time-code" placeholder="<?= OTP_LENGTH ?>-digit code" style="text-align:center;font-size:1.4em;letter-spacing:.2em;">
