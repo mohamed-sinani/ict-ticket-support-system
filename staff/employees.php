@@ -81,6 +81,7 @@ require_once __DIR__ . '/_nav.php';
                         <th data-i18n="common_full_name">Full Name</th>
                         <th data-i18n="common_employee_number">Badge No.</th>
                         <th data-i18n="common_email">Email</th>
+                        <th data-i18n="common_phone">Phone</th>
                         <th data-i18n="common_department">Department</th>
                         <th data-i18n="common_action">Action</th>
                     </tr>
@@ -88,45 +89,102 @@ require_once __DIR__ . '/_nav.php';
                 <tbody>
                     <?php foreach ($employees as $emp): ?>
                         <tr>
-                            <form method="POST">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="user_id" value="<?= (int) $emp['id'] ?>">
-                                <td>
-                                    <input type="text" name="full_name" value="<?= e($emp['full_name']) ?>" required>
-                                </td>
-                                <td><span class="db-mono"><?= e($emp['employee_number']) ?></span></td>
-                                <td>
-                                    <input type="email" name="email" value="<?= e($emp['email']) ?>" required>
-                                </td>
-                                <td>
-                                    <select name="department_id">
-                                        <?php foreach ($departments as $dept): ?>
-                                            <option value="<?= (int) $dept['id'] ?>" <?= (int)$emp['department_id'] === (int)$dept['id'] ? 'selected' : '' ?>>
-                                                <?= e($dept['name']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="table-actions">
-                                        <label>
-                                            <span class="small-text" data-i18n="common_phone">Phone</span>
-                                            <input type="text" name="phone" value="<?= e((string)$emp['phone']) ?>">
-                                        </label>
-                                        <button type="submit" class="btn btn-primary btn-sm" data-i18n="common_update">Update</button>
-                                    </div>
-                                </td>
-                            </form>
+                            <td><?= e($emp['full_name']) ?></td>
+                            <td><span class="db-mono"><?= e($emp['employee_number']) ?></span></td>
+                            <td><?= e($emp['email']) ?></td>
+                            <td><?= e((string) $emp['phone']) ?></td>
+                            <td><?= e((string) $emp['department_name']) ?></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="btn btn-icon" data-open-employee-edit
+                                        data-id="<?= (int) $emp['id'] ?>"
+                                        data-name="<?= e($emp['full_name']) ?>"
+                                        data-email="<?= e($emp['email']) ?>"
+                                        data-phone="<?= e((string) $emp['phone']) ?>"
+                                        data-dept="<?= (int) $emp['department_id'] ?>"
+                                        aria-label="Edit employee" title="Edit employee">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     <?php if (empty($employees)): ?>
-                        <tr><td colspan="5" class="small-text">No employees found.</td></tr>
+                        <tr><td colspan="6" class="small-text">No employees found.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </section>
+<div id="editEmployeeModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="editEmployeeTitle">
+    <div class="confirm-modal db-modal-card" role="document">
+        <div class="modal-head">
+            <h3 id="editEmployeeTitle" data-i18n="staff_edit_employee">Edit Employee</h3>
+            <button type="button" class="modal-close" data-close-employee-modal aria-label="Close">&times;</button>
+        </div>
+        <p class="modal-desc">Update employee profile details.</p>
+        <form method="POST" id="editEmployeeForm">
+            <?= csrf_field() ?>
+            <input type="hidden" name="user_id" id="eeUserId" value="0">
+            <div class="db-form-grid">
+                <label><span data-i18n="common_full_name">Full Name</span><input type="text" name="full_name" id="eeName" required></label>
+                <label><span data-i18n="common_email">Email</span><input type="email" name="email" id="eeEmail" required></label>
+                <label><span data-i18n="common_phone">Phone</span><input type="text" name="phone" id="eePhone"></label>
+                <label><span data-i18n="common_department">Department</span>
+                    <select name="department_id" id="eeDept">
+                        <option value="" data-i18n="report_department_placeholder">Select Department</option>
+                        <?php foreach ($departments as $dept): ?>
+                            <option value="<?= (int) $dept['id'] ?>"><?= e($dept['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+            </div>
+            <div class="confirm-actions">
+                <button type="button" class="btn btn-secondary" data-close-employee-modal data-i18n="common_cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary" data-i18n="common_update">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('editEmployeeModal');
+    const form = document.getElementById('editEmployeeForm');
+    if (!modal || !form) return;
+
+    function openEditModal(btn) {
+        document.getElementById('eeUserId').value = btn.getAttribute('data-id') || '0';
+        document.getElementById('eeName').value = btn.getAttribute('data-name') || '';
+        document.getElementById('eeEmail').value = btn.getAttribute('data-email') || '';
+        document.getElementById('eePhone').value = btn.getAttribute('data-phone') || '';
+        document.getElementById('eeDept').value = btn.getAttribute('data-dept') || '';
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        document.getElementById('eeName').focus();
+    }
+
+    function closeModal() {
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('[data-open-employee-edit]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            openEditModal(btn);
+        });
+    });
+    document.querySelectorAll('[data-close-employee-modal]').forEach(function (btn) {
+        btn.addEventListener('click', closeModal);
+    });
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+    });
+});
+</script>
 </section>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
