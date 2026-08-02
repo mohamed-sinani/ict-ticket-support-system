@@ -137,7 +137,7 @@ require_once __DIR__ . '/_nav.php';
             </div>
         </div>
         <?php if ($statusFilter !== '' || $departmentFilter > 0): ?>
-            <a class="db-view-btn" href="tickets.php" data-i18n="common_clear">
+            <a class="db-view-btn" href="tickets" data-i18n="common_clear">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 Clear
             </a>
@@ -248,7 +248,7 @@ require_once __DIR__ . '/_nav.php';
                                 ><?= !empty($t['assigned_to']) ? 'Reassign' : 'Assign' ?></button>
                             </td>
                             <td>
-                                <a href="<?= e(app_base_path() . '/admin/resolve_ticket.php?id=' . (int) $t['id']) ?>" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">Resolve</a>
+                                <a href="<?= e(app_base_path() . '/admin/resolve_ticket?id=' . (int) $t['id']) ?>" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">Resolve</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

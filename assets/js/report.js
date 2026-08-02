@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
         body.append('employee_number', empNum);
 
         try {
-            const response = await fetch('api/verify_employee.php', { method: 'POST', body });
+            const response = await fetch('api/verify_employee', { method: 'POST', body });
             const data = await response.json();
             if (!data.success || !data.employee) {
                 throw new Error(data.message || msg('verify_failed'));
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
         resultBox.classList.remove('hidden');
 
         try {
-            const response = await fetch('api/submit_ticket.php', {
+            const response = await fetch('api/submit_ticket', {
                 method: 'POST',
                 body: new FormData(wizardForm)
             });
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         body.append('category_id', categorySelect.value);
 
         try {
-            const response = await fetch('api/get_subcategories.php', { method: 'POST', body });
+            const response = await fetch('api/get_subcategories', { method: 'POST', body });
             const data = await response.json();
             const options = ['<option value="">' + msg('select_subcategory') + '</option>'];
             if (data.success && Array.isArray(data.subcategories)) {

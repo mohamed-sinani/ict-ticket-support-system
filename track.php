@@ -196,7 +196,7 @@ trackForm.addEventListener('submit', async function (event) {
     trackResult.innerHTML = '<p class="small-text">' + t('track_searching', 'Searching...') + '</p>';
 
     const formData = new FormData(trackForm);
-    const response = await fetch('api/track_ticket.php', {
+    const response = await fetch('api/track_ticket', {
         method: 'POST',
         body: formData
     });

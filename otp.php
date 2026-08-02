@@ -5,12 +5,12 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/helpers.php';
 
 $allowedNext = $_GET['next'] ?? '';
-$allowedNext = in_array($allowedNext, ['report.php', 'track.php'], true) ? $allowedNext : '';
+$allowedNext = in_array($allowedNext, ['report', 'track'], true) ? $allowedNext : '';
 
 // Ensure OTP pending info exists
 if (!isset($_SESSION['otp_pending_user_id'], $_SESSION['otp_pending_role'])) {
     // No pending OTP, redirect to login
-    redirect('login.php' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : ''));
+    redirect('login' . ($allowedNext !== '' ? '?next=' . urlencode($allowedNext) : ''));
     exit;
 }
 
@@ -20,7 +20,7 @@ $otpEmail = $_SESSION['otp_pending_email'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf()) {
         setFlash('Invalid security token. Please try again.', 'error');
-        redirect('login.php');
+        redirect('login');
     }
 
     // Resend OTP request
@@ -96,6 +96,6 @@ require_once __DIR__ . '/includes/header.php';
         <input type="hidden" name="resend" value="1">
         <button type="submit" class="btn btn-secondary">Resend Code</button>
     </form>
-    <p class="small-text"><a href="login.php<?= $allowedNext !== '' ? '?next=' . e($allowedNext) : '' ?>">Back to Login</a></p>
+    <p class="small-text"><a href="<?= $baseUrl ?>login<?= $allowedNext !== '' ? '?next=' . e($allowedNext) : '' ?>">Back to Login</a></p>
 </section>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

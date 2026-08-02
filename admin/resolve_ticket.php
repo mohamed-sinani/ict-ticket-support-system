@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             [$photoOk, $photoResult] = resolvePhotoUpload($resolutionPhoto ?? []);
             if (!$photoOk) {
                 setFlash((string) $photoResult, 'error');
-                redirect('resolve_ticket.php?id=' . $ticketId);
+                redirect('resolve_ticket?id=' . $ticketId);
             }
             $photoRecord = $photoResult;
         }

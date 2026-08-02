@@ -1,0 +1,38 @@
+# =====================================================================
+#  ICT Ticket Support System — clean URLs + security
+#  Compatible with Apache 2.4 (XAMPP and InfinityFree both support
+#  mod_rewrite + .htaccess with AllowOverride All).
+# =====================================================================
+
+Options -Indexes
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+RewriteEngine On
+
+# ---------------------------------------------------------------------
+# 1) Permanently redirect requests that explicitly target a .php file
+#    to the clean, extensionless URL. 308 preserves the request method
+#    and body, so form POSTs keep working.
+#    Using REQUEST_URI (not THE_REQUEST/$1) keeps the redirect URL
+#    root-relative regardless of where the app is mounted.
+# ---------------------------------------------------------------------
+RewriteCond %{THE_REQUEST} \.php[?/\s]
+RewriteCond %{REQUEST_URI} ^(.*)\.php$
+RewriteRule ^ %1 [R=308,L]
+
+# ---------------------------------------------------------------------
+# 2) Serve existing files and directories as-is (assets, uploads, etc.)
+# ---------------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ---------------------------------------------------------------------
+# 3) Internally rewrite clean URLs (e.g. /admin/users) to the matching
+#    .php file (e.g. /admin/users.php).
+# ---------------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L]

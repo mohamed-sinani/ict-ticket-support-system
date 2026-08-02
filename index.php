@@ -9,8 +9,8 @@ require_once __DIR__ . '/includes/header.php';
         <h1 data-i18n="home_hero_title">Report all Technical ICT issues by Submitting a Ticket</h1>
         <p data-i18n="home_hero_text">Report ICT incidents quickly and track updates with your unique code. Admin and ICT staff can securely manage ticket lifecycles in one place.</p>
         <div class="hero-actions">
-            <a href="report.php" target="_self" class="btn btn-primary" data-i18n="home_report_btn">Report an Issue</a>
-            <a href="track.php" class="btn btn-secondary" data-i18n="home_track_btn">Check Issue Status</a>
+            <a href="<?= $baseUrl ?>report" target="_self" class="btn btn-primary" data-i18n="home_report_btn">Report an Issue</a>
+            <a href="<?= $baseUrl ?>track" class="btn btn-secondary" data-i18n="home_track_btn">Check Issue Status</a>
         </div>
     </div>
 </section>
@@ -96,8 +96,8 @@ require_once __DIR__ . '/includes/header.php';
         <h2>Ready to Report an Issue?</h2>
         <p>Don't let ICT problems slow you down. Submit a ticket now and our team will get to work.</p>
         <div class="cta-actions">
-            <a href="report.php" class="btn btn-primary">Report an Issue</a>
-            <a href="track.php" class="btn btn-secondary">Track Existing Ticket</a>
+            <a href="<?= $baseUrl ?>report" class="btn btn-primary">Report an Issue</a>
+            <a href="<?= $baseUrl ?>track" class="btn btn-secondary">Track Existing Ticket</a>
         </div>
     </div>
 </section>

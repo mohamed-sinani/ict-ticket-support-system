@@ -190,7 +190,7 @@ if ($startDate !== '' && $endDate !== '') {
     $rangeLabel = 'All Time';
 }
 
-$exportUrl = 'reports.php?export=csv' . ($startDate !== '' ? '&start_date=' . rawurlencode($startDate) : '') . ($endDate !== '' ? '&end_date=' . rawurlencode($endDate) : '');
+$exportUrl = 'reports?export=csv' . ($startDate !== '' ? '&start_date=' . rawurlencode($startDate) : '') . ($endDate !== '' ? '&end_date=' . rawurlencode($endDate) : '');
 
 $pageTitle = 'Reports & Analytics | ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
@@ -275,7 +275,7 @@ require_once __DIR__ . '/_nav.php';
             </div>
         </div>
         <?php if ($hasRange): ?>
-            <a class="db-view-btn" href="reports.php" data-i18n="common_clear">
+            <a class="db-view-btn" href="reports" data-i18n="common_clear">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 Clear
             </a>
