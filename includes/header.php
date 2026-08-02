@@ -86,9 +86,15 @@ $baseUrl = $isSubDir ? '../' : '';
                 <a href="<?= $baseUrl ?>track.php" data-i18n="nav_check_status">Check Status</a>
                 <a class="btn btn-primary btn-link" href="<?= $baseUrl ?>login.php" target="_self" data-i18n="nav_login">Login</a>
             <?php endif; ?>
-            <button type="button" id="languageToggle" class="btn btn-secondary btn-link" aria-label="Switch language" data-language-toggle>SW</button>
+            <button type="button" id="languageToggle" class="admin-icon-btn admin-lang-btn" aria-label="Switch language" data-language-toggle>
+                <svg class="admin-lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                <span class="admin-lang-code" data-lang-code>EN</span>
+            </button>
             <?php if ($user): ?>
-            <button type="button" class="btn btn-secondary btn-link" id="themeToggle" aria-label="Toggle dark mode" data-theme-toggle>🌙</button>
+            <button type="button" class="admin-icon-btn" id="themeToggle" aria-label="Toggle dark mode" data-theme-toggle>
+                <svg data-theme-icon="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg data-theme-icon="sun" class="admin-icon-svg-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
             <?php endif; ?>
         </nav>
 
@@ -207,6 +213,11 @@ const appTranslations = {
         report_submit_btn: 'Submit Ticket',
         common_add: 'Add',
         common_cancel: 'Cancel',
+        common_back: 'Back',
+        common_next: 'Next',
+        modal_step_personal: 'Personal Info',
+        modal_step_work: 'Work Info',
+        modal_step_password: 'Password',
         common_update: 'Update',
         common_delete: 'Delete',
         common_filter: 'Filter',
@@ -215,9 +226,14 @@ const appTranslations = {
         common_employee: 'Employee',
         common_department: 'Department',
         common_issue: 'Issue',
+        common_current: 'Current',
         common_status: 'Status',
         common_priority: 'Priority',
         common_created: 'Created',
+        common_members: 'Members',
+        admin_edit_department: 'Edit Department',
+        admin_edit_user: 'Edit User',
+        staff_edit_employee: 'Edit Employee',
         common_updated: 'Updated',
         common_all_tickets: 'All Issues',
         common_no_tickets: 'No tickets yet',
@@ -464,6 +480,11 @@ const appTranslations = {
         report_submit_btn: 'Tuma Tiketi',
         common_add: 'Ongeza',
         common_cancel: 'Ghairi',
+        common_back: 'Rudi',
+        common_next: 'Endelea',
+        modal_step_personal: 'Taarifa Binafsi',
+        modal_step_work: 'Taarifa za Kazi',
+        modal_step_password: 'Nenosiri',
         common_update: 'Sasisha',
         common_delete: 'Futa',
         common_filter: 'Chuja',
@@ -472,9 +493,14 @@ const appTranslations = {
         common_employee: 'Mfanyakazi',
         common_department: 'Idara',
         common_issue: 'Tatizo',
+        common_current: 'Ya Sasa',
         common_status: 'Hali',
         common_priority: 'Kipaumbele',
         common_created: 'Imeundwa',
+        common_members: 'Wanachama',
+        admin_edit_department: 'Hariri Idara',
+        admin_edit_user: 'Hariri Mtumiaji',
+        staff_edit_employee: 'Hariri Mfanyakazi',
         common_updated: 'Imesasishwa',
         common_all_tickets: 'Masuala Yote',
         common_no_tickets: 'Hakuna tiketi bado',
@@ -653,7 +679,8 @@ function applyAppLanguage(lang) {
     });
 
     document.querySelectorAll('[data-language-toggle]').forEach(function (toggle) {
-        toggle.textContent = appLanguage === 'en' ? 'EN / SW' : 'SW / EN';
+        const code = toggle.querySelector('[data-lang-code]');
+        if (code) code.textContent = appLanguage === 'en' ? 'EN' : 'SW';
         toggle.setAttribute('aria-label', appLanguage === 'en' ? 'Switch to Swahili' : 'Switch to English');
     });
 
@@ -711,20 +738,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.querySelectorAll('[data-theme-toggle]').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+    function syncThemeIcons() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+            const moon = b.querySelector('[data-theme-icon="moon"]');
+            const sun = b.querySelector('[data-theme-icon="sun"]');
+            if (moon) moon.classList.toggle('admin-icon-svg-hidden', isDark);
+            if (sun) sun.classList.toggle('admin-icon-svg-hidden', !isDark);
+        });
+    }
+
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             if (isDark) {
                 document.documentElement.removeAttribute('data-theme');
                 localStorage.setItem('app_theme', 'light');
-                document.querySelectorAll('[data-theme-toggle]').forEach(b => b.textContent = '🌙');
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 localStorage.setItem('app_theme', 'dark');
-                document.querySelectorAll('[data-theme-toggle]').forEach(b => b.textContent = '☀️');
             }
+            syncThemeIcons();
         });
-        btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+    });
+    syncThemeIcons();
+
+    document.querySelectorAll('[data-profile-menu]').forEach(function (wrap) {
+        const btn = wrap.querySelector('.admin-profile-icon');
+        const menu = wrap.querySelector('.admin-profile-menu');
+        if (!btn || !menu) return;
+
+        function setProfileMenu(open) {
+            menu.classList.toggle('hidden', !open);
+            btn.setAttribute('aria-expanded', String(open));
+        }
+
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            setProfileMenu(menu.classList.contains('hidden'));
+        });
+        document.addEventListener('click', function (e) {
+            if (!wrap.contains(e.target)) setProfileMenu(false);
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') setProfileMenu(false);
+        });
     });
 
     const flashToast = document.querySelector('[data-flash-toast]');
