@@ -110,7 +110,12 @@ require_once __DIR__ . '/includes/header.php';
         </label>
         <label>
             <span data-i18n="login_password_label">Password</span>
-            <input type="password" name="password" required>
+            <span class="password-field">
+                <input type="password" name="password" required data-password-field>
+                <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
+                    <span aria-hidden="true">👁</span>
+                </button>
+            </span>
         </label>
         <button type="submit" class="btn btn-primary" data-i18n="login_submit">Login</button>
     </form>
@@ -123,4 +128,19 @@ require_once __DIR__ . '/includes/header.php';
     </p>
     <p class="small-text auth-notice" data-i18n="login_support_notice">If you face any problem, please contact the ICT support team: 0763364721</p>
 </section>
+<script>
+document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+    button.addEventListener('click', function () {
+        const wrapper = button.closest('.password-field');
+        const input = wrapper ? wrapper.querySelector('[data-password-field]') : null;
+        if (!input) return;
+
+        const isHidden = input.getAttribute('type') === 'password';
+        input.setAttribute('type', isHidden ? 'text' : 'password');
+        button.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+        button.classList.toggle('is-visible', isHidden);
+        button.querySelector('span').textContent = isHidden ? '🙈' : '👁';
+    });
+});
+</script>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

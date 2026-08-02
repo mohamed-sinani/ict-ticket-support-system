@@ -159,10 +159,20 @@ require_once __DIR__ . '/includes/header.php';
                     </select>
                 </label>
                 <label><span data-i18n="register_password_label">Password</span>
-                    <input type="password" name="password" minlength="8" required data-i18n-placeholder="register_password_label" placeholder="Minimum 8 characters">
+                    <span class="password-field">
+                        <input type="password" name="password" minlength="8" required data-i18n-placeholder="register_password_label" placeholder="Minimum 8 characters" data-password-field>
+                        <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
+                            <span aria-hidden="true">👁</span>
+                        </button>
+                    </span>
                 </label>
                 <label><span data-i18n="register_confirm_password_label">Confirm Password</span>
-                    <input type="password" name="confirm_password" minlength="8" required data-i18n-placeholder="register_confirm_password_label" placeholder="Repeat password">
+                    <span class="password-field">
+                        <input type="password" name="confirm_password" minlength="8" required data-i18n-placeholder="register_confirm_password_label" placeholder="Repeat password" data-password-field>
+                        <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
+                            <span aria-hidden="true">👁</span>
+                        </button>
+                    </span>
                 </label>
             </div>
             <div class="wizard-actions auth-actions">
@@ -219,6 +229,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 firstInvalid.reportValidity();
             }
         }
+    });
+});
+</script>
+<script>
+document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+    button.addEventListener('click', function () {
+        const wrapper = button.closest('.password-field');
+        const input = wrapper ? wrapper.querySelector('[data-password-field]') : null;
+        if (!input) return;
+
+        const isHidden = input.getAttribute('type') === 'password';
+        input.setAttribute('type', isHidden ? 'text' : 'password');
+        button.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+        button.classList.toggle('is-visible', isHidden);
+        button.querySelector('span').textContent = isHidden ? '🙈' : '👁';
     });
 });
 </script>

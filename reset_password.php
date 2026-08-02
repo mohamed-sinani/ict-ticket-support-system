@@ -92,14 +92,39 @@ require_once __DIR__ . '/includes/header.php';
             <input type="hidden" name="token" value="<?= e($token) ?>">
             <label>
                 <span data-i18n="reset_password_label">New Password</span>
-                <input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Minimum 8 characters">
+                <span class="password-field">
+                    <input type="password" name="password" minlength="8" required autocomplete="new-password" placeholder="Minimum 8 characters" data-password-field>
+                    <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
+                        <span aria-hidden="true">👁</span>
+                    </button>
+                </span>
             </label>
             <label>
                 <span data-i18n="reset_confirm_label">Confirm New Password</span>
-                <input type="password" name="confirm_password" minlength="8" required autocomplete="new-password" placeholder="Repeat password">
+                <span class="password-field">
+                    <input type="password" name="confirm_password" minlength="8" required autocomplete="new-password" placeholder="Repeat password" data-password-field>
+                    <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
+                        <span aria-hidden="true">👁</span>
+                    </button>
+                </span>
             </label>
             <button type="submit" class="btn btn-primary" data-i18n="reset_submit">Reset Password</button>
         </form>
     <?php endif; ?>
 </section>
+<script>
+document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+    button.addEventListener('click', function () {
+        const wrapper = button.closest('.password-field');
+        const input = wrapper ? wrapper.querySelector('[data-password-field]') : null;
+        if (!input) return;
+
+        const isHidden = input.getAttribute('type') === 'password';
+        input.setAttribute('type', isHidden ? 'text' : 'password');
+        button.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+        button.classList.toggle('is-visible', isHidden);
+        button.querySelector('span').textContent = isHidden ? '🙈' : '👁';
+    });
+});
+</script>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

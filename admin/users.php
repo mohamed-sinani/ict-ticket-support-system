@@ -218,7 +218,12 @@ foreach ($users as $u) {
                 </select>
             </label>
             <label class="full"><span data-i18n="admin_password_label">Password (leave blank to keep current)</span>
-                <input type="password" name="password" value="" placeholder="<?= $editUser ? 'Leave blank to keep current' : 'Required for new users' ?>">
+                <span class="password-field">
+                    <input type="password" name="password" value="" placeholder="<?= $editUser ? 'Leave blank to keep current' : 'Required for new users' ?>" data-password-field>
+                    <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
+                        <span aria-hidden="true">👁</span>
+                    </button>
+                </span>
             </label>
             <div class="db-form-actions">
                 <button class="btn btn-primary" type="submit"><?= $editUser ? 'Save Changes' : 'Create User' ?></button>
@@ -283,7 +288,12 @@ foreach ($users as $u) {
             </div>
             <div class="wizard-panel" data-panel="3" hidden>
                 <label class="full"><span data-i18n="admin_password_label">Password</span>
-                    <input type="password" name="password" required placeholder="Required for new users">
+                    <span class="password-field">
+                        <input type="password" name="password" required placeholder="Required for new users" data-password-field>
+                        <button type="button" class="password-toggle" aria-label="Show password" data-password-toggle>
+                            <span aria-hidden="true">👁</span>
+                        </button>
+                    </span>
                 </label>
             </div>
             <div class="db-form-actions full wizard-actions">
@@ -365,6 +375,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     document.addEventListener('keydown', function (ev) {
         if (ev.key === 'Escape' && !addUserModal.classList.contains('hidden')) closeAddUserModal();
+    });
+});
+document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+    button.addEventListener('click', function () {
+        const wrapper = button.closest('.password-field');
+        const input = wrapper ? wrapper.querySelector('[data-password-field]') : null;
+        if (!input) return;
+
+        const isHidden = input.getAttribute('type') === 'password';
+        input.setAttribute('type', isHidden ? 'text' : 'password');
+        button.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+        button.classList.toggle('is-visible', isHidden);
+        button.querySelector('span').textContent = isHidden ? '🙈' : '👁';
     });
 });
 </script>
