@@ -12,11 +12,11 @@ function db(): mysqli
         return $conn;
     }
 
-    $host = '127.0.0.1';
-    $user = 'root';
-    $password = '';
-    $database = 'ict_support_system';
-    $port = 3306;
+    $host = env('DB_HOST', '127.0.0.1');
+    $user = env('DB_USER', 'root');
+    $password = env('DB_PASSWORD', '');
+    $database = env('DB_NAME', 'ict_support_system');
+    $port = (int) env('DB_PORT', '3306');
 
     $conn = new mysqli($host, $user, $password, $database, $port);
 
