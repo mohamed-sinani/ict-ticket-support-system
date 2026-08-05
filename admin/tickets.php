@@ -288,7 +288,7 @@ require_once __DIR__ . '/_nav.php';
             <?= csrf_field() ?>
             <input type="hidden" name="ticket_id" id="assignTicketId">
             <label class="modal-label">
-                <span data-i18n="admin_select_ict">ICT Staff</span>
+                <span data-i18n="admin_assign_to">Assign To</span>
                 <select name="ict_id" id="assignIctSelect" required>
                     <option value="" data-i18n="admin_select_ict">Select ICT</option>
                     <?php foreach ($ictUsers as $ict): ?>
@@ -397,7 +397,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (issueBox) issueBox.textContent = btn.dataset.ticketIssue || '-';
             if (currentBox) currentBox.textContent = btn.dataset.hasAssignment === '1' ? (btn.dataset.currentIct || '-') : 'None';
             if (assignSelect) {
-                assignSelect.value = btn.dataset.hasAssignment === '1' ? (btn.dataset.currentIctId || '') : '';
+                if (btn.dataset.hasAssignment === '1' && btn.dataset.currentIctId) {
+                    assignSelect.value = btn.dataset.currentIctId;
+                } else {
+                    assignSelect.selectedIndex = assignSelect.options.length > 1 ? 1 : 0;
+                }
             }
             openAssignModal();
         });

@@ -92,8 +92,7 @@ function absoluteUrl(string $path): string
 function buildTicketCreatedEmail(array $ticket): string
 {
     $trackingCode = e((string) $ticket['tracking_code']);
-    $employeeName = e((string) $ticket['employee_name']);
-    $status = e((string) $ticket['status']);
+    $employeeName = e((string) ($ticket['employee_name'] ?? $ticket['full_name'] ?? ''));
     $department = e((string) ($ticket['department_name'] ?? 'Not specified'));
     $category = e(trim((string) ($ticket['category_name'] ?? '') . ' - ' . (string) ($ticket['subcategory_name'] ?? ''), ' -'));
     $trackUrl = e(absoluteUrl('track'));
@@ -188,7 +187,7 @@ function buildTicketAdminAlertEmail(array $ticket): string
 function buildTicketAssignmentEmail(array $ticket): string
 {
     $trackingCode = e((string) $ticket['tracking_code']);
-    $employeeName = e((string) $ticket['employee_name']);
+    $employeeName = e((string) ($ticket['employee_name'] ?? $ticket['full_name'] ?? ''));
     $department = e((string) ($ticket['department_name'] ?? 'Not specified'));
     $category = e(trim((string) ($ticket['category_name'] ?? '') . ' - ' . (string) ($ticket['subcategory_name'] ?? ''), ' -'));
     $status = e((string) ($ticket['status'] ?? STATUS_ASSIGNED));
@@ -236,7 +235,7 @@ function buildTicketAssignmentEmail(array $ticket): string
 function buildTicketResolvedEmail(array $ticket): string
 {
     $trackingCode = e((string) $ticket['tracking_code']);
-    $employeeName = e((string) $ticket['employee_name']);
+    $employeeName = e((string) ($ticket['employee_name'] ?? $ticket['full_name'] ?? ''));
     $department = e((string) ($ticket['department_name'] ?? 'Not specified'));
     $category = e(trim((string) ($ticket['category_name'] ?? '') . ' - ' . (string) ($ticket['subcategory_name'] ?? ''), ' -'));
     $status = e((string) ($ticket['status'] ?? STATUS_RESOLVED));
